@@ -1,7 +1,24 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
 
-const BASE = (process.env.NEXT_PUBLIC_SITE_URL ?? site.url).replace(/\/$/, "");
+/**
+ * Vercel environment values are user-configurable and may occasionally be set
+ * to a relative path such as `/`. Metadata URLs must always use an absolute
+ * HTTP(S) origin, so ignore malformed values and fall back to the canonical
+ * production domain instead of failing the entire static build.
+ */
+function resolveSiteOrigin(value: string | undefined): string {
+  try {
+    const url = new URL(value?.trim() || site.url);
+    if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error();
+
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return site.url.replace(/\/$/, "");
+  }
+}
+
+const BASE = resolveSiteOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
 export function absoluteUrl(path = "/"): string {
   return `${BASE}${path.startsWith("/") ? path : `/${path}`}`;
