@@ -1,0 +1,478 @@
+@import "tailwindcss";
+
+/* Manual theme switch. `dark:` still works, but most components read the
+   semantic tokens below and need no variant at all. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+
+  /* Brand constants — these do not change between themes.
+     Gold is carried over from the existing White Cloud Realty logo. */
+  --color-ink: #0f1723;
+  --color-ink-deep: #0b1119;
+  --color-paper: #faf9f6;
+  --color-gold: #c9a227;
+
+  /* Semantic tokens. These are re-declared (not aliased) per theme in the base
+     layer below: `var()` resolves where a property is *declared*, so an alias
+     such as `--color-fg: var(--fg)` would freeze to the :root value and make
+     .on-ink overrides silently do nothing. */
+  --color-bg: #faf9f6;
+  --color-surface: #ffffff;
+  --color-raised: #f3f1ea;
+  --color-fg: #0f1723;
+  --color-muted: #5a6473;
+  --color-faint: #646b78;
+  --color-line: #e4e0d6;
+  --color-accent: #a8811a;
+  --color-accent-text: #7d5f0c;
+
+  /* Type scale — fluid, so headings never need per-breakpoint overrides. */
+  --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 5.5rem);
+  --text-h1: clamp(2.1rem, 1.5rem + 2.8vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
+  --text-h3: clamp(1.3rem, 1.15rem + 0.7vw, 1.75rem);
+  --text-lede: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  --text-eyebrow: 0.75rem;
+
+  --radius-card: 1rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --animate-marquee: marquee 44s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Hero headline: each line rises into place behind a clipping mask. */
+  --animate-rise: rise 0.9s var(--ease-out-soft) both;
+  @keyframes rise {
+    from { transform: translateY(105%); }
+    to { transform: translateY(0); }
+  }
+
+  --animate-fade-up: fade-up 0.8s var(--ease-out-soft) both;
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Draws the corridor route once the map scrolls into view. */
+  --animate-draw: draw 2.2s var(--ease-out-soft) both;
+  @keyframes draw {
+    from { stroke-dashoffset: var(--draw-length, 200); }
+    to { stroke-dashoffset: 0; }
+  }
+
+  --animate-pulse-ring: pulse-ring 2.6s ease-out infinite;
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.55; }
+    70%, 100% { transform: scale(2.6); opacity: 0; }
+  }
+}
+
+@layer base {
+  /* Light is the default and already set in @theme; this only pins
+     color-scheme so form controls and scrollbars match. */
+  :root {
+    color-scheme: light;
+  }
+
+  /* Follow the OS unless the visitor has explicitly chosen light. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-bg: #0b1119;
+      --color-surface: #131c28;
+      --color-raised: #1b2634;
+      --color-fg: #f5f3ee;
+      --color-muted: #aeb7c4;
+      --color-faint: #8f99a8;
+      --color-line: #253141;
+      --color-accent: #d9b441;
+      --color-accent-text: #d9b441;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-bg: #0b1119;
+    --color-surface: #131c28;
+    --color-raised: #1b2634;
+    --color-fg: #f5f3ee;
+    --color-muted: #aeb7c4;
+    --color-faint: #8f99a8;
+    --color-line: #253141;
+    --color-accent: #d9b441;
+    --color-accent-text: #d9b441;
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings carry the serif by default so pages stay consistent. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  /* Dark panels sit on brand ink regardless of theme, so anything inside them
+     needs the dark-side token values. */
+  .on-ink {
+    /* --color-bg flips too, so `text-bg` on a `bg-fg` button resolves to ink
+       rather than to the page background of the active theme. */
+    --color-bg: #0b1119;
+    --color-fg: #f5f3ee;
+    --color-muted: #aab4c2;
+    --color-faint: #8d97a6;
+    --color-line: rgba(245, 243, 238, 0.16);
+    --color-surface: rgba(255, 255, 255, 0.04);
+    --color-raised: rgba(255, 255, 255, 0.07);
+    --color-accent: #d9b441;
+    --color-accent-text: #d9b441;
+    color: var(--color-fg);
+    color-scheme: dark;
+  }
+
+  /* A deliberate warm-paper interlude. Unlike the page theme, this section
+     stays light so long dark pages gain a clear visual change of pace. */
+  .on-paper {
+    --color-bg: #f1ede3;
+    --color-surface: #faf8f2;
+    --color-raised: #e8e1d2;
+    --color-fg: #0f1723;
+    --color-muted: #505b69;
+    --color-faint: #626b77;
+    --color-line: rgba(15, 23, 35, 0.14);
+    --color-accent: #a27a16;
+    --color-accent-text: #76580b;
+    color: var(--color-fg);
+    color-scheme: light;
+  }
+}
+
+@layer utilities {
+  /* Tabular figures for prices, areas and counts so columns line up. */
+  .numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* The wordmark ships in two colourways — see components/layout/Logo.tsx.
+     The light-surface one is the default; ink panels and the dark theme swap
+     in the original pale-gold artwork. */
+  .logo-on-dark {
+    display: none;
+  }
+  :is([data-theme="dark"], .on-ink) .logo-on-dark {
+    display: block;
+  }
+  :is([data-theme="dark"], .on-ink) .logo-on-light {
+    display: none;
+  }
+
+  /* Horizontal chip/card rails scroll without showing a scrollbar. */
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .eyebrow {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+/* The two-pixel reading rule is deliberately quieter than a conventional
+   progress bar: it reads as part of the editorial grid. */
+.site-scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 80;
+  height: 2px;
+  pointer-events: none;
+}
+
+.site-scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #b88a1b, #f0d878);
+  box-shadow: 0 0 12px rgb(217 180 65 / 0.3);
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.route-page {
+  min-width: 0;
+}
+
+/* Reveal-on-scroll, driven by lib/useReveal.ts. The variants share one
+   restrained timing system: typography clips, media unmasks, sections rise. */
+@media (prefers-reduced-motion: no-preference) {
+  .route-page {
+    animation: editorial-page-in 460ms var(--ease-out-soft) both;
+  }
+
+  html[data-route-transition="native"] .route-page {
+    animation: none;
+  }
+
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.72s var(--ease-out-soft),
+      transform 0.82s var(--ease-out-soft);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal][data-reveal-variant="clip"] {
+    transform: translateY(18px);
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-reveal][data-reveal-variant="image"] {
+    opacity: 0.65;
+    transform: scale(1.045);
+    clip-path: inset(0 0 0 14% round var(--radius-card));
+    transition-duration: 0.95s;
+  }
+
+  [data-reveal][data-reveal-variant="section"] {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  [data-reveal="shown"],
+  [data-reveal="shown"][data-reveal-variant] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0);
+    will-change: auto;
+  }
+
+  .editorial-section__inner {
+    position: relative;
+  }
+
+  .editorial-section__inner::before {
+    position: absolute;
+    inset-inline: 0;
+    top: -2.25rem;
+    height: 1px;
+    content: "";
+    background: var(--color-line);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.9s var(--ease-out-soft) 120ms;
+  }
+
+  [data-reveal="shown"].editorial-section__inner::before {
+    transform: scaleX(1);
+  }
+
+  @keyframes editorial-page-in {
+    from { opacity: 0; transform: translateY(9px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* A hard-load brand reveal: the cloud draws and fills, the wordmark settles,
+   then the camera pushes through the mark into the page. The root layout
+   persists, so this never replays during normal in-site navigation. */
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #0b1119;
+  color: #f5f3ee;
+  animation: intro-reveal 340ms ease-out 790ms forwards;
+  will-change: opacity;
+}
+
+.site-intro__content {
+  display: grid;
+  width: min(76vw, 24rem);
+  place-items: center;
+  transform-origin: 50% 42%;
+  animation: intro-logo-zoom 430ms cubic-bezier(0.66, 0, 0.86, 0.48) 665ms forwards;
+  will-change: transform, opacity;
+}
+
+.site-intro__cloud {
+  width: clamp(6.5rem, 22vw, 8.5rem);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 14px 28px rgb(0 0 0 / 0.22));
+}
+
+.site-intro__cloud-outline {
+  fill: none;
+  stroke: #e4bf4b;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-cloud-draw 350ms var(--ease-out-soft) 35ms forwards;
+}
+
+.site-intro__cloud-fill {
+  fill: #f5f3ee;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-cloud-fill 260ms cubic-bezier(0.2, 0.8, 0.2, 1.18) 210ms forwards;
+}
+
+.site-intro__gold-line {
+  fill: #e4bf4b;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-gold-line 260ms var(--ease-out-soft) 300ms forwards;
+}
+
+.site-intro__brand {
+  display: grid;
+  margin-top: 0.85rem;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(0.45rem) scale(0.98);
+  animation: intro-brand 280ms var(--ease-out-soft) 315ms forwards;
+}
+
+@keyframes intro-cloud-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes intro-cloud-fill {
+  from { opacity: 0; transform: scale(0.72); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes intro-gold-line {
+  from { opacity: 0; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes intro-brand {
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes intro-logo-zoom {
+  0% { opacity: 1; transform: scale(1); }
+  42% { opacity: 1; }
+  100% { opacity: 0; transform: scale(9); }
+}
+
+@keyframes intro-reveal {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro { display: none; }
+}
+
+/* Project cards and detail heroes share a native browser snapshot. Only
+   opacity and compositor transforms animate, keeping the effect inexpensive
+   on phones. Browsers without View Transitions ignore these selectors. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: page-out 160ms ease-out both;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-in 300ms var(--ease-out-soft) both;
+  }
+
+  ::view-transition-group(*) {
+    z-index: 80;
+    animation-duration: 420ms;
+    animation-timing-function: var(--ease-out-soft);
+  }
+
+  ::view-transition-group(root) {
+    z-index: 0;
+    animation-duration: 300ms;
+  }
+
+  ::view-transition-image-pair(*) {
+    isolation: auto;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    mix-blend-mode: normal;
+  }
+
+  @keyframes page-out {
+    to { opacity: 0; }
+  }
+
+  @keyframes page-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+}

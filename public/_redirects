@@ -1,0 +1,6 @@
+# Netlify / Cloudflare Pages redirect rules.
+# Preserves the URLs the GoDaddy builder site used, so existing links and any
+# indexed pages keep working after the cutover. Vercel reads vercel.json instead.
+/about-us       /about              301
+/connect        /contact            301
+/testimonials   /about#testimonials 301
