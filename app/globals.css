@@ -243,7 +243,7 @@
 }
 
 /* Reveal-on-scroll, driven by lib/useReveal.ts. The variants share one
-   restrained timing system: typography clips, media unmasks, sections rise. */
+   restrained timing system: typography rises, media unmasks, sections settle. */
 @media (prefers-reduced-motion: no-preference) {
   .route-page {
     animation: editorial-page-in 460ms var(--ease-out-soft) both;
@@ -265,7 +265,6 @@
 
   [data-reveal][data-reveal-variant="clip"] {
     transform: translateY(18px);
-    clip-path: inset(0 0 100% 0);
   }
 
   [data-reveal][data-reveal-variant="image"] {
