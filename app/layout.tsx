@@ -69,6 +69,10 @@ export const viewport: Viewport = {
  * Resolves the theme before first paint so there is no flash of the wrong
  * palette, and keeps `data-theme` always present so the `dark:` variant is
  * reliable. With no stored choice it tracks the OS, live.
+ *
+ * It also marks whether the brand intro has already played in this tab, so a
+ * reload skips straight to the page (see SiteIntro). Deciding here, before
+ * paint, is what stops the overlay flashing up for a frame.
  */
 const THEME_SCRIPT = `
 (function(){
@@ -81,6 +85,10 @@ const THEME_SCRIPT = `
   } catch (e) {
     document.documentElement.setAttribute('data-theme', 'light');
   }
+  try {
+    if (sessionStorage.getItem('wcr-intro')) document.documentElement.setAttribute('data-intro', 'seen');
+    else sessionStorage.setItem('wcr-intro', '1');
+  } catch (e) {}
 })();
 `;
 

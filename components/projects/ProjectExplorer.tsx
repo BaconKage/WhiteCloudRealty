@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { Project, ProjectCategory } from "@/content/projects";
 import { CATEGORY_LABELS } from "@/content/projects";
 import { localities } from "@/content/localities";
 import { ProjectCard } from "./ProjectCard";
 import { CompareDrawer } from "./CompareDrawer";
 import { cx } from "@/lib/format";
+import { withViewTransition } from "@/lib/viewTransition";
 
 const MAX_COMPARE = 3;
 
@@ -66,10 +67,17 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
   }
 
   function reset() {
-    setCategory("all");
-    setLocalityId("all");
-    setQuery("");
+    withViewTransition(() => {
+      setCategory("all");
+      setLocalityId("all");
+      setQuery("");
+    }, "filtering");
   }
+
+  // Filter chips re-flow the grid inside a View Transition: cards that stay
+  // glide to their new slots, the rest fade out or in. Typing in the search
+  // box updates directly, since animating every keystroke would lag.
+  const filterTo = (apply: () => void) => withViewTransition(apply, "filtering");
 
   return (
     <>
@@ -90,7 +98,7 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Project, developer or area"
-                className="border-line bg-bg text-fg placeholder:text-faint focus:border-accent min-h-12 w-full rounded-full border pr-4 pl-11 outline-none transition-colors"
+                className="border-line bg-bg text-fg placeholder:text-faint focus:border-accent min-h-12 w-full rounded-full border pr-4 pl-11 outline-none transition-[border-color,box-shadow] focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-accent)_14%,transparent)]"
               />
             </div>
           </div>
@@ -102,7 +110,7 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
               ...categories.map((c) => ({ value: c, label: CATEGORY_LABELS[c] })),
             ]}
             value={category}
-            onChange={(v) => setCategory(v as ProjectCategory | "all")}
+            onChange={(v) => filterTo(() => setCategory(v as ProjectCategory | "all"))}
           />
 
           <FilterRow
@@ -112,7 +120,7 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
               ...usedLocalities.map((l) => ({ value: l.id, label: l.name })),
             ]}
             value={localityId}
-            onChange={setLocalityId}
+            onChange={(v) => filterTo(() => setLocalityId(v))}
           />
         </div>
       </div>
@@ -140,7 +148,12 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
       {results.length > 0 ? (
         <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {results.map((project, i) => (
-            <li key={project.slug} className="relative flex">
+            <li
+              key={project.slug}
+              data-filter-slot
+              style={{ "--filter-slot": `project-slot-${project.slug}` } as CSSProperties}
+              className="relative flex"
+            >
               <ProjectCard project={project} priority={i < 3} className="w-full" />
               <CompareToggle
                 checked={compare.includes(project.slug)}
@@ -198,7 +211,7 @@ function FilterRow({ legend, options, value, onChange }: FilterRowProps) {
             onClick={() => onChange(option.value)}
             aria-pressed={value === option.value}
             className={cx(
-              "min-h-11 shrink-0 rounded-full border px-4 text-sm whitespace-nowrap transition-colors",
+              "min-h-11 shrink-0 rounded-full border px-4 text-sm whitespace-nowrap transition-[background-color,border-color,color,transform] active:scale-95",
               value === option.value
                 ? "border-fg bg-fg text-bg font-medium"
                 : "border-line text-muted hover:border-accent hover:text-accent-text",
@@ -230,7 +243,7 @@ function CompareToggle({
   return (
     <label
       className={cx(
-        "absolute right-3 bottom-3 z-10 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3 text-xs font-medium transition-colors",
+        "absolute right-3 bottom-3 z-10 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3 text-xs font-medium transition-[background-color,border-color,color,transform] active:scale-95",
         checked
           ? "border-accent bg-accent text-ink"
           : "border-line bg-surface text-muted hover:border-accent",

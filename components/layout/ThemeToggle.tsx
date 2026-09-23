@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
+import { withViewTransition } from "@/lib/viewTransition";
 
 type Theme = "light" | "dark";
 
@@ -8,6 +9,9 @@ type Theme = "light" | "dark";
  * Flips `data-theme` on <html>. With no stored preference the site follows the
  * OS, which is handled entirely in CSS — this only kicks in once the visitor
  * makes a choice, and that choice is remembered per browser.
+ *
+ * Where View Transitions are supported, the new theme spreads out in a circle
+ * from the button rather than every colour on the page flipping at once.
  */
 export function ThemeToggle({ className }: { className?: string }) {
   const [theme, setTheme] = useState<Theme | null>(null);
@@ -20,10 +24,25 @@ export function ThemeToggle({ className }: { className?: string }) {
     setTheme(active);
   }, []);
 
-  function toggle() {
+  function toggle(event: MouseEvent<HTMLButtonElement>) {
     const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
+
+    // Origin and radius of the reveal: from the button's centre to the
+    // farthest corner of the viewport, so the circle always covers the page.
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const root = document.documentElement;
+    root.style.setProperty("--theme-x", `${x}px`);
+    root.style.setProperty("--theme-y", `${y}px`);
+    root.style.setProperty("--theme-r", `${radius}px`);
+
+    withViewTransition(() => {
+      setTheme(next);
+      root.setAttribute("data-theme", next);
+    }, "themeTransition");
+
     try {
       localStorage.setItem("wcr-theme", next);
     } catch {
@@ -35,7 +54,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      className={`border-line text-muted hover:border-accent hover:text-accent-text inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${className ?? ""}`}
+      className={`border-line text-muted hover:border-accent hover:text-accent-text inline-flex h-11 w-11 items-center justify-center rounded-full border transition-[color,border-color,transform] active:scale-90 ${className ?? ""}`}
       aria-label={
         theme === null
           ? "Switch colour theme"
@@ -47,7 +66,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           button never flashes the wrong icon before hydration. */}
       <svg
         viewBox="0 0 24 24"
-        className="h-[18px] w-[18px] dark:hidden"
+        className="h-[18px] w-[18px] animate-(--animate-icon-turn) dark:hidden"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.6"
@@ -59,7 +78,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       </svg>
       <svg
         viewBox="0 0 24 24"
-        className="hidden h-[18px] w-[18px] dark:block"
+        className="hidden h-[18px] w-[18px] animate-(--animate-icon-turn) dark:block"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.6"

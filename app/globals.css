@@ -43,6 +43,34 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 
+  /* Every `transition-*` utility without its own duration or easing uses
+     these. A fast start with a long, soft settle is what makes an interface
+     feel both snappy and smooth: it answers immediately, then glides. */
+  --default-transition-duration: 220ms;
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Small UI arriving: messages, errors, the compare tray. */
+  --animate-pop-in: pop-in 0.32s var(--ease-out-soft) both;
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.985); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* The sun/moon glyph turns into place each time the theme flips (the swap
+     is display-based, which restarts the animation). */
+  --animate-icon-turn: icon-turn 0.45s var(--ease-spring) both;
+  @keyframes icon-turn {
+    from { opacity: 0; transform: rotate(-70deg) scale(0.6); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* The project compare tray rising from the bottom edge. */
+  --animate-tray-up: tray-up 0.42s var(--ease-out-soft) both;
+  @keyframes tray-up {
+    from { opacity: 0; transform: translateY(110%); }
+    to { opacity: 1; transform: none; }
+  }
+
   --animate-marquee: marquee 44s linear infinite;
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -50,13 +78,13 @@
   }
 
   /* Hero headline: each line rises into place behind a clipping mask. */
-  --animate-rise: rise 0.9s var(--ease-out-soft) both;
+  --animate-rise: rise 0.8s var(--ease-out-soft) both;
   @keyframes rise {
     from { transform: translateY(105%); }
     to { transform: translateY(0); }
   }
 
-  --animate-fade-up: fade-up 0.8s var(--ease-out-soft) both;
+  --animate-fade-up: fade-up 0.6s var(--ease-out-soft) both;
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: none; }
@@ -115,9 +143,17 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* Paired with body below: overflow set on <html> goes to the viewport, so
+       body's own value then clips body itself rather than being hoisted. */
+    overflow-x: clip;
   }
 
   body {
+    /* Scroll reveals briefly scale elements up before they settle; near the
+       edge of a phone screen that would otherwise let the page wobble
+       sideways. \`clip\`, unlike \`hidden\`, is not a scroll container, so the
+       sticky header is unaffected. */
+    overflow-x: clip;
     background-color: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
@@ -218,6 +254,14 @@
   }
 }
 
+/* The floating WhatsApp button and the project compare tray share the
+   bottom-right corner; while the tray is up it owns that space. */
+body:has([data-compare-tray]) [data-floating-contact] {
+  opacity: 0;
+  translate: 0 1rem;
+  pointer-events: none;
+}
+
 /* The two-pixel reading rule is deliberately quieter than a conventional
    progress bar: it reads as part of the editorial grid. */
 .site-scroll-progress {
@@ -310,10 +354,16 @@
 }
 
 /* Reveal-on-scroll, driven by lib/useReveal.ts. The variants share one
-   restrained timing system: typography rises, media unmasks, sections settle. */
+   restrained timing system: typography rises, media unmasks, sections settle.
+   Distances are short and timings brisk so content keeps pace with a fast
+   scroll rather than trailing behind it. */
 @media (prefers-reduced-motion: no-preference) {
+  /* `backwards`, not `both`: a fill that outlives the animation leaves an
+     identity transform on the page wrapper, which makes it the containing
+     block for every `position: fixed` descendant — the project compare tray
+     then scrolls away with the page instead of staying pinned. */
   .route-page {
-    animation: editorial-page-in 460ms var(--ease-out-soft) both;
+    animation: editorial-page-in 340ms var(--ease-out-soft) backwards;
   }
 
   html[data-route-transition="native"] .route-page {
@@ -322,23 +372,23 @@
 
   [data-reveal] {
     opacity: 0;
-    transform: translateY(26px);
+    transform: translateY(16px);
     transition:
-      opacity 0.72s var(--ease-out-soft),
-      transform 0.82s var(--ease-out-soft);
+      opacity 0.5s var(--ease-out-soft),
+      transform 0.6s var(--ease-out-soft);
     transition-delay: var(--reveal-delay, 0ms);
     will-change: opacity, transform;
   }
 
   [data-reveal][data-reveal-variant="clip"] {
-    transform: translateY(18px);
+    transform: translateY(12px);
   }
 
   [data-reveal][data-reveal-variant="image"] {
     opacity: 0.65;
-    transform: scale(1.045);
-    clip-path: inset(0 0 0 14% round var(--radius-card));
-    transition-duration: 0.95s;
+    transform: scale(1.035);
+    clip-path: inset(0 0 0 10% round var(--radius-card));
+    transition-duration: 0.7s;
   }
 
   [data-reveal][data-reveal-variant="section"] {
@@ -349,12 +399,20 @@
     will-change: auto;
   }
 
+  /* Only the image variant animates a clip, so only it keeps one. Any
+     clip-path creates a stacking context and clips the element's own shadow,
+     so leaving one on every revealed block cut off hover shadows and trapped
+     fixed-position children (the compare tray) beneath later sections. */
   [data-reveal="shown"],
   [data-reveal="shown"][data-reveal-variant] {
     opacity: 1;
     transform: none;
-    clip-path: inset(0);
+    clip-path: none;
     will-change: auto;
+  }
+
+  [data-reveal="shown"][data-reveal-variant="image"] {
+    clip-path: inset(0);
   }
 
   .editorial-section__inner {
@@ -370,7 +428,7 @@
     background: var(--color-line);
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform 0.9s var(--ease-out-soft) 120ms;
+    transition: transform 0.7s var(--ease-out-soft) 80ms;
   }
 
   [data-reveal="shown"].editorial-section__inner::before {
@@ -378,7 +436,7 @@
   }
 
   @keyframes editorial-page-in {
-    from { opacity: 0; transform: translateY(9px); }
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: none; }
   }
 }
@@ -500,6 +558,11 @@
   to { opacity: 0; visibility: hidden; pointer-events: none; }
 }
 
+/* Already played in this tab (set before paint by app/layout.tsx). */
+html[data-intro="seen"] .site-intro {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-intro { display: none; }
 }
@@ -543,5 +606,68 @@
   @keyframes page-in {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: none; }
+  }
+
+  /* Project filters (components/projects/ProjectExplorer.tsx). Each card is
+     named only while a filter transition runs, so these names never collide
+     with the card-to-detail image transition. The page itself swaps
+     instantly; only the cards move. */
+  html[data-filtering] [data-filter-slot] {
+    view-transition-name: var(--filter-slot);
+  }
+
+  html[data-filtering]::view-transition-old(root),
+  html[data-filtering]::view-transition-new(root) {
+    animation: none;
+  }
+
+  html[data-filtering]::view-transition-group(*) {
+    animation-duration: 420ms;
+    animation-timing-function: var(--ease-out-soft);
+  }
+
+  /* A lone snapshot is a card entering or leaving the results. */
+  html[data-filtering]::view-transition-new(*):only-child {
+    animation: card-enter 380ms var(--ease-out-soft) 60ms both;
+  }
+
+  html[data-filtering]::view-transition-old(*):only-child {
+    animation: card-leave 180ms ease-in both;
+  }
+
+  @keyframes card-enter {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes card-leave {
+    to { opacity: 0; transform: scale(0.96); }
+  }
+
+  /* Theme switch (components/layout/ThemeToggle.tsx): the new theme is
+     revealed in a circle growing from the toggle, over the old one held
+     still underneath. Named elements such as project images do not change
+     with the theme, so they swap instantly instead of cross-fading. */
+  html[data-theme-transition]::view-transition-old(root) {
+    animation: none;
+  }
+
+  html[data-theme-transition]::view-transition-new(root) {
+    animation: theme-reveal 560ms var(--ease-out-soft) both;
+  }
+
+  html[data-theme-transition]::view-transition-group(*),
+  html[data-theme-transition]::view-transition-old(*),
+  html[data-theme-transition]::view-transition-new(*) {
+    animation-duration: 0s;
+  }
+
+  html[data-theme-transition]::view-transition-group(root) {
+    animation-duration: 560ms;
+  }
+
+  @keyframes theme-reveal {
+    from { clip-path: circle(0 at var(--theme-x, 100%) var(--theme-y, 0)); }
+    to { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 100%) var(--theme-y, 0)); }
   }
 }

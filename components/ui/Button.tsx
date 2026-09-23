@@ -5,10 +5,12 @@ import { cx } from "@/lib/format";
 type Variant = "primary" | "secondary" | "ghost";
 type Size = "md" | "lg";
 
+// Presses scale down slightly: an immediate, physical answer to a tap that
+// the old 1px nudge was too subtle to give.
 const BASE =
   "inline-flex items-center justify-center gap-2 rounded-full font-medium " +
   "transition-[background-color,border-color,color,transform] duration-200 " +
-  "active:translate-y-px disabled:pointer-events-none disabled:opacity-60";
+  "active:scale-[0.97] active:duration-75 disabled:pointer-events-none disabled:opacity-60";
 
 const VARIANTS: Record<Variant, string> = {
   primary:

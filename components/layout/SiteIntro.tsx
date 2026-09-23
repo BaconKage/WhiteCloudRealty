@@ -17,15 +17,19 @@ const LAYERS = [
  * cloud blooms in, "Realty." rises into it, "White Cloud" slides out from
  * behind it, then the camera pushes through the cloud into the page.
  *
- * Because this component lives in the root layout it mounts for a fresh visit
- * or reload, but persists through App Router navigation so it never slows
- * movement around the site.
+ * It plays once per browser tab: the head script in app/layout.tsx marks
+ * <html data-intro="seen"> on later loads, and CSS hides the overlay before
+ * paint. Because this component lives in the root layout it also persists
+ * through App Router navigation, so it never slows movement around the site.
  */
 export function SiteIntro() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      document.documentElement.dataset.intro === "seen" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       setVisible(false);
       return;
     }

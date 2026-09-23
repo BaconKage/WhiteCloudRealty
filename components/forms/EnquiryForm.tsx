@@ -77,7 +77,7 @@ export function EnquiryForm({
     return (
       <div
         role="status"
-        className="border-accent/40 bg-accent/8 rounded-(--radius-card) border p-8 text-center"
+        className="border-accent/40 bg-accent/8 animate-(--animate-pop-in) rounded-(--radius-card) border p-8 text-center"
       >
         <h3 className="text-(length:--text-h3)">Thanks, we&rsquo;ve got it.</h3>
         <p className="text-muted mt-3 leading-relaxed">
@@ -129,13 +129,13 @@ export function EnquiryForm({
         <button
           type="submit"
           disabled={status === "sending"}
-          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-colors disabled:opacity-60"
+          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,transform,opacity] active:scale-[0.98] disabled:opacity-60"
         >
           {status === "sending" ? "Sending…" : "Send enquiry"}
         </button>
 
         {status === "error" && (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+          <p role="alert" className="animate-(--animate-pop-in) text-sm text-red-600 dark:text-red-400">
             {serverError} You can also{" "}
             <a href={whatsappLink()} className="underline underline-offset-4">
               message us on WhatsApp
@@ -187,8 +187,9 @@ function Field({
     "aria-invalid": error ? (true as const) : undefined,
     "aria-describedby": describedBy,
     className: cx(
-      "border-line bg-surface text-fg placeholder:text-faint w-full rounded-xl border px-4 py-3 outline-none transition-colors",
-      "focus:border-accent",
+      "border-line bg-surface text-fg placeholder:text-faint w-full rounded-xl border px-4 py-3 outline-none transition-[border-color,box-shadow]",
+      // A soft accent ring grows in on focus, alongside the border change.
+      "focus:border-accent focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--color-accent)_14%,transparent)]",
       error && "border-red-500",
     ),
   };
@@ -216,7 +217,11 @@ function Field({
         </p>
       )}
       {error && (
-        <p id={errorId} role="alert" className="mt-2 text-xs text-red-600 dark:text-red-400">
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-2 animate-(--animate-pop-in) text-xs text-red-600 dark:text-red-400"
+        >
           {error}
         </p>
       )}
@@ -246,13 +251,13 @@ function WhatsappFallback({ subject }: { subject: string }) {
           href={whatsappLink(`Hi ${site.name}, regarding ${subject}: `)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-colors"
+          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,transform] active:scale-[0.97]"
         >
           Message on WhatsApp
         </a>
         <a
           href={`mailto:${site.contact.email}?subject=${encodeURIComponent(subject)}`}
-          className="border-line hover:border-accent hover:text-accent-text inline-flex min-h-12 items-center justify-center rounded-full border px-7 font-medium transition-colors"
+          className="border-line hover:border-accent hover:text-accent-text inline-flex min-h-12 items-center justify-center rounded-full border px-7 font-medium transition-[border-color,color,transform] active:scale-[0.97]"
         >
           Email us
         </a>

@@ -37,7 +37,9 @@ export function useReveal(ref: RefObject<HTMLElement | null>): boolean {
         setShown(true);
         observer.disconnect();
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+      // Fire just before the element is fully on screen, so it is already
+      // settling as it arrives rather than starting late.
+      { rootMargin: "0px 0px -4% 0px", threshold: 0.01 },
     );
 
     observer.observe(el);

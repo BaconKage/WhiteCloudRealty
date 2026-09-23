@@ -12,7 +12,8 @@ import { cx } from "@/lib/format";
  * the header and in-page calls to action.
  *
  * Hidden until the visitor has scrolled past the hero so it never covers the
- * first thing they see.
+ * first thing they see. It also steps aside while the project compare tray is
+ * open, which occupies the same corner (see globals.css).
  */
 export function FloatingContact() {
   const [visible, setVisible] = useState(false);
@@ -30,6 +31,7 @@ export function FloatingContact() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Message ${site.name} on WhatsApp`}
+      data-floating-contact
       className={cx(
         "fixed right-4 bottom-4 z-40 flex h-13 w-13 items-center justify-center gap-2 rounded-full bg-[#25d366] text-white shadow-[0_12px_32px_-12px_rgb(0_0_0_/_0.55)] transition-all duration-300 ease-(--ease-spring) hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-12px_rgb(0_0_0_/_0.6)] sm:right-6 sm:bottom-6 lg:h-12 lg:w-auto lg:px-5",
         visible ? "opacity-100" : "pointer-events-none translate-y-4 opacity-0",

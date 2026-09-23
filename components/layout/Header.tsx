@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { primaryNav, site, whatsappLink } from "@/content/site";
 import { cx } from "@/lib/format";
 import { Logo } from "./Logo";
@@ -118,7 +118,7 @@ export function Header() {
             href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-fg text-bg hover:bg-accent hover:text-ink hidden min-h-11 items-center rounded-full px-5 text-sm font-medium transition-colors sm:inline-flex"
+            className="bg-fg text-bg hover:bg-accent hover:text-ink hidden min-h-11 items-center rounded-full px-5 text-sm font-medium transition-[background-color,color,transform] active:scale-[0.96] sm:inline-flex"
           >
             Talk to us
           </a>
@@ -129,27 +129,60 @@ export function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="border-line text-fg inline-flex h-11 w-11 items-center justify-center rounded-full border lg:hidden"
+            className="border-line text-fg inline-flex h-11 w-11 items-center justify-center rounded-full border transition-transform active:scale-90 lg:hidden"
           >
             <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+            {/* Two bars that fold into a cross, rather than an icon swap. */}
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+              <path
+                d="M4 12h16"
+                className={cx(
+                  "origin-center transition-transform duration-300",
+                  open ? "rotate-45" : "-translate-y-1",
+                )}
+              />
+              <path
+                d="M4 12h16"
+                className={cx(
+                  "origin-center transition-transform duration-300",
+                  open ? "-rotate-45" : "translate-y-1",
+                )}
+              />
             </svg>
           </button>
         </div>
       </div>
 
-      {/* Mobile panel */}
+      {/* Mobile panel. Always rendered so it can animate; `inert` and
+          `invisible` take it out of the tab order and accessibility tree
+          while closed. */}
       <div
         id="mobile-nav"
         ref={panelRef}
-        hidden={!open}
-        className="bg-bg h-[calc(100dvh-4.5rem)] overflow-y-auto lg:hidden"
+        inert={!open}
+        className={cx(
+          "bg-bg absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto duration-300 lg:hidden",
+          // Visibility flips at once on open, so the first link can take focus
+          // immediately, but waits out the fade on close.
+          open
+            ? "visible opacity-100 transition-[opacity,transform]"
+            : "invisible -translate-y-2 opacity-0 transition-[opacity,transform,visibility]",
+        )}
       >
         <nav aria-label="Primary mobile" className="px-4 py-6 sm:px-6">
           <ul className="flex flex-col">
-            {primaryNav.map((link) => (
-              <li key={link.href} className="border-line border-b last:border-b-0">
+            {primaryNav.map((link, i) => (
+              <li
+                key={link.href}
+                style={{ "--i": i } as CSSProperties}
+                className={cx(
+                  "border-line border-b transition-[opacity,transform] duration-400 last:border-b-0",
+                  // Links cascade in on open; on close they leave together.
+                  open
+                    ? "translate-y-0 opacity-100 delay-[calc(var(--i)*35ms+60ms)]"
+                    : "translate-y-3 opacity-0",
+                )}
+              >
                 <Link
                   href={link.href}
                   aria-current={isActive(link.href) ? "page" : undefined}
