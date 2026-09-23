@@ -31,8 +31,8 @@ Then open http://localhost:3000.
 | `npm run lint` | Next's linter |
 | `npm run fetch-assets` | Re-download imagery from the old site's CDN (already done) |
 | `npm run prep-images` | Trim/resize/re-encode those downloads (already done) |
-| `npm run prep-logo <file>` | Rebuild the two wordmark colourways from a source logo |
-| `npm run make-brand` | Regenerate the favicon set and the Open Graph card |
+| `npm run prep-logo [file]` | Rebuild the logo colourways and intro layers from the official logo (defaults to `design/official-logo/wcr-logo-official.png`) |
+| `npm run make-brand` | Regenerate the favicon set and the Open Graph card (run after `prep-logo`) |
 
 > Stop `npm run dev` before running `npm run build` — both write to `.next`, and running them
 > at once leaves the dev server serving a half-replaced bundle.
@@ -50,6 +50,7 @@ Everything the site says lives in `content/`. No component changes are needed to
 | `localities.ts` | The North Bengaluru corridor and its map coordinates |
 | `services.ts` | Buy / Invest / Sell, the capability list, the three-step journey |
 | `founder.ts` | The founder's letter and the About intro |
+| `team.ts` | Meet the team: names, titles, photos (photos and titles still to come) |
 | `partners.ts` | Developer logos |
 | `testimonials.ts` | Client recommendations, transcribed from LinkedIn |
 | `faqs.ts` | Contact-page FAQs |

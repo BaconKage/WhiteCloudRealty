@@ -3,14 +3,18 @@ import Link from "next/link";
 import { cx } from "@/lib/format";
 
 /**
- * The White Cloud Realty wordmark.
+ * The official White Cloud Realty logo: "White Cloud" set beside a disc — the
+ * cloud — with "Realty." knocked out of it.
  *
  * Two files ship, prepared by scripts/prep-brand-logo.mjs: the artwork as
- * supplied (pale gold on the white cloud) for ink surfaces, and one with the
- * gold deepened for the cream page background, where the original pale gold
- * all but disappears. CSS in globals.css picks between them from `.on-ink`
+ * supplied (white words, white disc) for ink surfaces, and a reversed copy
+ * (ink words, ink disc, paper "Realty.") for the cream page, where the
+ * original would vanish. CSS in globals.css picks between them from `.on-ink`
  * and the active theme, so no JavaScript is involved and there is no swap
  * flicker on load.
+ *
+ * The disc takes the full height of the artwork and the lettering only about
+ * a fifth of it, so the logo is sized taller than a plain wordmark would be.
  */
 export function Logo({
   className,
@@ -21,15 +25,15 @@ export function Logo({
   href?: string | null;
   priority?: boolean;
 }) {
-  const sizing = cx("h-8 w-auto sm:h-9", className);
+  const sizing = cx("h-12 w-auto sm:h-14", className);
 
   const mark = (
     <>
       <Image
         src="/images/brand/wordmark-on-light.png"
         alt="White Cloud Realty"
-        width={900}
-        height={222}
+        width={640}
+        height={246}
         priority={priority}
         className={cx("logo-on-light", sizing)}
       />
@@ -37,8 +41,8 @@ export function Logo({
         src="/images/brand/wordmark-on-dark.png"
         alt=""
         aria-hidden="true"
-        width={900}
-        height={222}
+        width={640}
+        height={246}
         priority={priority}
         className={cx("logo-on-dark", sizing)}
       />

@@ -9,7 +9,8 @@
   --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
 
   /* Brand constants — these do not change between themes.
-     Gold is carried over from the existing White Cloud Realty logo. */
+     Gold was carried over from the previous White Cloud Realty logo; the
+     official logo is monochrome, so gold now serves purely as the accent. */
   --color-ink: #0f1723;
   --color-ink-deep: #0b1119;
   --color-paper: #faf9f6;
@@ -187,9 +188,9 @@
     font-feature-settings: "tnum" 1;
   }
 
-  /* The wordmark ships in two colourways — see components/layout/Logo.tsx.
-     The light-surface one is the default; ink panels and the dark theme swap
-     in the original pale-gold artwork. */
+  /* The logo ships in two colourways — see components/layout/Logo.tsx.
+     The reversed, light-surface one is the default; ink panels and the dark
+     theme swap in the artwork as supplied. */
   .logo-on-dark {
     display: none;
   }
@@ -397,10 +398,21 @@
   }
 }
 
-/* A hard-load brand reveal: the cloud draws and fills, the wordmark settles,
-   then the camera pushes through the mark into the page. The root layout
-   persists, so this never replays during normal in-site navigation. */
+/* A hard-load brand reveal, built from the official logo's three parts (see
+   components/layout/SiteIntro.tsx): the cloud blooms in, "Realty." rises into
+   it, "White Cloud" slides out from behind it, then the camera pushes through
+   the cloud into the page. The root layout persists, so this never replays
+   during normal in-site navigation.
+
+   Disc geometry comes from public/images/brand/logo-geometry.json. */
 .site-intro {
+  --disc-x: 80.73%;
+  --disc-y: 49.86%;
+  --disc-left: 61.77%;
+  /* How far the logo must shift for the disc, not the lockup, to sit at the
+     centre of the screen: disc centre minus half the width. */
+  --disc-offset: -30.73%;
+
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -409,86 +421,78 @@
   overflow: hidden;
   isolation: isolate;
   background: #0b1119;
-  color: #f5f3ee;
-  animation: intro-reveal 340ms ease-out 790ms forwards;
+  animation: intro-reveal 350ms ease-out 1300ms forwards;
   will-change: opacity;
 }
 
-.site-intro__content {
-  display: grid;
-  width: min(76vw, 24rem);
-  place-items: center;
-  transform-origin: 50% 42%;
-  animation: intro-logo-zoom 430ms cubic-bezier(0.66, 0, 0.86, 0.48) 665ms forwards;
-  will-change: transform, opacity;
+.site-intro__logo {
+  position: relative;
+  width: min(84vw, 26rem);
+  aspect-ratio: 960 / 369;
+  /* The cloud arrives alone at the centre of the screen, then the lockup
+     glides left into balance as "White Cloud" slides out. */
+  translate: var(--disc-offset) 0;
+  transform-origin: var(--disc-x) var(--disc-y);
+  animation:
+    intro-settle 620ms var(--ease-out-soft) 480ms forwards,
+    intro-push 400ms cubic-bezier(0.6, 0, 0.9, 0.45) 1100ms forwards;
+  will-change: translate, transform, opacity;
 }
 
-.site-intro__cloud {
-  width: clamp(6.5rem, 22vw, 8.5rem);
-  height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 14px 28px rgb(0 0 0 / 0.22));
+.site-intro__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.site-intro__cloud-outline {
-  fill: none;
-  stroke: #e4bf4b;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: intro-cloud-draw 350ms var(--ease-out-soft) 35ms forwards;
-}
-
-.site-intro__cloud-fill {
-  fill: #f5f3ee;
+.site-intro__layer--disc {
   opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: intro-cloud-fill 260ms cubic-bezier(0.2, 0.8, 0.2, 1.18) 210ms forwards;
+  transform: scale(0.35);
+  transform-origin: var(--disc-x) var(--disc-y);
+  filter: drop-shadow(0 18px 36px rgb(0 0 0 / 0.35));
+  animation: intro-disc 520ms var(--ease-spring) 60ms forwards;
 }
 
-.site-intro__gold-line {
-  fill: #e4bf4b;
+/* Black on ink is invisible, so "Realty." only shows where it crosses the
+   disc: it rises into the cloud with no mask needed. */
+.site-intro__layer--realty {
   opacity: 0;
-  transform: scaleX(0);
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: intro-gold-line 260ms var(--ease-out-soft) 300ms forwards;
+  transform: translateY(24%);
+  animation: intro-realty 440ms var(--ease-out-soft) 330ms forwards;
 }
 
-.site-intro__brand {
-  display: grid;
-  margin-top: 0.85rem;
-  place-items: center;
-  opacity: 0;
-  transform: translateY(0.45rem) scale(0.98);
-  animation: intro-brand 280ms var(--ease-out-soft) 315ms forwards;
+/* Starts as a zero-width strip at the disc's left edge and opens leftwards,
+   so the words appear to slide out from behind the cloud. */
+.site-intro__layer--words {
+  clip-path: inset(0 calc(100% - var(--disc-left)) 0 var(--disc-left));
+  transform: translateX(7%);
+  animation: intro-words 560ms var(--ease-out-soft) 500ms forwards;
 }
 
-@keyframes intro-cloud-draw {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes intro-cloud-fill {
-  from { opacity: 0; transform: scale(0.72); }
+@keyframes intro-disc {
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes intro-gold-line {
-  from { opacity: 0; transform: scaleX(0); }
-  to { opacity: 1; transform: scaleX(1); }
-}
-
-@keyframes intro-brand {
+@keyframes intro-realty {
   to { opacity: 1; transform: none; }
 }
 
-@keyframes intro-logo-zoom {
+@keyframes intro-words {
+  to { clip-path: inset(0 calc(100% - var(--disc-left)) 0 0); transform: none; }
+}
+
+@keyframes intro-settle {
+  to { translate: 0 0; }
+}
+
+/* Fully faded before the page shows through, so the oversized logo never
+   ghosts over the hero headline. */
+@keyframes intro-push {
   0% { opacity: 1; transform: scale(1); }
-  42% { opacity: 1; }
-  100% { opacity: 0; transform: scale(9); }
+  30% { opacity: 1; }
+  70% { opacity: 0; }
+  100% { opacity: 0; transform: scale(7); }
 }
 
 @keyframes intro-reveal {

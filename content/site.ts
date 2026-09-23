@@ -46,8 +46,9 @@ export const site = {
     hours: null as string | null,
   },
 
+  /** The firm's own pages. The founder's profile lives on `founder` above. */
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/sayantimajumdar/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/white-cloud-realty/" },
   ],
 
   /**
@@ -67,6 +68,7 @@ export type NavLink = { label: string; href: string; description?: string };
 export const primaryNav: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Team", href: "/team" },
   { label: "Projects", href: "/projects" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
@@ -77,6 +79,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
     title: "Company",
     links: [
       { label: "About us", href: "/about" },
+      { label: "Meet the team", href: "/team" },
       { label: "Founder's desk", href: "/about#founders-desk" },
       { label: "Our partners", href: "/about#partners" },
       { label: "Contact", href: "/contact" },

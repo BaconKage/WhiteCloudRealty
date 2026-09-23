@@ -3,12 +3,23 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const INTRO_DURATION_MS = 1200;
+const INTRO_DURATION_MS = 1700;
+
+/** Layers of the official logo, split by scripts/prep-brand-logo.mjs. */
+const LAYERS = [
+  { src: "/images/brand/intro-words.png", part: "words" },
+  { src: "/images/brand/intro-disc.png", part: "disc" },
+  { src: "/images/brand/intro-realty.png", part: "realty" },
+] as const;
 
 /**
- * A short, brand-led hard-load introduction. Because this component lives in
- * the root layout it mounts for a fresh visit or reload, but persists through
- * App Router navigation so it never slows movement around the site.
+ * A short, brand-led hard-load introduction built from the official logo: the
+ * cloud blooms in, "Realty." rises into it, "White Cloud" slides out from
+ * behind it, then the camera pushes through the cloud into the page.
+ *
+ * Because this component lives in the root layout it mounts for a fresh visit
+ * or reload, but persists through App Router navigation so it never slows
+ * movement around the site.
  */
 export function SiteIntro() {
   const [visible, setVisible] = useState(true);
@@ -27,34 +38,18 @@ export function SiteIntro() {
 
   return (
     <div className="site-intro" aria-hidden="true">
-      <div className="site-intro__content">
-        <svg
-          viewBox="0 0 204 132"
-          className="site-intro__cloud"
-          role="presentation"
-        >
-          <path
-            className="site-intro__cloud-outline"
-            pathLength="1"
-            d="M51 105c-22 0-36-14-36-35 0-20 15-35 35-36C58 15 76 5 98 5c27 0 48 17 53 41 21 0 38 15 38 35 0 15-12 24-31 24H51Z"
-          />
-          <path
-            className="site-intro__cloud-fill"
-            d="M51 105c-22 0-36-14-36-35 0-20 15-35 35-36C58 15 76 5 98 5c27 0 48 17 53 41 21 0 38 15 38 35 0 15-12 24-31 24H51Z"
-          />
-          <rect className="site-intro__gold-line" x="55" y="121" width="94" height="7" rx="3.5" />
-        </svg>
-
-        <div className="site-intro__brand">
+      <div className="site-intro__logo">
+        {LAYERS.map((layer) => (
           <Image
-            src="/images/brand/wordmark-on-dark.png"
+            key={layer.part}
+            src={layer.src}
             alt=""
-            width={900}
-            height={222}
+            width={960}
+            height={369}
             priority
-            className="h-auto w-[min(72vw,21rem)]"
+            className={`site-intro__layer site-intro__layer--${layer.part}`}
           />
-        </div>
+        ))}
       </div>
     </div>
   );
