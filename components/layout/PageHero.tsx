@@ -62,8 +62,11 @@ export function PageHero({
       <Container
         className={cx(
           "relative flex flex-col justify-end",
+          // Full heroes fill the screen exactly: the section's pt-18 plus this
+          // makes 100svh. A capped height let the next section poke up as a
+          // thin sliver at the bottom of tall screens.
           size === "full"
-            ? "min-h-[clamp(34rem,88svh,52rem)] pt-20 pb-14 lg:pb-20"
+            ? "min-h-[max(34rem,calc(100svh-4.5rem))] pt-20 pb-14 lg:pb-20"
             : "min-h-[22rem] pt-16 pb-14 lg:min-h-[26rem]",
         )}
       >

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import type { Project } from "@/content/projects";
 import { CATEGORY_LABELS, STATUS_LABELS } from "@/content/projects";
 import { formatArea, formatConfigurations, formatPrice, cx } from "@/lib/format";
+import { navigateWithTransition } from "@/lib/viewTransition";
 
 const warmedProjectRoutes = new Set<string>();
 
@@ -81,37 +82,24 @@ export function ProjectCard({
       event.ctrlKey ||
       event.shiftKey ||
       event.altKey ||
-      navigating.current ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      navigating.current
     ) {
       return;
     }
 
-    const transitionDocument = document as Document & {
-      startViewTransition?: (
-        update: () => void | Promise<void>,
-      ) => { finished: Promise<void> };
-    };
-
-    if (!transitionDocument.startViewTransition) return;
-
-    event.preventDefault();
-    navigating.current = true;
     warmProject();
 
-    const transition = transitionDocument.startViewTransition(async () => {
+    const transition = navigateWithTransition(async () => {
       router.push(href);
       await waitForProjectPage(project.slug);
     });
+    if (!transition) return;
 
-    transition.finished.then(
-      () => {
-        navigating.current = false;
-      },
-      () => {
-        navigating.current = false;
-      },
-    );
+    event.preventDefault();
+    navigating.current = true;
+    transition.finished.finally(() => {
+      navigating.current = false;
+    });
   };
 
   return (

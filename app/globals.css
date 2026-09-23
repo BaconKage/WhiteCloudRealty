@@ -358,16 +358,19 @@ body:has([data-compare-tray]) [data-floating-contact] {
    Distances are short and timings brisk so content keeps pace with a fast
    scroll rather than trailing behind it. */
 @media (prefers-reduced-motion: no-preference) {
-  /* `backwards`, not `both`: a fill that outlives the animation leaves an
-     identity transform on the page wrapper, which makes it the containing
-     block for every `position: fixed` descendant — the project compare tray
-     then scrolls away with the page instead of staying pinned. */
-  .route-page {
-    animation: editorial-page-in 340ms var(--ease-out-soft) backwards;
-  }
+  /* A fallback page entrance, only for browsers without View Transitions —
+     everywhere else the transition itself is the entrance. It used to be
+     switched off with an attribute during a transition, but removing that
+     attribute afterwards restarted the animation, so every page faded in a
+     second time just as the first had finished.
 
-  html[data-route-transition="native"] .route-page {
-    animation: none;
+     `backwards`, not `both`: a fill that outlives the animation leaves an
+     identity transform on the page wrapper, which makes it the containing
+     block for every `position: fixed` descendant. */
+  @supports not (view-transition-name: none) {
+    .route-page {
+      animation: editorial-page-in 340ms var(--ease-out-soft) backwards;
+    }
   }
 
   [data-reveal] {
@@ -571,12 +574,15 @@ html[data-intro="seen"] .site-intro {
    opacity and compositor transforms animate, keeping the effect inexpensive
    on phones. Browsers without View Transitions ignore these selectors. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Route changes are a plain crossfade: the incoming page's hero already
+     rises into place, so the page itself adding movement too read as a
+     stutter. */
   ::view-transition-old(root) {
-    animation: page-out 160ms ease-out both;
+    animation: page-out 150ms ease-out both;
   }
 
   ::view-transition-new(root) {
-    animation: page-in 300ms var(--ease-out-soft) both;
+    animation: page-in 260ms var(--ease-out-soft) both;
   }
 
   ::view-transition-group(*) {
@@ -604,8 +610,7 @@ html[data-intro="seen"] .site-intro {
   }
 
   @keyframes page-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: none; }
+    from { opacity: 0; }
   }
 
   /* Project filters (components/projects/ProjectExplorer.tsx). Each card is
