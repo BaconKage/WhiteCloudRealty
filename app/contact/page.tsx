@@ -129,14 +129,19 @@ export default function ContactPage() {
 
       <Section width="prose">
         <h2 className="text-(length:--text-h2) leading-tight">Questions we get a lot</h2>
-        <dl className="mt-10 divide-y divide-(--color-line)">
+        <div className="mt-8 divide-y divide-(--color-line)">
           {faqs.map((faq) => (
-            <div key={faq.question} className="py-6 first:pt-0">
-              <dt className="font-display text-(length:--text-h3) leading-snug">{faq.question}</dt>
-              <dd className="text-muted mt-3 leading-relaxed">{faq.answer}</dd>
-            </div>
+            <details key={faq.question} className="group">
+              <summary className="font-display hover:text-accent-text flex min-h-14 cursor-pointer items-center justify-between gap-4 py-4 text-lg leading-snug transition-colors sm:text-xl">
+                {faq.question}
+                <svg viewBox="0 0 24 24" className="text-accent h-5 w-5 shrink-0 transition-transform duration-200 group-open:rotate-45" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <p className="faq-answer text-muted pb-5 leading-relaxed">{faq.answer}</p>
+            </details>
           ))}
-        </dl>
+        </div>
       </Section>
     </>
   );

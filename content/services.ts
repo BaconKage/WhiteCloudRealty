@@ -179,24 +179,15 @@ export const capabilities = [
 ];
 
 /**
- * The engagement, drawn from how the home-page copy already describes it:
- * "From understanding your needs and shortlisting the right options to site
- * visits, negotiations, and final paperwork."
+ * The engagement, drawn from how the firm describes it: "From understanding your
+ * needs and shortlisting the right options to site visits, negotiations, and
+ * final paperwork", through to possession.
  */
-export const buyerRoute = [
-  {
-    step: "01",
-    title: "Understand",
-    body: "We start with your brief. Budget, location, when you need it by, and what the place actually has to do for you.",
-  },
-  {
-    step: "02",
-    title: "Shortlist & visit",
-    body: "A short list measured against that brief, then site visits. You hear the trade-offs on each one, including the ones that count against it.",
-  },
-  {
-    step: "03",
-    title: "Negotiate & close",
-    body: "Negotiation, documentation, legal and loan support, right through to the final paperwork and possession.",
-  },
+export const journey = [
+  { title: "Your brief", note: "Budget, location, timing, and what the place has to do for you." },
+  { title: "Shortlist", note: "Options measured against that brief." },
+  { title: "Site visits", note: "The trade-offs of each, said out loud." },
+  { title: "Negotiation", note: "Terms worked out on your behalf." },
+  { title: "Paperwork", note: "Documentation, legal and loan support." },
+  { title: "Keys", note: "Right through to possession." },
 ];

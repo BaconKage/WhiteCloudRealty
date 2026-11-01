@@ -26,11 +26,21 @@ export function TestimonialCard({
   const hasMore =
     testimonial.quote.length > 1 || testimonial.quote.join(" ").length > 240;
 
+  // The whole card opens the recommendation. The button below has no handler of
+  // its own: its click, by mouse or keyboard, bubbles up to this one.
+  const onCardClick = () => {
+    // Selecting text to copy it should not collapse the card.
+    if (window.getSelection()?.toString()) return;
+    setOpen((v) => !v);
+  };
+
   return (
     <figure
+      onClick={hasMore ? onCardClick : undefined}
       className={cx(
         "group border-line bg-surface relative flex flex-col overflow-hidden rounded-(--radius-card) border p-6 transition-[border-color,translate,box-shadow] duration-200 sm:p-7",
         "hover:border-accent/50 hover:-translate-y-1 hover:shadow-[0_18px_44px_-24px_rgb(0_0_0_/_0.35)]",
+        hasMore && "cursor-pointer",
         className,
       )}
     >
@@ -56,7 +66,7 @@ export function TestimonialCard({
       <blockquote
         id={panelId}
         className={cx(
-          "relative grid transition-[grid-template-rows,opacity] duration-500 ease-(--ease-out-soft)",
+          "relative grid transition-[grid-template-rows,opacity] duration-300",
           open ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
         )}
       >
@@ -72,7 +82,6 @@ export function TestimonialCard({
       {hasMore && (
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls={panelId}
           className="text-accent-text relative mt-4 inline-flex min-h-11 items-center gap-1.5 self-start text-sm font-medium"

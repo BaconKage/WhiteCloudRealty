@@ -8,6 +8,8 @@
 
 export type ArticleSection = {
   heading: string;
+  /** A diagram to show after the text. */
+  visual?: "metro";
   paragraphs: string[];
   bullets?: string[];
 };
@@ -61,6 +63,7 @@ export const articles: Article[] = [
       },
       {
         heading: "How it connects",
+        visual: "metro",
         paragraphs: [
           "South Bangalore's position has improved a lot with the metro, though the roads still decide many daily commutes.",
         ],

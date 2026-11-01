@@ -4,6 +4,7 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { CtaBand } from "@/components/home/CtaBand";
+import { ZoneThumb, ZoneThumbDefs } from "@/components/home/ZoneThumb";
 import { localities } from "@/content/localities";
 import { projects } from "@/content/projects";
 import { articles } from "@/content/insights";
@@ -61,6 +62,7 @@ export default function InsightsPage() {
       </Section>
 
       <Section tone="raised">
+        <ZoneThumbDefs />
         <h2 className="text-(length:--text-h2) leading-tight">Every part of the city</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {localities.map((locality, i) => {
@@ -74,8 +76,13 @@ export default function InsightsPage() {
                 as="article"
                 className="border-line bg-surface flex flex-col rounded-(--radius-card) border p-7"
               >
-                <p className="text-accent-text text-xs font-medium tracking-wide">{locality.tag}</p>
-                <h3 className="mt-3 text-(length:--text-h3) leading-snug">{locality.name}</h3>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-accent-text text-xs font-medium tracking-wide">{locality.tag}</p>
+                    <h3 className="mt-3 text-(length:--text-h3) leading-snug">{locality.name}</h3>
+                  </div>
+                  <ZoneThumb id={locality.id} className="h-20 w-auto shrink-0" />
+                </div>
                 <p className="text-muted mt-3 leading-relaxed">{locality.blurb}</p>
 
                 <ul className="mt-5 space-y-2">

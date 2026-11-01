@@ -3,6 +3,7 @@ import { founders } from "@/content/team";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { FounderCard } from "@/components/team/FounderCard";
+import { PerspectivesDiagram } from "@/components/about/PerspectivesDiagram";
 
 /**
  * A concise trust bridge for the home page: the two founders side by side, and
@@ -24,6 +25,8 @@ export function FounderTrust() {
               market.
             </p>
           </div>
+
+          <PerspectivesDiagram className="mt-10 lg:mt-12" />
 
           <div className="mt-10 grid gap-10 md:grid-cols-2 lg:mt-12 lg:gap-14">
             {founders.map((member, i) => (

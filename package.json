@@ -14,7 +14,8 @@
     "prep-images": "node scripts/prep-images.mjs",
     "make-brand": "node scripts/make-brand.mjs",
     "prep-logo": "node scripts/prep-brand-logo.mjs",
-    "make-images": "node scripts/make-responsive-images.mjs"
+    "make-images": "node scripts/make-responsive-images.mjs",
+    "make-map": "node scripts/make-city-map.mjs"
   },
   "dependencies": {
     "next": "^15.5.4",
@@ -26,6 +27,8 @@
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "d3-array": "^3.2.4",
+    "d3-contour": "^4.0.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.25",
     "sharp": "^0.35.4",

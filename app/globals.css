@@ -245,6 +245,99 @@ html[data-compare-open] [data-floating-contact] {
   pointer-events: none;
 }
 
+/* From brief to keys: a line behind the stops that draws itself once. It runs
+   down the column on phones and along the row on wide screens. */
+.journey-track {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 2rem;
+  left: 1.375rem;
+  width: 2px;
+  background: var(--color-line);
+}
+
+.journey-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-brand);
+  transform-origin: top;
+}
+
+@media (min-width: 64rem) {
+  .journey-track {
+    top: 1.375rem;
+    /* Ends under the last stop's marker: one column, less half a marker. */
+    right: calc((100% - 5rem) / 6 - 1.375rem);
+    bottom: auto;
+    left: 1.375rem;
+    width: auto;
+    height: 2px;
+  }
+
+  .journey-fill {
+    transform-origin: left;
+  }
+}
+
+/* Two perspectives: the circles slide together and the disc lands between them. */
+.persp-a { --persp-from: 0, -12%; }
+.persp-b { --persp-from: 0, 12%; }
+
+@media (min-width: 40rem) {
+  .persp-a { --persp-from: -12%, 0; }
+  .persp-b { --persp-from: 12%, 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal="shown"] > .persp-circle {
+    animation: persp-slide 800ms var(--ease-out-soft) backwards;
+  }
+
+  [data-reveal="shown"] > .persp-disc {
+    animation: persp-land 500ms var(--ease-spring) 420ms backwards;
+  }
+
+  [data-reveal="shown"] .journey-fill {
+    animation: journey-draw-y 1100ms var(--ease-out-soft) backwards;
+  }
+
+  @media (min-width: 64rem) {
+    [data-reveal="shown"] .journey-fill {
+      animation-name: journey-draw-x;
+    }
+  }
+
+  @keyframes persp-slide {
+    from { opacity: 0; transform: translate(var(--persp-from)); }
+  }
+
+  @keyframes persp-land {
+    from { opacity: 0; scale: 0.5; }
+  }
+
+  @keyframes journey-draw-x {
+    from { transform: scaleX(0); }
+  }
+
+  @keyframes journey-draw-y {
+    from { transform: scaleY(0); }
+  }
+}
+
+/* FAQ answers ease in when opened. */
+details[open] > .faq-answer {
+  animation: var(--animate-pop-in);
+}
+
+details > summary {
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 /* The two-pixel reading rule is deliberately quieter than a conventional
    progress bar: it reads as part of the editorial grid. */
 .site-scroll-progress {

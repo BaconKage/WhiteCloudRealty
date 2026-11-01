@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
  *
  * Under reduced motion it never moves at all.
  */
-export function useCountUp(target: number, duration = 1400) {
+export function useCountUp(target: number, duration = 900) {
   const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(target);
 

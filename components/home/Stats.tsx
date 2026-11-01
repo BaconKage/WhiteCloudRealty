@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { projects } from "@/content/projects";
 import { localities } from "@/content/localities";
 import { partners } from "@/content/partners";
 import { testimonials } from "@/content/testimonials";
@@ -13,9 +12,9 @@ import { Reveal } from "@/components/ui/Reveal";
  * point at somewhere on the page.
  */
 const stats = [
-  { value: projects.length, label: "Projects on our desk", href: "/projects" },
-  { value: partners.length, label: "Developer partners", href: "/about#partners" },
   { value: localities.length, label: "Parts of Bengaluru", href: "/#locations" },
+  { value: new Set(localities.flatMap((l) => l.markets)).size, label: "Micro-markets covered", href: "/#locations" },
+  { value: partners.length, label: "Developer partners", href: "/#partners" },
   { value: testimonials.length, label: "Client recommendations", href: "/#testimonials" },
 ];
 
@@ -27,7 +26,7 @@ export function Stats() {
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 90} as="li">
               <Link href={stat.href} className="group block">
-                <span className="numeric font-display text-accent block text-4xl leading-none transition-transform duration-400 ease-(--ease-spring) group-hover:-translate-y-0.5 sm:text-5xl">
+                <span className="numeric font-display text-fg block text-4xl leading-none transition-[translate] duration-200 group-hover:-translate-y-0.5 sm:text-5xl">
                   <Counter to={stat.value} />
                 </span>
                 <span className="text-muted group-hover:text-fg mt-3 block text-sm transition-colors">
@@ -35,7 +34,7 @@ export function Stats() {
                 </span>
                 <span
                   aria-hidden="true"
-                  className="bg-accent mt-3 block h-px w-8 origin-left scale-x-100 transition-transform duration-500 ease-(--ease-out-soft) group-hover:scale-x-[3]"
+                  className="bg-brand mt-3 block h-0.5 w-8 origin-left transition-transform duration-200 group-hover:scale-x-[3]"
                 />
               </Link>
             </Reveal>

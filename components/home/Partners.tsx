@@ -20,13 +20,13 @@ export function Partners() {
         </Container>
 
         <div
-          className="group relative mt-9 overflow-hidden"
+          className="relative mt-9 overflow-hidden"
           style={{
             maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div className="flex w-max animate-(--animate-marquee) items-center group-hover:[animation-play-state:paused]">
+          <div className="flex w-max animate-(--animate-marquee) items-center">
             {[0, 1].map((copy) => (
               <ul
                 key={copy}
@@ -34,13 +34,13 @@ export function Partners() {
                 className="flex shrink-0 items-center"
               >
                 {partners.map((partner) => (
-                  <li key={partner.name} className="flex w-40 shrink-0 items-center justify-center px-6 sm:w-48">
+                  <li key={partner.name} className="flex w-44 shrink-0 items-center justify-center px-3 sm:w-52">
                     <Image
                       src={partner.logo}
                       alt={copy === 0 ? partner.name : ""}
                       width={partner.width}
                       height={partner.height}
-                      className="h-auto max-h-12 w-auto object-contain opacity-60 grayscale transition-[opacity,scale,filter] duration-200 hover:scale-110 hover:opacity-100 hover:grayscale-0"
+                      className="box-content h-auto max-h-12 w-auto max-w-[9rem] rounded-lg bg-white object-contain p-2 transition-[scale] duration-200 hover:scale-105"
                     />
                   </li>
                 ))}

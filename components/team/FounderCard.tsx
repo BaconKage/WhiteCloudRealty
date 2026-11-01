@@ -45,7 +45,9 @@ export function FounderCard({
         </div>
       </figure>
 
-      {member.bio && <p className="text-muted mt-5 leading-relaxed">{member.bio}</p>}
+      {(showContact ? member.bio : member.intro) && (
+        <p className="text-muted mt-5 leading-relaxed">{showContact ? member.bio : member.intro}</p>
+      )}
 
       {showContact && (
         <dl className="mt-5 space-y-1 text-sm">

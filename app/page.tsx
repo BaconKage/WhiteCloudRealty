@@ -4,6 +4,7 @@ import { HeroSearch } from "@/components/home/HeroSearch";
 import { LocationStrip } from "@/components/home/LocationStrip";
 import { Welcome } from "@/components/home/Welcome";
 import { Services } from "@/components/home/Services";
+import { Stats } from "@/components/home/Stats";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { LocationFinder } from "@/components/home/LocationFinder";
 import { BuyerRoute } from "@/components/home/BuyerRoute";
@@ -65,6 +66,7 @@ export default function HomePage() {
       <LocationStrip />
       <FeaturedProjects />
       <Partners />
+      <Stats />
       <Welcome />
       <LocationFinder />
       <Services />

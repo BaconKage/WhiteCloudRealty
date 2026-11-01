@@ -33,6 +33,7 @@ Then open http://localhost:3000.
 | `npm run prep-images` | Trim/resize/re-encode those downloads (already done) |
 | `npm run prep-logo [file]` | Rebuild the logo and intro layers from the official logo (defaults to `design/official-logo/wcr-logo-official.png`) |
 | `npm run make-brand` | Regenerate the favicon set and the Open Graph card (run after `prep-logo`) |
+| `npm run make-map` | Rebuild the Bengaluru map from OpenStreetMap data and `scripts/data/city-map-places.json` |
 | `npm run make-images` | Resize project images for each screen. Run after adding or replacing a project's `-4k.webp` |
 
 > Stop `npm run dev` before running `npm run build` — both write to `.next`, and running them

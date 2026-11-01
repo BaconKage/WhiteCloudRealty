@@ -1,20 +1,17 @@
 /**
- * The founder's letter, from the "From the Founder's Desk" section of
- * whitecloudrealty.in, updated to match the wider scope on Sayanti's LinkedIn:
- * "advisory services firm" and all of Bengaluru rather than just the north.
+ * The founder's letter, as it stands on Sayanti's LinkedIn profile, with light
+ * punctuation and grammar fixes. It now speaks for all of Bengaluru.
  */
 
 export const founderLetter = {
   eyebrow: "From the founder’s desk",
   greeting: "Welcome!",
   /** Used as the large pull-quote in the spread. */
-  pullQuote:
-    "Bengaluru is not just a location — it represents a new era of urban living.",
+  pullQuote: "Not just transactions, but informed decisions.",
   paragraphs: [
     "I’m Sayanti Majumdar, and it’s both an honour and a thrill to share the vision behind what we’re building at White Cloud Realty — a real estate advisory services firm rooted in conviction, clarity, and a deep belief in the transformative potential of Bengaluru’s real estate ecosystem.",
-    "My professional journey has been defined by two guiding principles: building meaningful connections and creating value that lasts. Over the years, working across sales, marketing, business development and strategic growth initiatives has taught me that at the heart of every strong decision lies purposeful insight and unshakable trust. This same mindset now drives our real estate advisory practice.",
-    "Bengaluru is not just a location — it represents a new era of urban living. The seamless integration of infrastructure, employment hubs, residential enclaves, and planned growth corridors positions it as one of India’s most compelling markets. For home-buyers and investors alike, this city offers future-ready opportunities where lifestyle, connectivity, and appreciation converge.",
-    "At White Cloud Realty, we are dedicated to delivering not just transactions, but informed decisions. We partner with our clients, listen to their aspirations, and guide them with clarity — driven by data, grounded in real-world insights, and shaped by integrity.",
+    "My professional journey has been defined by two guiding principles: building meaningful connections and creating value that lasts. Working across sales, marketing, business development and strategic growth initiatives has taught me that at the heart of every strong decision lies purposeful insight and unshakable trust. This same mindset now drives our real estate advisory practice.",
+    "At White Cloud Realty, we are dedicated to delivering not just transactions, but informed decisions. We partner with our clients, listen to their aspirations, and guide them with curated investment options and clarity — driven by data, grounded in real-world insights, and shaped by integrity.",
     "Thank you for being part of this journey. We look forward to helping you discover spaces that are meaningful, rewarding, and future-focused.",
   ],
   signOff: "Warm regards,",
@@ -56,4 +53,21 @@ export const ethos = {
     { from: "Relationships", to: "opportunity" },
   ],
   people: "White Cloud has always been about people.",
+  sides: [
+    { title: "The developer’s side", points: ["Projects and mandates", "Market insight", "Developer relationships"] },
+    { title: "The client’s side", points: ["Homebuyers and investors", "The right opportunities", "Beyond the transaction"] },
+  ],
+  /** Each founder in their own words, from their LinkedIn posts and profile. */
+  voices: [
+    {
+      quote:
+        "Mahesh and I come from different sides of real estate. We think differently, challenge each other, and bring very different strengths to the table.",
+      name: "Sayanti Majumdar",
+    },
+    {
+      quote:
+        "Cityscape shaped my understanding of the developer side of real estate. White Cloud Realty allows me to bring that perspective closer to the client.",
+      name: "Mahesh Sham Wadhwa",
+    },
+  ],
 };

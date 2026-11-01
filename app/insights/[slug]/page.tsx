@@ -6,6 +6,8 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { CtaBand } from "@/components/home/CtaBand";
+import { ZoneCloseUp } from "@/components/insights/ZoneCloseUp";
+import { MetroDiagram } from "@/components/insights/MetroDiagram";
 import { articles, getArticle, type ArticleSection } from "@/content/insights";
 import { getLocality } from "@/content/localities";
 import { whatsappLink, site } from "@/content/site";
@@ -63,6 +65,7 @@ function Block({ section }: { section: ArticleSection }) {
           })}
         </ul>
       )}
+      {section.visual === "metro" && <MetroDiagram />}
     </Reveal>
   );
 }
@@ -93,11 +96,26 @@ export default async function ArticlePage({ params }: Params) {
         </p>
       </PageHero>
 
-      <Section width="prose">
-        {article.sections.map((section) => (
-          <Block key={section.heading} section={section} />
-        ))}
-      </Section>
+      {article.localityId ? (
+        <Section>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14">
+            <Reveal variant="image" className="lg:sticky lg:top-24 lg:self-start">
+              <ZoneCloseUp id={article.localityId} />
+            </Reveal>
+            <div>
+              {article.sections.map((section) => (
+                <Block key={section.heading} section={section} />
+              ))}
+            </div>
+          </div>
+        </Section>
+      ) : (
+        <Section width="prose">
+          {article.sections.map((section) => (
+            <Block key={section.heading} section={section} />
+          ))}
+        </Section>
+      )}
 
       {article.markets && (
         <Section tone="raised">

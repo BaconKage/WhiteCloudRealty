@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { FoundersDesk } from "@/components/about/FoundersDesk";
+import { PerspectivesDiagram } from "@/components/about/PerspectivesDiagram";
 import { Partners } from "@/components/home/Partners";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CtaBand } from "@/components/home/CtaBand";
@@ -18,6 +19,13 @@ export const metadata: Metadata = pageMetadata({
     "White Cloud Realty is a strategic real estate advisory firm covering residential, commercial and land across Bengaluru. Buying, selling and renting, handled end to end.",
   path: "/about",
 });
+
+const PILLAR_ICONS: React.ReactNode[] = [
+  <path key="route" d="M6 19a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM18 10a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM8.5 16.5H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" />,
+  <path key="docs" d="M7 3.5h7.5L18 7v13.5H7ZM14 3.5V7.5h4M10 12h5M10 15.5h5" />,
+  <path key="finance" d="M4 19.5h16M5.5 15l4.5-4.5 3.5 3L19 7.5M15 7.5h4v4" />,
+  <path key="home" d="M4 11.5 12 5l8 6.5M6.5 10v9.5h11V10M10 19.5v-5h4v5" />,
+];
 
 export default function AboutPage() {
   return (
@@ -81,20 +89,18 @@ export default function AboutPage() {
           <p className="text-muted mt-5 text-(length:--text-lede) leading-relaxed">{ethos.lede}</p>
         </div>
 
-        <ul className="mt-10 grid gap-4 sm:grid-cols-3">
-          {ethos.pairs.map((pair, i) => (
-            <Reveal
-              key={pair.from}
-              as="li"
-              delay={i * 70}
-              className="border-line bg-surface rounded-(--radius-card) border p-6"
-            >
-              <p className="font-display text-xl leading-snug">
-                {pair.from} <span className="text-accent">meets {pair.to}.</span>
-              </p>
+        <PerspectivesDiagram className="mt-10" />
+
+        <div className="mt-10 grid gap-8 md:grid-cols-2">
+          {ethos.voices.map((voice, i) => (
+            <Reveal key={voice.name} as="figure" delay={i * 80}>
+              <blockquote className="border-accent font-display border-l-2 pl-5 text-lg leading-snug">
+                &ldquo;{voice.quote}&rdquo;
+              </blockquote>
+              <figcaption className="text-accent mt-3 pl-5 text-sm">{voice.name}</figcaption>
             </Reveal>
           ))}
-        </ul>
+        </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
           <Button href="/team" variant="brand">
@@ -114,8 +120,10 @@ export default function AboutPage() {
               delay={i * 70}
               className="border-line bg-surface rounded-(--radius-card) border p-7"
             >
-              <span className="numeric text-accent/40 font-display text-4xl leading-none">
-                0{i + 1}
+              <span className="bg-brand text-ink flex h-11 w-11 items-center justify-center rounded-full">
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  {PILLAR_ICONS[i]}
+                </svg>
               </span>
               <h3 className="mt-4 text-(length:--text-h3) leading-snug">{pillar.title}</h3>
               <p className="text-muted mt-3 leading-relaxed">{pillar.body}</p>

@@ -1,100 +1,56 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { cityMap } from "@/content/cityMap";
 import { developingCorridors, getLocality, localities } from "@/content/localities";
 import { projects } from "@/content/projects";
 import { site, whatsappLink } from "@/content/site";
 import { articles } from "@/content/insights";
 import { cx } from "@/lib/format";
+import { useHashSelection } from "@/lib/useHashSelection";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 
+const ZONE_IDS = localities.map((l) => l.id);
+const METRO = [
+  { name: "Purple", colour: "#b76be8" },
+  { name: "Green", colour: "#2fbf71" },
+  { name: "Yellow", colour: "#efca3e" },
+];
 const INTENTS = ["Buy", "Sell", "Rent"] as const;
 const ASSETS = ["Residential", "Commercial", "Land"] as const;
 
-const CENTRE = 200;
-const HUB_RADIUS = 58;
-const RING_ROAD_RADIUS = 106;
+const LANDMARK_COLOURS: Record<string, string> = {
+  water: "#8cc0e0",
+  park: "#7fbf9b",
+  road: "#a9b8c9",
+  airport: "#f5f3ee",
+};
 
-/** The city's edge: a circle with a little irregularity, so it reads as a place. */
-function edgeRadius(bearing: number): number {
-  const a = (bearing * Math.PI) / 180;
-  return 150 + 9 * Math.sin(3 * a + 0.6) + 5 * Math.sin(5 * a + 2.1);
-}
-
-function point(bearing: number, radius: number): [number, number] {
-  const a = (bearing * Math.PI) / 180;
-  return [CENTRE + radius * Math.sin(a), CENTRE - radius * Math.cos(a)];
-}
-
-const fmt = ([x, y]: [number, number]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
-
-/** One zone: an outer edge and an inner edge, walked in opposite directions. */
-function wedgePath(from: number, to: number): string {
-  const end = to > from ? to : to + 360;
-  const outer: string[] = [];
-  const inner: string[] = [];
-  for (let b = from; b < end; b += 3) {
-    outer.push(fmt(point(b, edgeRadius(b))));
-    inner.unshift(fmt(point(b, HUB_RADIUS)));
-  }
-  outer.push(fmt(point(end, edgeRadius(end))));
-  inner.unshift(fmt(point(end, HUB_RADIUS)));
-  return `M${outer.join("L")}L${inner.join("L")}Z`;
-}
-
-/** Where a zone's label sits, as percentages of the map. */
-function labelPosition(from?: number, to?: number): { left: string; top: string } {
-  if (from === undefined || to === undefined) return { left: "50%", top: "50%" };
-  const end = to > from ? to : to + 360;
-  const [x, y] = point((from + end) / 2, 106);
-  return { left: `${x / 4}%`, top: `${y / 4}%` };
-}
-
-/** The roads out of the city. Labels near an edge anchor inwards to stay on the map. */
-const ROADS: { bearing: number; label: string; anchor: "start" | "middle" | "end"; dy?: number; dx?: number }[] = [
-  { bearing: 8, label: "Devanahalli", anchor: "middle" },
-  { bearing: 80, label: "Whitefield", anchor: "end", dy: -9, dx: 15 },
-  { bearing: 150, label: "Hosur", anchor: "start" },
-  { bearing: 196, label: "Kanakapura", anchor: "middle", dy: 4 },
-  { bearing: 242, label: "Mysuru", anchor: "end" },
-  { bearing: 304, label: "Tumakuru", anchor: "end" },
-];
-
-/** Worked out once: these never change, and the panel re-renders on every click. */
-const WEDGES = localities
-  .filter((l) => l.from !== undefined)
-  .map((l) => ({ id: l.id, d: wedgePath(l.from!, l.to!) }));
-const LABELS = localities.map((l) => ({
-  id: l.id,
-  name: l.name,
-  shortName: l.shortName,
-  position: labelPosition(l.from, l.to),
-}));
+/** A dark outline behind map text, so it stays readable over the roads. */
+const HALO = { paintOrder: "stroke", stroke: "#0a1018", strokeWidth: 5, strokeLinejoin: "round" } as const;
 
 /**
  * The signature section: pick a part of Bengaluru and what you need there, and
  * it turns into a pre-written message to the team.
  *
- * The map is decorative SVG, with wedges a pointer can click; every zone is
- * also a real HTML button over it, so the whole thing is keyboard-navigable and
- * screen-reader legible. Links elsewhere can open a zone with #location-<id>.
+ * The map is real: a pre-rendered image of the city's roads, lakes and metro
+ * from OpenStreetMap, with zones and labels drawn over it (see
+ * scripts/make-city-map.mjs). Pre-rendering keeps it as cheap as any photo,
+ * where a live map would add a heavy script and dozens of tile requests.
+ *
+ * Zones can be clicked directly, and each is also a real HTML button, so the
+ * map works by keyboard and screen reader. Links elsewhere can open a zone with
+ * #location-<id>.
  */
 export function LocationFinder() {
   const [activeId, setActiveId] = useState("north");
   const [intent, setIntent] = useState<(typeof INTENTS)[number]>("Buy");
   const [asset, setAsset] = useState<(typeof ASSETS)[number]>("Residential");
 
-  useEffect(() => {
-    const fromHash = () => {
-      const match = window.location.hash.match(/^#location-(.+)$/);
-      if (match && getLocality(match[1])) setActiveId(match[1]);
-    };
-    fromHash();
-    window.addEventListener("hashchange", fromHash);
-    return () => window.removeEventListener("hashchange", fromHash);
-  }, []);
+  useHashSelection(ZONE_IDS, setActiveId, "location-");
 
   const active = getLocality(activeId) ?? localities[0];
   const activeProjects = projects.filter((p) => p.localityId === active.id);
@@ -134,98 +90,140 @@ export function LocationFinder() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
-          <div className="relative mx-auto aspect-square w-full max-w-[34rem]">
-            <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full" aria-hidden="true">
-              {ROADS.map((road) => {
-                const [x1, y1] = point(road.bearing, edgeRadius(road.bearing));
-                const [x2, y2] = point(road.bearing, 172);
-                const [tx, ty] = point(road.bearing, 184);
-                return (
-                  <g key={road.label}>
-                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#f5f3ee" strokeOpacity="0.16" strokeWidth="1" />
+        <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
+          <div className="mx-auto w-full max-w-[36rem]">
+            <div
+              className="border-line relative overflow-hidden rounded-(--radius-card) border"
+              style={{ aspectRatio: `${cityMap.width} / ${cityMap.height}` }}
+            >
+              <Image
+                src="/images/map/bengaluru.webp"
+                alt="Map of Bengaluru showing its main roads, lakes, parks and metro lines."
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover"
+              />
+
+              <svg
+                viewBox={`0 0 ${cityMap.width} ${cityMap.height}`}
+                className="absolute inset-0 h-full w-full"
+                aria-hidden="true"
+              >
+                {cityMap.zones.map((zone) => (
+                  <path
+                    key={zone.id}
+                    d={zone.d}
+                    onClick={() => setActiveId(zone.id)}
+                    className={cx(
+                      "cursor-pointer transition-[fill,stroke] duration-150",
+                      zone.id === active.id
+                        ? "fill-[rgb(255_118_30/0.36)] stroke-[#ff761e] stroke-[2.5]"
+                        : "fill-[rgb(255_255_255/0.05)] stroke-[rgb(255_255_255/0.5)] stroke-[1.4] hover:fill-[rgb(255_255_255/0.16)]",
+                    )}
+                  />
+                ))}
+
+                <g className="pointer-events-none max-md:hidden" fontSize="17">
+                  {cityMap.landmarks.map((l) => (
                     <text
-                      x={tx + (road.dx ?? 0)}
-                      y={ty + 3 + (road.dy ?? 0)}
-                      textAnchor={road.anchor}
-                      fill="#f5f3ee"
-                      fillOpacity="0.5"
-                      fontSize="9"
+                      key={l.name}
+                      x={l.x}
+                      y={l.y}
+                      textAnchor={l.anchor ?? "middle"}
+                      fill={LANDMARK_COLOURS[l.kind]}
+                      fontStyle={l.kind === "water" ? "italic" : undefined}
+                      style={HALO}
                     >
-                      {road.label}
+                      {l.name}
                     </text>
-                  </g>
-                );
-              })}
+                  ))}
+                </g>
 
-              {WEDGES.map((wedge) => (
-                <path
-                  key={wedge.id}
-                  d={wedge.d}
-                  onClick={() => setActiveId(wedge.id)}
-                  className={cx(
-                    "cursor-pointer stroke-[#0b1119] stroke-[2.5] transition-[fill] duration-150",
-                    wedge.id === active.id
-                      ? "fill-brand"
-                      : "fill-[rgb(245_243_238/0.09)] hover:fill-[rgb(245_243_238/0.2)]",
-                  )}
-                />
-              ))}
+                <g transform={`translate(${cityMap.airport.x} ${cityMap.airport.y})`} className="pointer-events-none">
+                  <circle r="15" fill="#0a1018" stroke="#ff761e" strokeWidth="2" />
+                  <path
+                    transform="scale(1.7)"
+                    d="M0 -5.5 L1.3 -1.6 L5 0.6 L5 1.8 L1.2 0.8 L1 3.6 L2.3 4.6 L2.3 5.5 L0 4.9 L-2.3 5.5 L-2.3 4.6 L-1 3.6 L-1.2 0.8 L-5 1.8 L-5 0.6 L-1.3 -1.6 Z"
+                    fill="#ff761e"
+                  />
+                </g>
 
-              <circle
-                cx={CENTRE}
-                cy={CENTRE}
-                r={RING_ROAD_RADIUS}
-                fill="none"
-                stroke="#f5f3ee"
-                strokeOpacity="0.28"
-                strokeWidth="1"
-                strokeDasharray="4 4"
-                pointerEvents="none"
-              />
-
-              <circle
-                cx={CENTRE}
-                cy={CENTRE}
-                r={HUB_RADIUS - 2}
-                onClick={() => setActiveId("central")}
-                className={cx(
-                  "cursor-pointer transition-[fill] duration-150",
-                  active.id === "central" ? "fill-brand" : "fill-[#1b2634] hover:fill-[#253141]",
-                )}
-              />
-
-              {/* The airport, at the far end of NH-44. */}
-              <g transform={`translate(${point(8, 163).join(" ")})`} pointerEvents="none">
-                <circle r="9" fill="#0b1119" stroke="#ff761e" strokeWidth="1.2" />
-                <path
-                  d="M0 -5.5 L1.3 -1.6 L5 0.6 L5 1.8 L1.2 0.8 L1 3.6 L2.3 4.6 L2.3 5.5 L0 4.9 L-2.3 5.5 L-2.3 4.6 L-1 3.6 L-1.2 0.8 L-5 1.8 L-5 0.6 L-1.3 -1.6 Z"
-                  fill="#ff761e"
-                />
-              </g>
-            </svg>
-
-            <ul className="pointer-events-none absolute inset-0">
-              {LABELS.map((l) => {
-                const isActive = l.id === active.id;
-                return (
-                  <li key={l.id} className="absolute" style={l.position}>
-                    <button
-                      type="button"
-                      onClick={() => setActiveId(l.id)}
-                      aria-pressed={isActive}
-                      className={cx(
-                        "pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-2.5 py-2 text-xs font-medium whitespace-nowrap transition-colors duration-150 sm:text-sm",
-                        isActive ? "text-ink font-semibold" : "text-fg hover:text-accent",
+                {/* The chosen zone's neighbourhoods, where they really are. */}
+                <g key={active.id} className="pointer-events-none animate-(--animate-pop-in)">
+                  {(cityMap.markets[active.id] ?? []).map((m) => (
+                    <g key={m.name}>
+                      <circle cx={m.x} cy={m.y} r="5.5" fill="#fff" stroke="#0a1018" strokeWidth="2" />
+                      {m.lx !== undefined && (
+                        <text
+                          x={m.lx}
+                          y={m.ly}
+                          textAnchor={m.anchor}
+                          fontSize="19"
+                          fontWeight="500"
+                          fill="#fff"
+                          className="max-md:hidden"
+                          style={HALO}
+                        >
+                          {m.name}
+                        </text>
                       )}
+                    </g>
+                  ))}
+                </g>
+              </svg>
+
+              <ul className="pointer-events-none absolute inset-0">
+                {cityMap.zones.map((zone) => {
+                  const zoneInfo = getLocality(zone.id);
+                  const isActive = zone.id === active.id;
+                  return (
+                    <li
+                      key={zone.id}
+                      className="absolute"
+                      style={{ left: `${zone.label.left}%`, top: `${zone.label.top}%` }}
                     >
-                      <span aria-hidden="true">{l.shortName}</span>
-                      <span className="sr-only">{l.name}</span>
-                    </button>
-                  </li>
-                );
-              })}
+                      <button
+                        type="button"
+                        onClick={() => setActiveId(zone.id)}
+                        aria-pressed={isActive}
+                        className={cx(
+                          "pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-full border px-2.5 py-1 text-xs font-semibold whitespace-nowrap transition-[background-color,border-color,color] duration-150 sm:text-sm",
+                          isActive
+                            ? "border-brand bg-brand text-ink"
+                            : "text-fg hover:border-brand border-white/25 bg-[rgb(10_16_24/0.82)]",
+                        )}
+                      >
+                        <span aria-hidden="true">{zoneInfo?.shortName}</span>
+                        <span className="sr-only">{zoneInfo?.name}</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <ul className="text-muted mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+              <li className="text-faint">Metro</li>
+              {METRO.map((line) => (
+                <li key={line.name} className="flex items-center gap-1.5">
+                  <span aria-hidden="true" className="h-[3px] w-4 rounded-full" style={{ background: line.colour }} />
+                  {line.name} Line
+                </li>
+              ))}
             </ul>
+
+            <p className="text-faint mt-1.5 text-[0.6875rem] leading-relaxed">
+              Zones are indicative. Map data &copy;{" "}
+              <a
+                href="https://www.openstreetmap.org/copyright"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2"
+              >
+                OpenStreetMap contributors
+              </a>
+              .
+            </p>
           </div>
 
           <div className="border-line bg-fg/4 rounded-(--radius-card) border p-6 sm:p-8">

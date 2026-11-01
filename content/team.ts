@@ -19,7 +19,9 @@ export type TeamMember = {
   phone: string | null;
   email?: string;
   linkedin?: string;
-  /** Optional introduction. */
+  /** A sentence for the home page. */
+  intro?: string;
+  /** The fuller introduction on Meet the team. */
   bio?: string;
 };
 
@@ -32,7 +34,8 @@ export const founders: TeamMember[] = [
     phone: null,
     email: "connect@whitecloudrealty.in",
     linkedin: "https://www.linkedin.com/in/sayantimajumdar/",
-    bio: "Sayanti founded White Cloud Realty around a simple idea: property decisions should be led by clarity and context, never pressure. Years across sales, marketing, business development and strategic growth shape how every client brief is handled.",
+    intro: "Sayanti founded White Cloud Realty with the belief that property decisions should feel confident, not confusing, and curates options that match each client’s brief with honesty and precision.",
+    bio: "Sayanti founded White Cloud Realty with the belief that property decisions should feel confident, not confusing. She works closely with clients to understand what they are truly optimising for (home, lifestyle, returns, timing), then curates options that match the brief with honesty and precision, blending research, on-ground insight and a strong service mindset.",
   },
   {
     name: "Mahesh Sham Wadhwa",
@@ -41,7 +44,8 @@ export const founders: TeamMember[] = [
     phone: "+91 98868 98882",
     email: "msw@whitecloudrealty.in",
     linkedin: "https://www.linkedin.com/in/maheshswadhwa/",
-    bio: "An entrepreneur with deep experience across Bengaluru’s real estate ecosystem, Mahesh spent years building Cityscape and working closely with developers across projects, mandates, strategy and sales. That developer-side perspective now sits alongside the firm’s client-first advisory.",
+    intro: "Mahesh brings the developer’s side of the table: years building Cityscape Consulting, working with developers on exclusive mandates, project positioning and sales.",
+    bio: "A real estate entrepreneur and the founder of Cityscape Consulting, Mahesh has worked closely with developers on exclusive mandates, project positioning, go-to-market strategy, sales execution and revenue growth. At White Cloud Realty he is building a sharper, more informed advisory platform across residential real estate, curated investment opportunities, strategic developer partnerships and end-to-end client advisory.",
   },
 ];
 
