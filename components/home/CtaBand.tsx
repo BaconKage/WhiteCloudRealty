@@ -8,7 +8,7 @@ export function CtaBand() {
     <section className="on-ink bg-ink-deep relative isolate overflow-hidden">
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_120%_at_85%_0%,rgb(201_162_39/0.2),transparent_65%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_120%_at_85%_0%,rgb(255_118_30/0.2),transparent_65%)]"
       />
       <Container className="py-16 sm:py-20 lg:py-24">
         <Reveal
@@ -28,7 +28,7 @@ export function CtaBand() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
-            <Button href="/contact" size="lg" className="bg-accent text-ink hover:bg-accent hover:opacity-90">
+            <Button href="/contact" size="lg" variant="brand">
               Send an enquiry
             </Button>
             <Button href={whatsappLink()} size="lg" variant="secondary">

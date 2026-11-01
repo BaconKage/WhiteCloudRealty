@@ -12,10 +12,10 @@ export const site = {
   legalName: "White Cloud Realty",
   tagline: "Your search. Our expertise.",
   description:
-    "Strategic real estate advisory for North Bengaluru. Residential, commercial and land, for buying, selling and renting, guided by market intelligence and client-first thinking.",
+    "Strategic real estate advisory across Bengaluru. Residential, commercial and land, for buying, selling and renting, guided by market intelligence and client-first thinking.",
   url: "https://www.whitecloudrealty.in",
   locale: "en-IN",
-  region: "North Bengaluru, Karnataka, India",
+  region: "All of Bengaluru, Karnataka, India",
 
   founder: {
     name: "Sayanti Majumdar",
@@ -24,21 +24,31 @@ export const site = {
     portrait: "/images/founder-portrait.jpg" as string | null,
   },
 
+  coFounder: {
+    name: "Mahesh Sham Wadhwa",
+    role: "Co-Founder & Managing Director",
+    linkedin: "https://www.linkedin.com/in/maheshswadhwa/",
+    portrait: "/images/team/mahesh-sham-wadhwa.jpg",
+  },
+
   contact: {
-    phoneDisplay: "+91 90356 81633",
-    phoneHref: "tel:+919035681633",
-    whatsapp: "919035681633",
+    // The website's call to action, as requested by the client. Their office
+    // line (+91 90356 81633) is on the business card but deliberately not here.
+    phoneDisplay: "+91 98868 98882",
+    phoneHref: "tel:+919886898882",
+    whatsapp: "919886898882",
     email: "connect@whitecloudrealty.in",
-    // TODO: no office address is published anywhere on the current site.
-    // Add it here and the footer + contact page will render it, along with
-    // the `address` field of the RealEstateAgent structured data.
-    address: null as null | {
-      street: string;
-      locality: string;
-      city: string;
-      state: string;
-      postalCode: string;
-      mapUrl: string;
+    // From the business card. Drives the footer, the contact page and the
+    // `address` field of the RealEstateAgent structured data.
+    address: {
+      street: "#6, 3rd Main Road, Venkategowda Layout",
+      locality: "Kempapura, Hebbal",
+      city: "Bengaluru",
+      state: "Karnataka",
+      postalCode: "560024",
+      mapUrl:
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent("#6, 3rd Main Road, Venkategowda Layout, Kempapura, Hebbal, Bengaluru 560024"),
     },
     // TODO: opening hours are not published anywhere on the current site.
     // Fill this in and the footer and contact page show it; left null they
@@ -49,6 +59,7 @@ export const site = {
   /** The firm's own pages. The founder's profile lives on `founder` above. */
   social: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/white-cloud-realty/" },
+    { label: "Instagram", href: "https://www.instagram.com/whitecloudrealty.in/" },
   ],
 
   /**
@@ -89,7 +100,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
     title: "Explore",
     links: [
       { label: "All projects", href: "/projects" },
-      { label: "North Bengaluru corridor", href: "/#corridor" },
+      { label: "Choose your location", href: "/#locations" },
       { label: "Insights", href: "/insights" },
       { label: "How we work", href: "/#how-we-work" },
     ],
@@ -98,8 +109,10 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
     title: "Services",
     links: [
       { label: "Buy a home", href: "/#buy" },
-      { label: "Invest for returns", href: "/#invest" },
       { label: "Sell & diversify", href: "/#sell" },
+      { label: "Rent", href: "/#rent" },
+      { label: "Invest for returns", href: "/#invest" },
+      { label: "Commercial", href: "/#commercial" },
       { label: "Yield calculator", href: "/contact#calculator" },
     ],
   },

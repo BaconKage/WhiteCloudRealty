@@ -1,16 +1,15 @@
 /**
- * Prepares the official White Cloud Realty logo for every surface it appears on.
+ * Prepares the official White Cloud Realty logo for the site.
  *
- * The supplied artwork (design/official-logo/wcr-logo-official.png) is built
- * for dark backgrounds: "White Cloud" in white, then "Realty." knocked out in
- * black on a white disc — the cloud. On the cream page both the words and the
- * disc vanish, so this also emits a reversed colourway: ink words, ink disc,
- * paper "Realty.". Nothing is redrawn; every file is derived from the supplied
- * pixels.
+ * The brand logo is white "White Cloud" beside a white disc holding a black
+ * "Realty.", on a flat orange tile. The supplied artwork
+ * (design/official-logo/wcr-logo-official.png) is that logo with a transparent
+ * background, so the orange comes from --color-brand in globals.css and the
+ * same file sits on the tile on every surface. Nothing is redrawn; every file
+ * here is derived from the supplied pixels.
  *
  * Outputs, all in public/images/brand/:
- *   wordmark-on-dark.png   the logo as supplied, for ink surfaces
- *   wordmark-on-light.png  reversed, for the cream page
+ *   wordmark.png           the logo, for the orange tile (components/layout/Logo.tsx)
  *   intro-words.png        "White Cloud" alone      ┐ same canvas, stacked by
  *   intro-disc.png         the disc alone           │ SiteIntro so each part
  *   intro-realty.png       "Realty." alone          ┘ can animate on its own
@@ -27,11 +26,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public", "images", "brand");
 const SOURCE = process.argv[2] ?? join(ROOT, "design", "official-logo", "wcr-logo-official.png");
 
-const INK = { r: 15, g: 23, b: 35 }; // --color-ink
-const PAPER = { r: 250, g: 249, b: 246 }; // --color-paper
-
-/** Header/footer copies only ever render ~60px tall; 3x that is plenty. */
-const WORDMARK_WIDTH = 640;
+/** The tile logo only ever renders ~44px tall (~115px wide); 3x that is plenty. */
+const WORDMARK_WIDTH = 360;
 /** The intro draws the logo up to ~26rem wide on a 2x screen. */
 const INTRO_WIDTH = 960;
 
@@ -76,29 +72,14 @@ function findDisc(data, width, height) {
 }
 
 const luminance = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
-const mix = (a, b, t) => Math.round(a + (b - a) * t);
 
-// 1. As supplied, for ink surfaces.
+// 1. As supplied, for the orange tile.
 await sharp(trimmed)
   .resize({ width: WORDMARK_WIDTH })
   .png({ compressionLevel: 9 })
-  .toFile(join(OUT, "wordmark-on-dark.png"));
+  .toFile(join(OUT, "wordmark.png"));
 
-// 2. Reversed for the cream page: white becomes ink and black becomes paper,
-//    with anti-aliased edges mapped proportionally so nothing gets a halo.
-{
-  const { data, info } = await rawAt(WORDMARK_WIDTH);
-  for (let i = 0; i < data.length; i += 4) {
-    if (data[i + 3] === 0) continue;
-    const t = luminance(data[i], data[i + 1], data[i + 2]) / 255;
-    data[i] = mix(PAPER.r, INK.r, t);
-    data[i + 1] = mix(PAPER.g, INK.g, t);
-    data[i + 2] = mix(PAPER.b, INK.b, t);
-  }
-  await writePng(data, info, "wordmark-on-light.png");
-}
-
-// 3. Intro layers, split along the disc edge.
+// 2. Intro layers, split along the disc edge.
 {
   const { data, info } = await rawAt(INTRO_WIDTH);
   const { width, height } = info;
@@ -143,5 +124,5 @@ await sharp(trimmed)
   console.log("disc geometry", geometry);
 }
 
-const meta = await sharp(join(OUT, "wordmark-on-dark.png")).metadata();
+const meta = await sharp(join(OUT, "wordmark.png")).metadata();
 console.log(`wordmarks written at ${meta.width}x${meta.height}; intro layers at ${INTRO_WIDTH}px wide`);

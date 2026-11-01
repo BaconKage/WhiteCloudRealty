@@ -1,12 +1,14 @@
 import Image from "next/image";
-import { initials, type TeamMember } from "@/content/team";
+import { site } from "@/content/site";
+import { initials, telHref, type TeamMember } from "@/content/team";
 import { cx } from "@/lib/format";
 
 /**
  * One person on the Meet the team page. Until a photo arrives the frame shows
  * the logo's own device — the white disc on ink — with the person's initials
  * set in it the way "Realty." sits in the logo, so the grid reads as designed
- * rather than as missing images.
+ * rather than as missing images. Every card carries a number to call: the
+ * person's own, or the firm's main line until theirs is supplied.
  */
 export function TeamCard({
   member,
@@ -17,6 +19,8 @@ export function TeamCard({
   sizes?: string;
   className?: string;
 }) {
+  const phone = member.phone ?? site.contact.phoneDisplay;
+
   return (
     <figure className={cx("group", className)}>
       <div className="border-line relative aspect-4/5 overflow-hidden rounded-(--radius-card) border">
@@ -49,6 +53,13 @@ export function TeamCard({
       <figcaption className="mt-4">
         <span className="font-display block text-lg leading-snug sm:text-xl">{member.name}</span>
         {member.role && <span className="text-accent-text mt-1 block text-sm">{member.role}</span>}
+        <a
+          href={telHref(phone)}
+          aria-label={`Call ${member.name} on ${phone}`}
+          className="text-muted hover:text-accent-text mt-1 inline-flex min-h-9 items-center text-sm transition-colors"
+        >
+          {phone}
+        </a>
       </figcaption>
     </figure>
   );

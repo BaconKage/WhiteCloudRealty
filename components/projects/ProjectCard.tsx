@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { Project } from "@/content/projects";
+import type { ProjectSummary } from "@/content/projects";
 import { CATEGORY_LABELS, STATUS_LABELS } from "@/content/projects";
 import { formatArea, formatConfigurations, formatPrice, cx } from "@/lib/format";
 import { navigateWithTransition } from "@/lib/viewTransition";
+import { site, whatsappLink } from "@/content/site";
 
 const warmedProjectRoutes = new Set<string>();
 
@@ -22,7 +23,7 @@ export function ProjectCard({
   priority = false,
   className,
 }: {
-  project: Project;
+  project: ProjectSummary;
   priority?: boolean;
   className?: string;
 }) {
@@ -106,7 +107,7 @@ export function ProjectCard({
     <article
       data-project-card
       className={cx(
-        "group border-line bg-surface relative flex flex-col overflow-hidden rounded-(--radius-card) border transition-[border-color,transform,box-shadow] duration-300",
+        "group border-line bg-surface relative flex flex-col overflow-hidden rounded-(--radius-card) border transition-[border-color,translate,scale,box-shadow] duration-300",
         "hover:border-accent/50 hover:-translate-y-1 hover:shadow-[0_18px_44px_-24px_rgb(0_0_0_/_0.45)]",
         className,
       )}
@@ -137,7 +138,7 @@ export function ProjectCard({
         />
 
         <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3">
-          <span className="bg-ink-deep/80 rounded-full px-2.5 py-1 text-[0.625rem] font-semibold tracking-[0.12em] text-white/90 uppercase backdrop-blur-sm">
+          <span className="bg-ink-deep/85 rounded-full px-2.5 py-1 text-[0.625rem] font-semibold tracking-[0.12em] text-white/90 uppercase">
             {project.developer}
           </span>
           {project.status && (
@@ -191,7 +192,20 @@ export function ProjectCard({
           </dl>
         )}
 
-        <p className="text-accent-text mt-auto flex items-center gap-1.5 pt-5 text-sm font-medium">
+        {/* Above the card's stretched link, so it opens the enquiry instead. */}
+        <div className="mt-auto pt-5">
+          <a
+            href={whatsappLink(`Hi ${site.name}, I'd like to know more about ${project.name}.`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-brand text-ink hover:bg-fg hover:text-bg relative z-10 inline-flex min-h-11 w-full items-center justify-center rounded-full px-5 text-sm font-semibold transition-[background-color,color,translate,scale] active:scale-[0.97]"
+          >
+            Enquire now
+            <span className="sr-only"> about {project.name}</span>
+          </a>
+        </div>
+
+        <p className="text-accent-text flex min-h-11 items-center gap-1.5 pt-3 text-sm font-medium">
           View project
           <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" />

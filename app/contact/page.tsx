@@ -11,7 +11,7 @@ import { faqJsonLd } from "@/lib/jsonld";
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
-    "Talk to White Cloud Realty about buying, investing in or selling property across North Bengaluru. WhatsApp, call or send an enquiry.",
+    "Talk to White Cloud Realty about buying, investing in or selling property across Bengaluru. WhatsApp, call or send an enquiry.",
   path: "/contact",
 });
 
@@ -85,9 +85,16 @@ export default function ContactPage() {
                 {site.contact.address ? (
                   <div>
                     <dt className="text-muted">Office</dt>
-                    <dd className="text-fg mt-1">
-                      {site.contact.address.street}, {site.contact.address.locality},{" "}
-                      {site.contact.address.city} {site.contact.address.postalCode}
+                    <dd className="mt-1">
+                      <a
+                        href={site.contact.address.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-fg hover:text-accent-text underline-offset-4 transition-colors hover:underline"
+                      >
+                        {site.contact.address.street}, {site.contact.address.locality},{" "}
+                        {site.contact.address.city} {site.contact.address.postalCode}
+                      </a>
                     </dd>
                   </div>
                 ) : null}
@@ -103,7 +110,7 @@ export default function ContactPage() {
                   Message on WhatsApp
                 </a>
                 <a
-                  href={site.founder.linkedin}
+                  href={site.social[0].href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="border-line hover:border-accent hover:text-accent-text inline-flex min-h-12 items-center justify-center rounded-full border px-6 font-medium transition-colors"

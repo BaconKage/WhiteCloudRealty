@@ -21,7 +21,11 @@ export function organizationJsonLd() {
     telephone: site.contact.phoneDisplay,
     email: site.contact.email,
     areaServed: { "@type": "Place", name: site.region },
-    founder: { "@type": "Person", name: site.founder.name, jobTitle: site.founder.role },
+    founder: [site.founder, site.coFounder].map((person) => ({
+      "@type": "Person",
+      name: person.name,
+      jobTitle: person.role,
+    })),
     sameAs: site.social.map((s) => s.href),
     ...(address && {
       address: {

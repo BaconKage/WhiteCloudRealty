@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import type { Project, ProjectCategory } from "@/content/projects";
+import type { ProjectCategory, ProjectSummary } from "@/content/projects";
 import { CATEGORY_LABELS } from "@/content/projects";
+import { site, whatsappLink } from "@/content/site";
 import { localities } from "@/content/localities";
 import { ProjectCard } from "./ProjectCard";
 import { CompareDrawer } from "./CompareDrawer";
@@ -11,13 +12,14 @@ import { withViewTransition } from "@/lib/viewTransition";
 
 const MAX_COMPARE = 3;
 
-type ExplorerProps = { projects: Project[] };
+type ExplorerProps = { projects: ProjectSummary[] };
 
 /**
  * Filterable project grid with a comparison tray.
  *
- * The locality filter can be pre-set from a link (`/projects?locality=...`),
- * which is how the corridor strip and map hand off. That is read from
+ * Filters can be pre-set from a link (`/projects?locality=...`, `?type=...` or
+ * `?q=...`), which is how the hero search, property types and other pages hand
+ * off to it. That is read from
  * `location.search` in an effect rather than via `useSearchParams`, which in
  * an export build would push the whole page behind a Suspense boundary.
  */
@@ -28,9 +30,14 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
   const [compare, setCompare] = useState<string[]>([]);
 
   useEffect(() => {
-    const param = new URLSearchParams(window.location.search).get("locality");
-    if (param && localities.some((l) => l.id === param)) setLocalityId(param);
-  }, []);
+    const params = new URLSearchParams(window.location.search);
+    const locality = params.get("locality");
+    if (locality && localities.some((l) => l.id === locality)) setLocalityId(locality);
+    const type = params.get("type");
+    if (type && projects.some((p) => p.category === type)) setCategory(type as ProjectCategory);
+    const q = params.get("q");
+    if (q) setQuery(q);
+  }, [projects]);
 
   const categories = useMemo(
     () => [...new Set(projects.map((p) => p.category))],
@@ -171,13 +178,25 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
             What&rsquo;s listed here is only part of what we transact. Tell us what you&rsquo;re
             after and we&rsquo;ll bring you things that never make it onto a website.
           </p>
-          <button
-            type="button"
-            onClick={reset}
-            className="text-accent-text mt-5 min-h-11 text-sm underline underline-offset-4"
-          >
-            Clear filters
-          </button>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <a
+              href={whatsappLink(
+                `Hi ${site.name}, I'm looking for ${query.trim() ? `"${query.trim()}"` : "a property"} in Bengaluru. Can you help?`,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-brand text-ink inline-flex min-h-11 items-center rounded-full px-5 text-sm font-semibold transition-transform active:scale-[0.97]"
+            >
+              Ask us on WhatsApp
+            </a>
+            <button
+              type="button"
+              onClick={reset}
+              className="text-accent-text min-h-11 text-sm underline underline-offset-4"
+            >
+              Clear filters
+            </button>
+          </div>
         </div>
       )}
 
@@ -211,7 +230,7 @@ function FilterRow({ legend, options, value, onChange }: FilterRowProps) {
             onClick={() => onChange(option.value)}
             aria-pressed={value === option.value}
             className={cx(
-              "min-h-11 shrink-0 rounded-full border px-4 text-sm whitespace-nowrap transition-[background-color,border-color,color,transform] active:scale-95",
+              "min-h-11 shrink-0 rounded-full border px-4 text-sm whitespace-nowrap transition-[background-color,border-color,color,translate,scale] active:scale-95",
               value === option.value
                 ? "border-fg bg-fg text-bg font-medium"
                 : "border-line text-muted hover:border-accent hover:text-accent-text",
@@ -243,7 +262,7 @@ function CompareToggle({
   return (
     <label
       className={cx(
-        "absolute right-3 bottom-3 z-10 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3 text-xs font-medium transition-[background-color,border-color,color,transform] active:scale-95",
+        "absolute right-3 bottom-3 z-10 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-3 text-xs font-medium transition-[background-color,border-color,color,translate,scale] active:scale-95",
         checked
           ? "border-accent bg-accent text-ink"
           : "border-line bg-surface text-muted hover:border-accent",

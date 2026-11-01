@@ -1,15 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * The hero photograph, drifting slightly slower than the page.
  *
  * The image is rendered 18% taller than its frame so there is headroom to
  * move into and no gap appears at either edge. Parallax is skipped entirely
- * under reduced motion, and the transform runs off rAF so a fast scroll never
- * queues more work than a frame can take.
+ * under reduced motion. The offset is written straight to the element, at most
+ * once a frame: it changes constantly while scrolling, so it should never cost
+ * a React render or a layout read. Heroes always open the page, so the scroll
+ * position alone gives the offset.
  */
 export function HeroBackdrop({
   src,
@@ -18,23 +20,23 @@ export function HeroBackdrop({
   src: string;
   transitionName?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+  const layer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let frame = 0;
+    let lastY = -1;
+    const apply = () => {
+      frame = 0;
+      const y = window.scrollY;
+      // Past the hero there is nothing to move.
+      if (y === lastY || (y > window.innerHeight * 1.5 && lastY > window.innerHeight * 1.5)) return;
+      lastY = y;
+      if (layer.current) layer.current.style.transform = `translate3d(0, ${y * 0.16}px, 0)`;
+    };
     const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const el = ref.current;
-        if (!el) return;
-        const { top, height } = el.getBoundingClientRect();
-        // Only move while the panel is anywhere near the viewport.
-        if (top > window.innerHeight || top + height < 0) return;
-        setOffset(Math.max(-top, 0) * 0.16);
-      });
+      if (!frame) frame = requestAnimationFrame(apply);
     };
 
     onScroll();
@@ -46,13 +48,11 @@ export function HeroBackdrop({
   }, []);
 
   return (
-    <div ref={ref} aria-hidden="true" className="absolute inset-0 -z-20 overflow-hidden">
+    <div aria-hidden="true" className="absolute inset-0 -z-20 overflow-hidden">
       <div
+        ref={layer}
         className="absolute inset-x-0 top-0 h-[118%] will-change-transform"
-        style={{
-          transform: `translate3d(0, ${offset}px, 0)`,
-          viewTransitionName: transitionName,
-        }}
+        style={{ viewTransitionName: transitionName }}
       >
         <Image src={src} alt="" fill priority sizes="100vw" className="object-cover" />
       </div>

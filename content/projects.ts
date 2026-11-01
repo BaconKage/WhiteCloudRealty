@@ -11,7 +11,9 @@
 export type ProjectCategory =
   | "apartments"
   | "villas"
+  | "villaments"
   | "plots"
+  | "commercial"
   | "township"
   | "farmland"
   | "hospitality";
@@ -50,10 +52,22 @@ export type Project = {
   featured: boolean;
 };
 
+/**
+ * What cards and the compare table need. Passing whole projects to client
+ * components would send every full description with each page, unread.
+ */
+export type ProjectSummary = Omit<Project, "description" | "highlights">;
+
+export function toSummary({ description: _description, highlights: _highlights, ...summary }: Project): ProjectSummary {
+  return summary;
+}
+
 export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
   apartments: "Apartments",
   villas: "Villas",
+  villaments: "Villaments",
   plots: "Plots",
+  commercial: "Commercial",
   township: "Township",
   farmland: "Managed farmland",
   hospitality: "Hospitality",
@@ -100,7 +114,7 @@ export const projects: Project[] = [
     slug: "avillion-farm-villas",
     name: "Avillion — Luxury Farm Villas",
     developer: "Avillion Infrastructure",
-    localityId: "north-bengaluru",
+    localityId: "north",
     locationLabel: "North Bengaluru",
     category: "farmland",
     status: null,
@@ -129,7 +143,7 @@ export const projects: Project[] = [
     slug: "leela-bhartiya-city",
     name: "The Leela Bhartiya City",
     developer: "Bhartiya City · The Leela",
-    localityId: "airport-corridor",
+    localityId: "north",
     locationLabel: "Near Kempegowda International Airport",
     category: "hospitality",
     status: null,
@@ -158,7 +172,7 @@ export const projects: Project[] = [
     slug: "bm-solcrest",
     name: "Brick & Milestones — Solcrest",
     developer: "B&M Group",
-    localityId: "hennur-thanisandra",
+    localityId: "north",
     locationLabel: "Hennur, Bengaluru",
     category: "apartments",
     status: null,
@@ -188,7 +202,7 @@ export const projects: Project[] = [
     slug: "purva-flow-kiadb",
     name: "Purva Codename Flow",
     developer: "Puravankara Group",
-    localityId: "kiadb-bagalur",
+    localityId: "north",
     locationLabel: "KIADB Aerospace Tech Park, Bagalur",
     category: "apartments",
     status: null,
@@ -218,7 +232,7 @@ export const projects: Project[] = [
     slug: "nikoo-garden-estate",
     name: "Nikoo Garden Estate",
     developer: "Bhartiya Urban",
-    localityId: "devanahalli-sadahalli",
+    localityId: "north",
     locationLabel: "Sadahalli, Bengaluru",
     category: "township",
     status: null,

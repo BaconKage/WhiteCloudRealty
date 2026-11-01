@@ -23,7 +23,7 @@ export function FoundersDesk() {
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_12%_10%,rgb(201_162_39/0.14),transparent_60%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_12%_10%,rgb(255_118_30/0.14),transparent_60%)]"
       />
 
       <Container>

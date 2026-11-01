@@ -13,7 +13,8 @@
     "serve": "npx --yes serve out",
     "prep-images": "node scripts/prep-images.mjs",
     "make-brand": "node scripts/make-brand.mjs",
-    "prep-logo": "node scripts/prep-brand-logo.mjs"
+    "prep-logo": "node scripts/prep-brand-logo.mjs",
+    "make-images": "node scripts/make-responsive-images.mjs"
   },
   "dependencies": {
     "next": "^15.5.4",

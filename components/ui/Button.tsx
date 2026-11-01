@@ -2,19 +2,22 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cx } from "@/lib/format";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "brand" | "secondary" | "ghost";
 type Size = "md" | "lg";
 
 // Presses scale down slightly: an immediate, physical answer to a tap that
 // the old 1px nudge was too subtle to give.
 const BASE =
   "inline-flex items-center justify-center gap-2 rounded-full font-medium " +
-  "transition-[background-color,border-color,color,transform] duration-200 " +
+  "transition-[background-color,border-color,color,translate,scale] duration-200 " +
   "active:scale-[0.97] active:duration-75 disabled:pointer-events-none disabled:opacity-60";
 
 const VARIANTS: Record<Variant, string> = {
   primary:
     "bg-fg text-bg hover:bg-accent hover:text-ink",
+  // Ink on the logo orange: white on it falls short of readable contrast.
+  brand:
+    "bg-brand text-ink font-semibold hover:bg-fg hover:text-bg",
   secondary:
     "border border-line bg-fg/5 text-fg hover:border-accent hover:bg-transparent hover:text-accent-text",
   ghost: "text-fg hover:text-accent-text",

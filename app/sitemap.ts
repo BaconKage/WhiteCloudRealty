@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
+import { articles } from "@/content/insights";
 import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -22,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: route.priority,
+    })),
+    ...articles.map((article) => ({
+      url: absoluteUrl(`/insights/${article.slug}`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     ...projects.map((project) => ({
       url: absoluteUrl(`/projects/${project.slug}`),

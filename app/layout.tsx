@@ -30,7 +30,7 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL(absoluteUrl("/")),
   title: {
-    default: `${site.name} — Strategic Real Estate Advisory, North Bengaluru`,
+    default: `${site.name} — Strategic Real Estate Advisory, Bengaluru`,
     template: `%s — ${site.name}`,
   },
   description: site.description,
@@ -38,10 +38,11 @@ export const metadata: Metadata = {
   authors: [{ name: site.name, url: site.url }],
   keywords: [
     "real estate advisory Bengaluru",
-    "North Bengaluru property",
-    "Devanahalli apartments",
-    "KIADB Aerospace Park",
-    "Hennur apartments",
+    "Bangalore property",
+    "buy sell rent property Bangalore",
+    "commercial property Bangalore",
+    "South Bangalore real estate",
+    "North Bangalore real estate",
     "property consultant Bangalore",
   ],
   alternates: { canonical: absoluteUrl("/") },

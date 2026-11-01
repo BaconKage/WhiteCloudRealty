@@ -31,8 +31,9 @@ Then open http://localhost:3000.
 | `npm run lint` | Next's linter |
 | `npm run fetch-assets` | Re-download imagery from the old site's CDN (already done) |
 | `npm run prep-images` | Trim/resize/re-encode those downloads (already done) |
-| `npm run prep-logo [file]` | Rebuild the logo colourways and intro layers from the official logo (defaults to `design/official-logo/wcr-logo-official.png`) |
+| `npm run prep-logo [file]` | Rebuild the logo and intro layers from the official logo (defaults to `design/official-logo/wcr-logo-official.png`) |
 | `npm run make-brand` | Regenerate the favicon set and the Open Graph card (run after `prep-logo`) |
+| `npm run make-images` | Resize project images for each screen. Run after adding or replacing a project's `-4k.webp` |
 
 > Stop `npm run dev` before running `npm run build` — both write to `.next`, and running them
 > at once leaves the dev server serving a half-replaced bundle.
@@ -47,14 +48,14 @@ Everything the site says lives in `content/`. No component changes are needed to
 | --- | --- |
 | `site.ts` | Name, phone, email, WhatsApp, navigation, footer, legal disclaimer |
 | `projects.ts` | The project portfolio |
-| `localities.ts` | The North Bengaluru corridor and its map coordinates |
+| `localities.ts` | The seven parts of Bengaluru on the location map, and their micro-markets |
 | `services.ts` | Buy / Invest / Sell, the capability list, the three-step journey |
 | `founder.ts` | The founder's letter and the About intro |
-| `team.ts` | Meet the team: names, titles, photos (photos and titles still to come) |
+| `team.ts` | Founders and advisory team: names, titles, photos and contact numbers (advisory photos, titles and numbers still to come) |
 | `partners.ts` | Developer logos |
 | `testimonials.ts` | Client recommendations, transcribed from LinkedIn |
 | `faqs.ts` | Contact-page FAQs |
-| `insights.ts` | Articles — **currently empty** |
+| `insights.ts` | Articles, such as the South Bangalore guide |
 
 ### Adding a project
 

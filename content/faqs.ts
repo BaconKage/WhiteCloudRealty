@@ -11,7 +11,7 @@ export const faqs: Faq[] = [
   {
     question: "Which areas do you cover?",
     answer:
-      "North Bengaluru, mainly. Hebbal and Yelahanka, Hennur and Thanisandra, the KIADB Aerospace Park and Bagalur, the NH-44 airport stretch, Devanahalli and Sadahalli. It's the corridor we know street by street.",
+      "All of Bengaluru: North, North East, East, South East, South, West and Central. Choose your location on the home page and we'll help from there.",
   },
   {
     question: "What kinds of property do you advise on?",

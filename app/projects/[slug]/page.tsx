@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 
-import { projects, getProject, CATEGORY_LABELS, STATUS_LABELS } from "@/content/projects";
+import { projects, getProject, CATEGORY_LABELS, STATUS_LABELS, toSummary } from "@/content/projects";
 import { getLocality } from "@/content/localities";
 import { site, whatsappLink } from "@/content/site";
 import { formatArea, formatConfigurations, formatPrice } from "@/lib/format";
@@ -226,7 +226,7 @@ export default async function ProjectPage({ params }: Params) {
           <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <li key={p.slug} className="flex">
-                <ProjectCard project={p} className="w-full" />
+                <ProjectCard project={toSummary(p)} className="w-full" />
               </li>
             ))}
           </ul>

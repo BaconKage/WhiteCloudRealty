@@ -8,14 +8,14 @@ import { FoundersDesk } from "@/components/about/FoundersDesk";
 import { Partners } from "@/components/home/Partners";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CtaBand } from "@/components/home/CtaBand";
-import { aboutIntro } from "@/content/founder";
+import { aboutIntro, ethos } from "@/content/founder";
 import { pillars, verticals } from "@/content/services";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "About us",
   description:
-    "White Cloud Realty is a strategic real estate advisory firm covering residential, commercial and land across North Bengaluru. Buying, selling and renting, handled end to end.",
+    "White Cloud Realty is a strategic real estate advisory firm covering residential, commercial and land across Bengaluru. Buying, selling and renting, handled end to end.",
   path: "/about",
 });
 
@@ -39,34 +39,24 @@ export default function AboutPage() {
 
           <Reveal delay={120} variant="image">
             <figure className="group relative">
-              {/* Soft gold bloom behind the frame, so the picture sits on the
+              {/* Soft orange bloom behind the frame, so the picture sits on the
                   page rather than being pasted onto it. */}
               <span
                 aria-hidden="true"
                 // Inset stays inside the 16px mobile gutter, or the bloom pushes
                 // the page sideways; it opens up once there is room.
-                className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgb(201_162_39/0.22),transparent_72%)] blur-2xl sm:-inset-5"
+                className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgb(255_118_30/0.22),transparent_72%)] blur-2xl sm:-inset-5"
               />
 
               <div className="border-line bg-raised relative aspect-4/3 overflow-hidden rounded-(--radius-card) border shadow-[0_24px_60px_-32px_rgb(0_0_0_/_0.45)]">
                 <Image
-                  src="/images/about-advisory.webp"
-                  alt="Illustration of a property consultation: advisers and a client reviewing plans and a scale model, with the Bengaluru skyline and vignettes of a villa, an office park, open land, a handshake and a growing investment behind them."
+                  src="/images/projects/white-lotus-amanvana-4k.webp"
+                  alt="White Lotus Amanvana: a brick and concrete building with planted terraces, one of the projects White Cloud Realty represents."
                   fill
                   sizes="(max-width: 1024px) 100vw, 52vw"
                   className="object-cover transition-transform duration-[1100ms] ease-(--ease-out-soft) group-hover:scale-[1.035]"
                 />
 
-                {/* Pulls the illustration's brightness toward the ink-and-gold
-                    palette the rest of the page runs on. */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgb(11_17_25/0.34),transparent_46%)]"
-                />
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_70%_at_50%_100%,rgb(201_162_39/0.16),transparent_65%)]"
-                />
               </div>
             </figure>
           </Reveal>
@@ -81,6 +71,36 @@ export default function AboutPage() {
               <p className="text-muted mt-2 text-sm leading-relaxed">{v.body}</p>
             </Reveal>
           ))}
+        </div>
+      </Section>
+
+      <Section tone="ink">
+        <div className="max-w-3xl">
+          <p className="eyebrow text-accent">{ethos.eyebrow}</p>
+          <h2 className="mt-3 text-(length:--text-h2) leading-[1.08]">{ethos.title}</h2>
+          <p className="text-muted mt-5 text-(length:--text-lede) leading-relaxed">{ethos.lede}</p>
+        </div>
+
+        <ul className="mt-10 grid gap-4 sm:grid-cols-3">
+          {ethos.pairs.map((pair, i) => (
+            <Reveal
+              key={pair.from}
+              as="li"
+              delay={i * 70}
+              className="border-line bg-surface rounded-(--radius-card) border p-6"
+            >
+              <p className="font-display text-xl leading-snug">
+                {pair.from} <span className="text-accent">meets {pair.to}.</span>
+              </p>
+            </Reveal>
+          ))}
+        </ul>
+
+        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <Button href="/team" variant="brand">
+            Meet the team
+          </Button>
+          <p className="font-display text-lg">{ethos.people}</p>
         </div>
       </Section>
 

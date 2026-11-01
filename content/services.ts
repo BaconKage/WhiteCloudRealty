@@ -19,7 +19,7 @@ export type Service = {
   cta: string;
 };
 
-/** The three intent-led paths, from the three home-page sections. */
+/** The intent-led paths: buy, sell, rent, invest and commercial. */
 export const services: Service[] = [
   {
     id: "buy",
@@ -86,6 +86,42 @@ export const services: Service[] = [
       "Unlock value from what you own today and diversify for what you want tomorrow.",
     cta: "Request a valuation",
   },
+  {
+    id: "rent",
+    label: "Rent",
+    title: "Renting, on either side of the lease",
+    lede:
+      "Whether you need a place to live or a tenant for one you own, renting deserves the same care as buying.",
+    body: [
+      "We start with what the property has to do for you: the commute, the budget and how long you plan to stay, or the income you want it to bring in.",
+    ],
+    listTitle: "How we help you rent",
+    list: [
+      "Homes shortlisted against your budget, location and timeline",
+      "Rental pricing and positioning if you are letting out",
+      "Support with agreements and documentation",
+    ],
+    closer: "A clear brief, sensible terms and paperwork handled properly.",
+    cta: "Talk about renting",
+  },
+  {
+    id: "commercial",
+    label: "Commercial",
+    title: "Commercial property, judged on the numbers",
+    lede:
+      "Office, retail and leased assets, assessed on yield, tenant quality and where the micro-market around them is heading.",
+    body: [
+      "Whether you are buying an income-generating asset, leasing space for your business or selling a holding, we bring market intelligence to the decision.",
+    ],
+    listTitle: "How we help with commercial property",
+    list: [
+      "Office, retail and leased-asset opportunities across Bengaluru",
+      "Rental yield and appreciation assessment",
+      "Due diligence across legal, technical and financial checks",
+    ],
+    closer: "A strategic commercial investment should still make sense years from now.",
+    cta: "Discuss a commercial brief",
+  },
 ];
 
 export function getService(id: string): Service | undefined {
@@ -96,7 +132,7 @@ export function getService(id: string): Service | undefined {
 export const verticals = [
   {
     title: "Residential",
-    body: "Homes to live in and homes to let. Apartments, villas, row houses, townships, across the North Bengaluru corridor.",
+    body: "Homes to live in and homes to let. Apartments, villas, villaments, row houses, townships and plots, across Bengaluru.",
   },
   {
     title: "Commercial",

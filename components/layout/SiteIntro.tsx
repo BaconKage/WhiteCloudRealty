@@ -5,16 +5,11 @@ import { useEffect, useState } from "react";
 
 const INTRO_DURATION_MS = 1700;
 
-/** Layers of the official logo, split by scripts/prep-brand-logo.mjs. */
-const LAYERS = [
-  { src: "/images/brand/intro-words.png", part: "words" },
-  { src: "/images/brand/intro-disc.png", part: "disc" },
-  { src: "/images/brand/intro-realty.png", part: "realty" },
-] as const;
+const LOGO_LAYER = { width: 960, height: 369, priority: true } as const;
 
 /**
- * A short, brand-led hard-load introduction built from the official logo: the
- * cloud blooms in, "Realty." rises into it, "White Cloud" slides out from
+ * A short, brand-led hard-load introduction built from the official logo, on
+ * its orange: the cloud blooms in, "Realty." rises into it, "White Cloud" slides out from
  * behind it, then the camera pushes through the cloud into the page.
  *
  * It plays once per browser tab: the head script in app/layout.tsx marks
@@ -43,17 +38,26 @@ export function SiteIntro() {
   return (
     <div className="site-intro" aria-hidden="true">
       <div className="site-intro__logo">
-        {LAYERS.map((layer) => (
+        <Image
+          {...LOGO_LAYER}
+          alt=""
+          src="/images/brand/intro-words.png"
+          className="site-intro__layer site-intro__layer--words"
+        />
+        <Image
+          {...LOGO_LAYER}
+          alt=""
+          src="/images/brand/intro-disc.png"
+          className="site-intro__layer site-intro__layer--disc"
+        />
+        <div className="site-intro__realty-mask">
           <Image
-            key={layer.part}
-            src={layer.src}
+            {...LOGO_LAYER}
             alt=""
-            width={960}
-            height={369}
-            priority
-            className={`site-intro__layer site-intro__layer--${layer.part}`}
+            src="/images/brand/intro-realty.png"
+            className="site-intro__layer site-intro__layer--realty"
           />
-        ))}
+        </div>
       </div>
     </div>
   );

@@ -75,7 +75,7 @@ export function Header() {
         // header's height with -mt-18, and a border would leave a 1px sliver
         // of page background above it.
         solid
-          ? "bg-bg/90 shadow-[inset_0_-1px_0_var(--color-line),0_1px_24px_rgb(0_0_0_/_0.06)] backdrop-blur-xl"
+          ? "bg-bg shadow-[inset_0_-1px_0_var(--color-line),0_1px_24px_rgb(0_0_0_/_0.06)]"
           // Unscrolled, the bar floats over the ink hero every page opens with,
           // so it borrows the dark-surface tokens to stay legible.
           : "on-ink bg-transparent",
@@ -114,13 +114,16 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-2 lg:ml-4">
           <ThemeToggle />
+          {/* The website's main call to action: the number itself, one tap away. */}
           <a
-            href={whatsappLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-fg text-bg hover:bg-accent hover:text-ink hidden min-h-11 items-center rounded-full px-5 text-sm font-medium transition-[background-color,color,transform] active:scale-[0.96] sm:inline-flex"
+            href={site.contact.phoneHref}
+            aria-label={`Call ${site.contact.phoneDisplay}`}
+            className="bg-brand text-ink hover:bg-fg hover:text-bg hidden h-11 items-center justify-center gap-2 rounded-full text-sm font-semibold whitespace-nowrap transition-[background-color,color,translate,scale] active:scale-[0.96] min-[360px]:inline-flex max-sm:w-11 sm:px-5"
           >
-            Talk to us
+            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M6.6 3.5h2.6l1.5 4.3-2 1.6a12.5 12.5 0 0 0 5.9 5.9l1.6-2 4.3 1.5v2.6a2 2 0 0 1-2.2 2A16.8 16.8 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z" />
+            </svg>
+            <span className="max-sm:hidden">{site.contact.phoneDisplay}</span>
           </a>
 
           <button
@@ -165,8 +168,8 @@ export function Header() {
           // Visibility flips at once on open, so the first link can take focus
           // immediately, but waits out the fade on close.
           open
-            ? "visible opacity-100 transition-[opacity,transform]"
-            : "invisible -translate-y-2 opacity-0 transition-[opacity,transform,visibility]",
+            ? "visible opacity-100 transition-[opacity,translate,scale]"
+            : "invisible -translate-y-2 opacity-0 transition-[opacity,translate,scale,visibility]",
         )}
       >
         <nav aria-label="Primary mobile" className="px-4 py-6 sm:px-6">
@@ -176,7 +179,7 @@ export function Header() {
                 key={link.href}
                 style={{ "--i": i } as CSSProperties}
                 className={cx(
-                  "border-line border-b transition-[opacity,transform] duration-400 last:border-b-0",
+                  "border-line border-b transition-[opacity,translate,scale] duration-400 last:border-b-0",
                   // Links cascade in on open; on close they leave together.
                   open
                     ? "translate-y-0 opacity-100 delay-[calc(var(--i)*35ms+60ms)]"

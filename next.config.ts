@@ -6,8 +6,13 @@ const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
   images: {
-    // next/image cannot run the optimizer in an export build.
-    unoptimized: true,
+    // next/image cannot run the optimizer in an export build, so project images
+    // are resized ahead of time and this loader points srcset at those files.
+    loader: "custom",
+    loaderFile: "./lib/imageLoader.ts",
+    // Keep in step with scripts/make-responsive-images.mjs.
+    deviceSizes: [480, 828, 1200, 1920, 2880],
+    imageSizes: [],
   },
 };
 

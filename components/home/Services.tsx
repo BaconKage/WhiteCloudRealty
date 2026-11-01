@@ -1,4 +1,4 @@
-import { services } from "@/content/services";
+import { getService, type Service } from "@/content/services";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -6,27 +6,31 @@ import { Button } from "@/components/ui/Button";
 import { whatsappLink } from "@/content/site";
 
 /**
- * The three long essays on the old home page, restructured into the three
- * things a visitor is actually here to do. Copy is unchanged.
+ * What a visitor is actually here to do: buy, sell, rent, invest, or take on a
+ * commercial brief. Buy, invest and sell keep the old home page's copy.
  */
+const ORDER = ["buy", "sell", "rent", "invest", "commercial"];
+
 export function Services() {
+  const services = ORDER.map(getService).filter((s): s is Service => Boolean(s));
+
   return (
     <Section id="services">
       <SectionHeading
         eyebrow="What we do"
-        title="Three ways we can help"
-        lede="Buy a home, invest for returns, or unlock value from an asset you already own. Start with the outcome; we will help you work backwards to the right move."
+        title="Buy. Sell. Rent. And commercial too."
+        lede="A home, an income-generating asset or a commercial investment. Start with the outcome; we will help you work backwards to the right move."
       />
 
-      <p className="text-faint mt-7 text-xs lg:hidden">Swipe to compare all three paths &rarr;</p>
+      <p className="text-faint mt-7 text-xs lg:hidden">Swipe to see all five &rarr;</p>
 
-      <div className="scrollbar-none -mx-4 mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 lg:mx-0 lg:mt-16 lg:grid lg:grid-cols-3 lg:gap-7 lg:overflow-visible lg:px-0 lg:pb-0">
+      <div className="scrollbar-none -mx-4 mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 lg:mx-0 lg:mt-16 lg:grid lg:grid-cols-6 lg:gap-7 lg:overflow-visible lg:px-0 lg:pb-0">
         {services.map((service, i) => (
           <Reveal
             key={service.id}
             delay={i * 90}
             as="article"
-            className="group border-line bg-surface hover:border-accent/50 relative flex min-w-[85vw] snap-start flex-col overflow-hidden rounded-(--radius-card) border p-6 transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_22px_50px_-28px_rgb(0_0_0_/_0.4)] sm:min-w-[22rem] sm:p-8 lg:min-w-0"
+            className={`group border-line bg-surface hover:border-accent/50 relative flex min-w-[85vw] snap-start flex-col overflow-hidden rounded-(--radius-card) border p-6 transition-[border-color,translate,box-shadow] duration-200 hover:-translate-y-1.5 hover:shadow-[0_22px_50px_-28px_rgb(0_0_0_/_0.4)] sm:min-w-[22rem] sm:p-8 lg:min-w-0 ${i < 3 ? "lg:col-span-2" : "lg:col-span-3"}`}
           >
             <span
               aria-hidden="true"

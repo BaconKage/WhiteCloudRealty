@@ -43,7 +43,7 @@ export function Testimonials({ compact = false }: { compact?: boolean }) {
           >
             <span
               aria-hidden="true"
-              className="absolute inset-0 -z-10 bg-[radial-gradient(70%_100%_at_85%_0%,rgb(201_162_39/0.18),transparent_60%)] transition-opacity duration-700 group-hover:opacity-150"
+              className="absolute inset-0 -z-10 bg-[radial-gradient(70%_100%_at_85%_0%,rgb(255_118_30/0.18),transparent_60%)] transition-opacity duration-700 group-hover:opacity-150"
             />
             <span
               aria-hidden="true"

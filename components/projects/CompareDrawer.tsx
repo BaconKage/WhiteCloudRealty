@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { Project } from "@/content/projects";
+import type { ProjectSummary } from "@/content/projects";
 import { CATEGORY_LABELS } from "@/content/projects";
 import { formatArea, formatConfigurations, formatPrice, cx } from "@/lib/format";
 
-const ROWS: { label: string; get: (p: Project) => string | null }[] = [
+const ROWS: { label: string; get: (p: ProjectSummary) => string | null }[] = [
   { label: "Developer", get: (p) => p.developer },
   { label: "Location", get: (p) => p.locationLabel },
   { label: "Type", get: (p) => CATEGORY_LABELS[p.category] },
@@ -37,16 +37,27 @@ export function CompareDrawer({
   onRemove,
   onClear,
 }: {
-  projects: Project[];
+  projects: ProjectSummary[];
   onRemove: (slug: string) => void;
   onClear: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const open = projects.length > 0;
+
   useEffect(() => {
-    if (projects.length === 0) setExpanded(false);
-  }, [projects.length]);
+    if (!open) {
+      setExpanded(false);
+      return;
+    }
+    // Moves the floating contact buttons out of the tray's corner (globals.css).
+    const root = document.documentElement;
+    root.dataset.compareOpen = "";
+    return () => {
+      delete root.dataset.compareOpen;
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -91,7 +102,7 @@ export function CompareDrawer({
               type="button"
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
-              className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-[background-color,color,transform] active:scale-[0.96]"
+              className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-[background-color,color,translate,scale] active:scale-[0.96]"
             >
               {expanded ? "Hide" : "Compare"}
               <svg viewBox="0 0 24 24" className={cx("h-4 w-4 transition-transform duration-300", expanded && "rotate-180")} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

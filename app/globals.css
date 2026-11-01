@@ -9,12 +9,13 @@
   --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
 
   /* Brand constants — these do not change between themes.
-     Gold was carried over from the previous White Cloud Realty logo; the
-     official logo is monochrome, so gold now serves purely as the accent. */
+     --color-brand is the flat orange of the White Cloud Realty logo tile.
+     White on it is only 2.7:1, so anything small set on orange uses ink
+     instead; on light surfaces, orange text uses the darker accent-text. */
   --color-ink: #0f1723;
   --color-ink-deep: #0b1119;
   --color-paper: #faf9f6;
-  --color-gold: #c9a227;
+  --color-brand: #ff761e;
 
   /* Semantic tokens. These are re-declared (not aliased) per theme in the base
      layer below: `var()` resolves where a property is *declared*, so an alias
@@ -27,8 +28,8 @@
   --color-muted: #5a6473;
   --color-faint: #646b78;
   --color-line: #e4e0d6;
-  --color-accent: #a8811a;
-  --color-accent-text: #7d5f0c;
+  --color-accent: #e0600f;
+  --color-accent-text: #b84a08;
 
   /* Type scale — fluid, so headings never need per-breakpoint overrides. */
   --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 5.5rem);
@@ -78,23 +79,16 @@
   }
 
   /* Hero headline: each line rises into place behind a clipping mask. */
-  --animate-rise: rise 0.8s var(--ease-out-soft) both;
+  --animate-rise: rise 0.55s var(--ease-out-soft) both;
   @keyframes rise {
     from { transform: translateY(105%); }
     to { transform: translateY(0); }
   }
 
-  --animate-fade-up: fade-up 0.6s var(--ease-out-soft) both;
+  --animate-fade-up: fade-up 0.42s var(--ease-out-soft) both;
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: none; }
-  }
-
-  /* Draws the corridor route once the map scrolls into view. */
-  --animate-draw: draw 2.2s var(--ease-out-soft) both;
-  @keyframes draw {
-    from { stroke-dashoffset: var(--draw-length, 200); }
-    to { stroke-dashoffset: 0; }
   }
 
   --animate-pulse-ring: pulse-ring 2.6s ease-out infinite;
@@ -121,8 +115,8 @@
       --color-muted: #aeb7c4;
       --color-faint: #8f99a8;
       --color-line: #253141;
-      --color-accent: #d9b441;
-      --color-accent-text: #d9b441;
+      --color-accent: #ff761e;
+      --color-accent-text: #ff8a3d;
       color-scheme: dark;
     }
   }
@@ -135,8 +129,8 @@
     --color-muted: #aeb7c4;
     --color-faint: #8f99a8;
     --color-line: #253141;
-    --color-accent: #d9b441;
-    --color-accent-text: #d9b441;
+    --color-accent: #ff761e;
+    --color-accent-text: #ff8a3d;
     color-scheme: dark;
   }
 
@@ -178,7 +172,7 @@
   }
 
   ::selection {
-    background: var(--color-gold);
+    background: var(--color-brand);
     color: var(--color-ink);
   }
 
@@ -194,8 +188,8 @@
     --color-line: rgba(245, 243, 238, 0.16);
     --color-surface: rgba(255, 255, 255, 0.04);
     --color-raised: rgba(255, 255, 255, 0.07);
-    --color-accent: #d9b441;
-    --color-accent-text: #d9b441;
+    --color-accent: #ff761e;
+    --color-accent-text: #ff8a3d;
     color: var(--color-fg);
     color-scheme: dark;
   }
@@ -210,8 +204,8 @@
     --color-muted: #505b69;
     --color-faint: #626b77;
     --color-line: rgba(15, 23, 35, 0.14);
-    --color-accent: #a27a16;
-    --color-accent-text: #76580b;
+    --color-accent: #d85a0c;
+    --color-accent-text: #a84206;
     color: var(--color-fg);
     color-scheme: light;
   }
@@ -222,19 +216,6 @@
   .numeric {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;
-  }
-
-  /* The logo ships in two colourways — see components/layout/Logo.tsx.
-     The reversed, light-surface one is the default; ink panels and the dark
-     theme swap in the artwork as supplied. */
-  .logo-on-dark {
-    display: none;
-  }
-  :is([data-theme="dark"], .on-ink) .logo-on-dark {
-    display: block;
-  }
-  :is([data-theme="dark"], .on-ink) .logo-on-light {
-    display: none;
   }
 
   /* Horizontal chip/card rails scroll without showing a scrollbar. */
@@ -254,9 +235,11 @@
   }
 }
 
-/* The floating WhatsApp button and the project compare tray share the
-   bottom-right corner; while the tray is up it owns that space. */
-body:has([data-compare-tray]) [data-floating-contact] {
+/* The floating contact buttons and the project compare tray share the
+   bottom-right corner; while the tray is up it owns that space. The attribute
+   is set by CompareDrawer: a :has() on <body> would be re-checked on every DOM
+   change anywhere on the page. */
+html[data-compare-open] [data-floating-contact] {
   opacity: 0;
   translate: 0 1rem;
   pointer-events: none;
@@ -276,7 +259,7 @@ body:has([data-compare-tray]) [data-floating-contact] {
   display: block;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #b88a1b, #f0d878);
+  background: linear-gradient(90deg, #e0600f, #ffa564);
   box-shadow: 0 0 12px rgb(217 180 65 / 0.3);
   transform: scaleX(var(--scroll-progress, 0));
   transform-origin: left center;
@@ -354,7 +337,7 @@ body:has([data-compare-tray]) [data-floating-contact] {
 }
 
 /* Reveal-on-scroll, driven by lib/useReveal.ts. The variants share one
-   restrained timing system: typography rises, media unmasks, sections settle.
+   restrained timing system: typography rises, media settles, sections stay put.
    Distances are short and timings brisk so content keeps pace with a fast
    scroll rather than trailing behind it. */
 @media (prefers-reduced-motion: no-preference) {
@@ -373,49 +356,34 @@ body:has([data-compare-tray]) [data-floating-contact] {
     }
   }
 
-  [data-reveal] {
+  /* An animation rather than a transition: it leaves nothing behind once it
+     has run. A lingering transition held on to its stagger delay and overrode
+     the element's own hover transitions, so hovering a revealed card lagged.
+     Only opacity and transform move, which the compositor can run alone; no
+     will-change, since a layer per element costs more than it saves. */
+  [data-reveal=""]:not([data-reveal-variant="section"]) {
     opacity: 0;
-    transform: translateY(16px);
-    transition:
-      opacity 0.5s var(--ease-out-soft),
-      transform 0.6s var(--ease-out-soft);
-    transition-delay: var(--reveal-delay, 0ms);
-    will-change: opacity, transform;
   }
 
-  [data-reveal][data-reveal-variant="clip"] {
-    transform: translateY(12px);
+  [data-reveal="shown"]:not([data-reveal-variant="section"]) {
+    animation: reveal-rise 460ms var(--ease-out-soft) var(--reveal-delay, 0ms) backwards;
   }
 
-  [data-reveal][data-reveal-variant="image"] {
-    opacity: 0.65;
-    transform: scale(1.035);
-    clip-path: inset(0 0 0 10% round var(--radius-card));
-    transition-duration: 0.7s;
-  }
-
-  [data-reveal][data-reveal-variant="section"] {
-    opacity: 1;
-    transform: none;
-    clip-path: none;
-    transition: none;
-    will-change: auto;
-  }
-
-  /* Only the image variant animates a clip, so only it keeps one. Any
-     clip-path creates a stacking context and clips the element's own shadow,
-     so leaving one on every revealed block cut off hover shadows and trapped
-     fixed-position children (the compare tray) beneath later sections. */
-  [data-reveal="shown"],
-  [data-reveal="shown"][data-reveal-variant] {
-    opacity: 1;
-    transform: none;
-    clip-path: none;
-    will-change: auto;
+  [data-reveal="shown"][data-reveal-variant="clip"] {
+    --reveal-from: 12px;
   }
 
   [data-reveal="shown"][data-reveal-variant="image"] {
-    clip-path: inset(0);
+    animation-name: reveal-image;
+    animation-duration: 560ms;
+  }
+
+  @keyframes reveal-rise {
+    from { opacity: 0; transform: translateY(var(--reveal-from, 16px)); }
+  }
+
+  @keyframes reveal-image {
+    from { opacity: 0; transform: scale(1.025); }
   }
 
   .editorial-section__inner {
@@ -470,6 +438,9 @@ body:has([data-compare-tray]) [data-floating-contact] {
   --disc-x: 80.73%;
   --disc-y: 49.86%;
   --disc-left: 61.77%;
+  /* The disc's radius in clip-path terms: a circle() percentage resolves
+     against sqrt(w² + h²) / √2 of the box, not its width. */
+  --disc-clip-r: 25.03%;
   /* How far the logo must shift for the disc, not the lockup, to sit at the
      centre of the screen: disc centre minus half the width. */
   --disc-offset: -30.73%;
@@ -481,7 +452,7 @@ body:has([data-compare-tray]) [data-floating-contact] {
   place-items: center;
   overflow: hidden;
   isolation: isolate;
-  background: #0b1119;
+  background: var(--color-brand);
   animation: intro-reveal 350ms ease-out 1300ms forwards;
   will-change: opacity;
 }
@@ -511,12 +482,18 @@ body:has([data-compare-tray]) [data-floating-contact] {
   opacity: 0;
   transform: scale(0.35);
   transform-origin: var(--disc-x) var(--disc-y);
-  filter: drop-shadow(0 18px 36px rgb(0 0 0 / 0.35));
+  filter: drop-shadow(0 14px 28px rgb(120 45 0 / 0.28));
   animation: intro-disc 520ms var(--ease-spring) 60ms forwards;
 }
 
-/* Black on ink is invisible, so "Realty." only shows where it crosses the
-   disc: it rises into the cloud with no mask needed. */
+/* The mask stops at the disc's edge, so "Realty." rises from inside the cloud
+   rather than sliding across the orange. */
+.site-intro__realty-mask {
+  position: absolute;
+  inset: 0;
+  clip-path: circle(var(--disc-clip-r) at var(--disc-x) var(--disc-y));
+}
+
 .site-intro__layer--realty {
   opacity: 0;
   transform: translateY(24%);
@@ -578,22 +555,22 @@ html[data-intro="seen"] .site-intro {
      rises into place, so the page itself adding movement too read as a
      stutter. */
   ::view-transition-old(root) {
-    animation: page-out 150ms ease-out both;
+    animation: page-out 100ms ease-out both;
   }
 
   ::view-transition-new(root) {
-    animation: page-in 260ms var(--ease-out-soft) both;
+    animation: page-in 190ms var(--ease-out-soft) both;
   }
 
   ::view-transition-group(*) {
     z-index: 80;
-    animation-duration: 420ms;
+    animation-duration: 320ms;
     animation-timing-function: var(--ease-out-soft);
   }
 
   ::view-transition-group(root) {
     z-index: 0;
-    animation-duration: 300ms;
+    animation-duration: 190ms;
   }
 
   ::view-transition-image-pair(*) {
@@ -627,17 +604,17 @@ html[data-intro="seen"] .site-intro {
   }
 
   html[data-filtering]::view-transition-group(*) {
-    animation-duration: 420ms;
+    animation-duration: 300ms;
     animation-timing-function: var(--ease-out-soft);
   }
 
   /* A lone snapshot is a card entering or leaving the results. */
   html[data-filtering]::view-transition-new(*):only-child {
-    animation: card-enter 380ms var(--ease-out-soft) 60ms both;
+    animation: card-enter 260ms var(--ease-out-soft) 30ms both;
   }
 
   html[data-filtering]::view-transition-old(*):only-child {
-    animation: card-leave 180ms ease-in both;
+    animation: card-leave 120ms ease-in both;
   }
 
   @keyframes card-enter {
@@ -658,7 +635,7 @@ html[data-intro="seen"] .site-intro {
   }
 
   html[data-theme-transition]::view-transition-new(root) {
-    animation: theme-reveal 560ms var(--ease-out-soft) both;
+    animation: theme-reveal 420ms var(--ease-out-soft) both;
   }
 
   html[data-theme-transition]::view-transition-group(*),
@@ -668,7 +645,7 @@ html[data-intro="seen"] .site-intro {
   }
 
   html[data-theme-transition]::view-transition-group(root) {
-    animation-duration: 560ms;
+    animation-duration: 420ms;
   }
 
   @keyframes theme-reveal {

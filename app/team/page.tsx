@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
+import { FounderCard } from "@/components/team/FounderCard";
 import { TeamCard } from "@/components/team/TeamCard";
 import { CtaBand } from "@/components/home/CtaBand";
-import { founder, team } from "@/content/team";
+import { founders, team } from "@/content/team";
+import { ethos } from "@/content/founder";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Meet the team",
   description:
-    "The people at White Cloud Realty: a Bengaluru advisory team working across residential, commercial and land in North Bengaluru, from the first brief to the final paperwork.",
+    "The people at White Cloud Realty: a Bengaluru advisory team working across residential, commercial and land, from the first brief to the final paperwork.",
   path: "/team",
 });
 
@@ -29,36 +30,22 @@ export default function TeamPage() {
       />
 
       <Section>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-center lg:gap-16">
-          <Reveal variant="image" as="figure" className="group">
-            <div className="border-line relative aspect-4/5 overflow-hidden rounded-(--radius-card) border shadow-[0_24px_60px_-32px_rgb(0_0_0_/_0.45)] sm:aspect-square lg:aspect-4/5">
-              {founder.photo && (
-                <Image
-                  src={founder.photo}
-                  alt={`${founder.name}, ${founder.role} of ${site.name}`}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover transition-transform duration-[900ms] ease-(--ease-out-soft) group-hover:scale-[1.04]"
-                />
-              )}
-            </div>
-          </Reveal>
+        <div className="max-w-3xl">
+          <p className="eyebrow text-accent-text">{ethos.eyebrow}</p>
+          <h2 className="mt-3 text-(length:--text-h2) leading-[1.08]">{ethos.title}</h2>
+          <p className="text-muted mt-4 text-(length:--text-lede) leading-relaxed">{ethos.lede}</p>
+        </div>
 
-          <div className="max-w-[56ch]">
-            <Reveal>
-              <p className="eyebrow text-accent-text">{founder.role}</p>
-              <h2 className="mt-4 text-(length:--text-h2) leading-[1.06]">{founder.name}</h2>
+        <div className="mt-12 grid gap-12 md:grid-cols-2 lg:gap-14">
+          {founders.map((member, i) => (
+            <Reveal key={member.name} delay={i * 100}>
+              <FounderCard
+                member={member}
+                showContact
+                action={i === 0 ? { label: "Read the founder’s letter", href: "/about#founders-desk" } : undefined}
+              />
             </Reveal>
-            <Reveal delay={80}>
-              <p className="text-muted mt-6 text-(length:--text-lede) leading-relaxed">{founder.bio}</p>
-            </Reveal>
-            <Reveal delay={140} className="mt-8 flex flex-wrap gap-3">
-              <Button href="/about#founders-desk">Read the founder&rsquo;s letter</Button>
-              <Button href={site.founder.linkedin} variant="secondary">
-                Connect on LinkedIn
-              </Button>
-            </Reveal>
-          </div>
+          ))}
         </div>
       </Section>
 
@@ -67,7 +54,7 @@ export default function TeamPage() {
           <h2 className="text-(length:--text-h2) leading-[1.08]">The advisory team</h2>
           <p className="text-muted mt-4 text-(length:--text-lede) leading-relaxed">
             Discovery, site visits, negotiation, documentation and loan support, handled by people
-            who know North Bengaluru project by project.
+            who know Bengaluru project by project.
           </p>
         </div>
 

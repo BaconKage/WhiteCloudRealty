@@ -129,7 +129,7 @@ export function EnquiryForm({
         <button
           type="submit"
           disabled={status === "sending"}
-          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,transform,opacity] active:scale-[0.98] disabled:opacity-60"
+          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,translate,scale,opacity] active:scale-[0.98] disabled:opacity-60"
         >
           {status === "sending" ? "Sending…" : "Send enquiry"}
         </button>
@@ -251,13 +251,13 @@ function WhatsappFallback({ subject }: { subject: string }) {
           href={whatsappLink(`Hi ${site.name}, regarding ${subject}: `)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,transform] active:scale-[0.97]"
+          className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-12 items-center justify-center rounded-full px-7 font-medium transition-[background-color,color,translate,scale] active:scale-[0.97]"
         >
           Message on WhatsApp
         </a>
         <a
           href={`mailto:${site.contact.email}?subject=${encodeURIComponent(subject)}`}
-          className="border-line hover:border-accent hover:text-accent-text inline-flex min-h-12 items-center justify-center rounded-full border px-7 font-medium transition-[border-color,color,transform] active:scale-[0.97]"
+          className="border-line hover:border-accent hover:text-accent-text inline-flex min-h-12 items-center justify-center rounded-full border px-7 font-medium transition-[border-color,color,translate,scale] active:scale-[0.97]"
         >
           Email us
         </a>

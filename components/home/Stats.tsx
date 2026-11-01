@@ -15,7 +15,7 @@ import { Reveal } from "@/components/ui/Reveal";
 const stats = [
   { value: projects.length, label: "Projects on our desk", href: "/projects" },
   { value: partners.length, label: "Developer partners", href: "/about#partners" },
-  { value: localities.length, label: "Corridor localities", href: "/#corridor" },
+  { value: localities.length, label: "Parts of Bengaluru", href: "/#locations" },
   { value: testimonials.length, label: "Client recommendations", href: "/#testimonials" },
 ];
 

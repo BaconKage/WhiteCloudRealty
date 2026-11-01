@@ -93,7 +93,7 @@ export function Footer() {
                         </span>
                         <span
                           aria-hidden="true"
-                          className="-translate-x-1 opacity-0 transition-all duration-300 group-hover/f:translate-x-0 group-hover/f:opacity-100"
+                          className="-translate-x-1 opacity-0 transition-[opacity,translate] duration-200 group-hover/f:translate-x-0 group-hover/f:opacity-100"
                         >
                           &rarr;
                         </span>

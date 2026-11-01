@@ -29,12 +29,12 @@ export function TestimonialCard({
   return (
     <figure
       className={cx(
-        "group border-line bg-surface relative flex flex-col overflow-hidden rounded-(--radius-card) border p-6 transition-all duration-400 sm:p-7",
+        "group border-line bg-surface relative flex flex-col overflow-hidden rounded-(--radius-card) border p-6 transition-[border-color,translate,box-shadow] duration-200 sm:p-7",
         "hover:border-accent/50 hover:-translate-y-1 hover:shadow-[0_18px_44px_-24px_rgb(0_0_0_/_0.35)]",
         className,
       )}
     >
-      {/* Gold wash that warms the card on hover. */}
+      {/* Orange wash that warms the card on hover. */}
       <span
         aria-hidden="true"
         className="from-accent/8 pointer-events-none absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"

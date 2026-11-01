@@ -48,7 +48,7 @@ export function PageHero({
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-[radial-gradient(75%_55%_at_18%_88%,rgb(201_162_39/0.16),transparent_70%)]"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(75%_55%_at_18%_88%,rgb(255_118_30/0.16),transparent_70%)]"
           />
           {/* Keeps the strip behind the transparent header dark enough for the
               nav to stay legible whatever the backdrop image does up there. */}
@@ -85,7 +85,7 @@ export function PageHero({
           <span className="block overflow-hidden pb-[0.12em]">
             <span
               className="block animate-(--animate-rise)"
-              style={{ animationDelay: "120ms" }}
+              style={{ animationDelay: "40ms" }}
             >
               {title}
             </span>
@@ -94,15 +94,15 @@ export function PageHero({
 
         {lede && (
           <p
-            className="text-muted mt-6 max-w-2xl animate-(--animate-fade-up) text-(length:--text-lede) leading-relaxed"
-            style={{ animationDelay: "340ms" }}
+            className="text-fg mt-6 max-w-2xl animate-(--animate-fade-up) text-(length:--text-lede) leading-relaxed"
+            style={{ animationDelay: "90ms" }}
           >
             {lede}
           </p>
         )}
 
         {children && (
-          <div className="animate-(--animate-fade-up)" style={{ animationDelay: "480ms" }}>
+          <div className="animate-(--animate-fade-up)" style={{ animationDelay: "130ms" }}>
             {children}
           </div>
         )}
@@ -110,7 +110,7 @@ export function PageHero({
         {image?.credit && (
           <p
             className="text-faint mt-10 animate-(--animate-fade-up) text-[0.6875rem] tracking-wide"
-            style={{ animationDelay: "620ms" }}
+            style={{ animationDelay: "170ms" }}
           >
             {image.credit}
           </p>

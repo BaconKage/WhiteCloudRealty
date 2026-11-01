@@ -3,7 +3,7 @@
  * logo (see scripts/prep-brand-logo.mjs, which must run first).
  *
  * The full wordmark is illegible at 16px, so the icon keeps only the logo's
- * device: the white disc with the "R" of "Realty." knocked out of it, on ink.
+ * device: the white disc with the "R" of "Realty." in it, on the brand orange.
  * The "R" is cropped from the supplied artwork rather than re-typeset, so it
  * is the logo's own letterform.
  *
@@ -15,8 +15,10 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const BRAND = join(ROOT, "public", "images", "brand");
+const BRAND_DIR = join(ROOT, "public", "images", "brand");
 const INK = "#0b1119";
+/** Keep in step with --color-brand in app/globals.css. */
+const BRAND = "#ff761e";
 
 /**
  * The "R" glyph of "Realty.", dark on transparent. Its leg kerns under the
@@ -24,7 +26,7 @@ const INK = "#0b1119";
  * flood-fills from the leftmost inked pixel and keeps only what is connected.
  */
 async function extractR() {
-  const layer = join(BRAND, "intro-realty.png");
+  const layer = join(BRAND_DIR, "intro-realty.png");
   const { data, info } = await sharp(layer).raw().toBuffer({ resolveWithObject: true });
   const { width, height } = info;
   const alpha = (x, y) => data[(y * width + x) * 4 + 3];
@@ -88,8 +90,8 @@ async function icon(size, { rounded = true } = {}) {
   const radius = rounded ? size * 0.22 : 0;
   const discR = size * 0.36;
   const tile = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-    <rect width="${size}" height="${size}" rx="${radius}" fill="${INK}"/>
-    <circle cx="${size / 2}" cy="${size / 2}" r="${discR}" fill="#fcfcfd"/>
+    <rect width="${size}" height="${size}" rx="${radius}" fill="${BRAND}"/>
+    <circle cx="${size / 2}" cy="${size / 2}" r="${discR}" fill="#ffffff"/>
   </svg>`);
 
   const r = await sharp(glyph).resize({ height: Math.round(discR * 1.02) }).toBuffer();
@@ -109,15 +111,15 @@ async function icon(size, { rounded = true } = {}) {
     .toBuffer();
 }
 
-await mkdir(BRAND, { recursive: true });
+await mkdir(BRAND_DIR, { recursive: true });
 
 // 1. Favicons. Next picks up app/icon.png and app/apple-icon.png by convention.
 await rm(join(ROOT, "app", "icon.svg"), { force: true });
 await sharp(await icon(192)).toFile(join(ROOT, "app", "icon.png"));
 await sharp(await icon(180, { rounded: false })).toFile(join(ROOT, "app", "apple-icon.png"));
-await sharp(await icon(512)).toFile(join(BRAND, "mark-512.png"));
+await sharp(await icon(512)).toFile(join(BRAND_DIR, "mark-512.png"));
 
-// 2. Open Graph card: project render, ink scrim, the logo as supplied.
+// 2. Open Graph card: project render, ink scrim, the logo on its orange tile.
 {
   const W = 1200;
   const H = 630;
@@ -138,15 +140,26 @@ await sharp(await icon(512)).toFile(join(BRAND, "mark-512.png"));
     </svg>`,
   );
 
-  const logo = await sharp(await readFile(join(BRAND, "wordmark-on-dark.png")))
-    .resize({ width: 600 })
+  // From the source artwork: the site's own copy is too small for this card.
+  const logo = await sharp(await readFile(join(ROOT, "design", "official-logo", "wcr-logo-official.png")))
+    .trim({ threshold: 1 })
+    .resize({ width: 560 })
     .toBuffer();
   const { height: logoH } = await sharp(logo).metadata();
+  const pad = 36;
+  const tile = await sharp(
+    Buffer.from(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${560 + pad * 2}" height="${logoH + pad * 2}"><rect width="100%" height="100%" rx="24" fill="${BRAND}"/></svg>`,
+    ),
+  )
+    .composite([{ input: logo, top: pad, left: pad }])
+    .png()
+    .toBuffer();
 
   await sharp(photo)
     .composite([
       { input: scrim, top: 0, left: 0 },
-      { input: logo, top: Math.round((H - logoH) / 2), left: 84 },
+      { input: tile, top: Math.round((H - logoH - pad * 2) / 2), left: 84 },
     ])
     .jpeg({ quality: 88, mozjpeg: true })
     .toFile(join(ROOT, "public", "images", "og-default.jpg"));

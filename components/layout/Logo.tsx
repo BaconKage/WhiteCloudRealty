@@ -3,18 +3,10 @@ import Link from "next/link";
 import { cx } from "@/lib/format";
 
 /**
- * The official White Cloud Realty logo: "White Cloud" set beside a disc — the
- * cloud — with "Realty." knocked out of it.
- *
- * Two files ship, prepared by scripts/prep-brand-logo.mjs: the artwork as
- * supplied (white words, white disc) for ink surfaces, and a reversed copy
- * (ink words, ink disc, paper "Realty.") for the cream page, where the
- * original would vanish. CSS in globals.css picks between them from `.on-ink`
- * and the active theme, so no JavaScript is involved and there is no swap
- * flicker on load.
- *
- * The disc takes the full height of the artwork and the lettering only about
- * a fifth of it, so the logo is sized taller than a plain wordmark would be.
+ * The White Cloud Realty logo: white "White Cloud" beside a white disc holding
+ * a black "Realty.", on a flat orange tile. The artwork has a transparent
+ * background (see scripts/prep-brand-logo.mjs) and the tile is drawn in CSS, so
+ * it stays sharp and reads the same on every surface in both themes.
  */
 export function Logo({
   className,
@@ -25,28 +17,17 @@ export function Logo({
   href?: string | null;
   priority?: boolean;
 }) {
-  const sizing = cx("h-12 w-auto sm:h-14", className);
-
   const mark = (
-    <>
+    <span className={cx("bg-brand inline-flex rounded-lg px-2.5 py-1 sm:px-3", className)}>
       <Image
-        src="/images/brand/wordmark-on-light.png"
+        src="/images/brand/wordmark.png"
         alt="White Cloud Realty"
-        width={640}
-        height={246}
+        width={360}
+        height={139}
         priority={priority}
-        className={cx("logo-on-light", sizing)}
+        className="h-10 w-auto sm:h-11"
       />
-      <Image
-        src="/images/brand/wordmark-on-dark.png"
-        alt=""
-        aria-hidden="true"
-        width={640}
-        height={246}
-        priority={priority}
-        className={cx("logo-on-dark", sizing)}
-      />
-    </>
+    </span>
   );
 
   if (!href) return mark;
@@ -54,7 +35,7 @@ export function Logo({
   return (
     <Link
       href={href}
-      className="group/logo inline-flex min-h-11 items-center rounded-sm transition-transform duration-300 hover:scale-[1.03]"
+      className="group/logo inline-flex min-h-11 items-center rounded-lg transition-transform duration-300 hover:scale-[1.03]"
       aria-label="White Cloud Realty — home"
     >
       {mark}

@@ -40,7 +40,7 @@ export function Partners() {
                       alt={copy === 0 ? partner.name : ""}
                       width={partner.width}
                       height={partner.height}
-                      className="h-auto max-h-12 w-auto object-contain opacity-60 grayscale transition-all duration-500 ease-(--ease-out-soft) hover:scale-110 hover:opacity-100 hover:grayscale-0"
+                      className="h-auto max-h-12 w-auto object-contain opacity-60 grayscale transition-[opacity,scale,filter] duration-200 hover:scale-110 hover:opacity-100 hover:grayscale-0"
                     />
                   </li>
                 ))}

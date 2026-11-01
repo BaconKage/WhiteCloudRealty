@@ -3,13 +3,13 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/ui/Section";
 import { ProjectExplorer } from "@/components/projects/ProjectExplorer";
 import { CtaBand } from "@/components/home/CtaBand";
-import { projects } from "@/content/projects";
+import { projects, toSummary } from "@/content/projects";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Projects",
   description:
-    "Residential, township and managed-farmland developments across the North Bengaluru corridor, represented by White Cloud Realty.",
+    "Residential, township and managed-farmland developments across Bengaluru, represented by White Cloud Realty.",
   path: "/projects",
 });
 
@@ -23,7 +23,7 @@ export default function ProjectsPage() {
       />
 
       <Section>
-        <ProjectExplorer projects={projects} />
+        <ProjectExplorer projects={projects.map(toSummary)} />
       </Section>
 
       <CtaBand />
