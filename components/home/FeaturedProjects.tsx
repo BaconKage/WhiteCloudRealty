@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { projects, toSummary, type ProjectCategory } from "@/content/projects";
+import { pillars, purpose } from "@/content/services";
 import { site, whatsappLink } from "@/content/site";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Section } from "@/components/ui/Section";
@@ -46,7 +47,7 @@ export function FeaturedProjects() {
       <SectionHeading
         eyebrow="Browse properties"
         title="What are you looking for?"
-        lede="Developments we have walked ourselves. We can tell you about the masterplan and the micro-market, and about whatever the brochure decided to leave out."
+        lede={purpose}
         action={
           <Button href="/projects" variant="secondary">
             All projects
@@ -54,7 +55,20 @@ export function FeaturedProjects() {
         }
       />
 
-      <ul className="scrollbar-none -mx-4 mt-10 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-5">
+      <div className="mt-10">
+        <p className="eyebrow text-accent-text">What sets us apart</p>
+        <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {pillars.map((pillar, i) => (
+            <li key={pillar.title} className="border-line border-t pt-4">
+              <span className="numeric text-accent-text text-sm font-semibold">0{i + 1}</span>
+              <p className="font-display mt-1 text-lg leading-snug">{pillar.title}</p>
+              <p className="text-muted mt-2 text-sm leading-relaxed">{pillar.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <ul className="scrollbar-none -mx-4 mt-12 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-5">
         {PROPERTY_TYPES.map((type) => {
           const count = projects.filter((p) => p.category === type.category).length;
           const content = (

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { CtaBand } from "@/components/home/CtaBand";
 import { ZoneCloseUp } from "@/components/insights/ZoneCloseUp";
 import { MetroDiagram } from "@/components/insights/MetroDiagram";
-import { articles, getArticle, type ArticleSection } from "@/content/insights";
+import { getArticle, guides, type ArticleSection } from "@/content/insights";
 import { getLocality } from "@/content/localities";
 import { whatsappLink, site } from "@/content/site";
 import { formatDate } from "@/lib/format";
@@ -17,7 +17,7 @@ import { absoluteUrl, pageMetadata } from "@/lib/seo";
 type Params = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+  return guides.map((a) => ({ slug: a.slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

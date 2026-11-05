@@ -53,9 +53,10 @@ export const ethos = {
     { from: "Relationships", to: "opportunity" },
   ],
   people: "White Cloud has always been about people.",
+  /** Client first: it sits above Sayanti, the developer's side above Mahesh. */
   sides: [
-    { title: "The developer’s side", points: ["Projects and mandates", "Market insight", "Developer relationships"] },
     { title: "The client’s side", points: ["Homebuyers and investors", "The right opportunities", "Beyond the transaction"] },
+    { title: "The developer’s side", points: ["Projects and mandates", "Market insight", "Developer relationships"] },
   ],
   /** Each founder in their own words, from their LinkedIn posts and profile. */
   voices: [

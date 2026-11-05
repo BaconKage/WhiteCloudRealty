@@ -7,7 +7,7 @@ import { cityMap } from "@/content/cityMap";
 import { developingCorridors, getLocality, localities } from "@/content/localities";
 import { projects } from "@/content/projects";
 import { site, whatsappLink } from "@/content/site";
-import { articles } from "@/content/insights";
+import { guides } from "@/content/insights";
 import { cx } from "@/lib/format";
 import { useHashSelection } from "@/lib/useHashSelection";
 import { Reveal } from "@/components/ui/Reveal";
@@ -54,7 +54,7 @@ export function LocationFinder() {
 
   const active = getLocality(activeId) ?? localities[0];
   const activeProjects = projects.filter((p) => p.localityId === active.id);
-  const guide = articles.find((a) => a.localityId === active.id);
+  const guide = guides.find((a) => a.localityId === active.id);
   const message = `Hi ${site.name}, I'd like to ${intent.toLowerCase()} ${
     asset === "Land" ? "land" : `${asset.toLowerCase()} property`
   } in ${active.name}. Can you help?`;

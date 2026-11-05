@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const INTRO_DURATION_MS = 1700;
+const INTRO_DURATION_MS = 3000;
 
 const LOGO_LAYER = { width: 960, height: 369, priority: true } as const;
 

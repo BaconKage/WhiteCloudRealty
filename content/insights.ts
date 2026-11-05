@@ -6,6 +6,8 @@
  * out prices, which go stale and which published sources disagree on.
  */
 
+import { cityGuides } from "./cityGuides";
+
 export type ArticleSection = {
   heading: string;
   /** A diagram to show after the text. */
@@ -134,8 +136,14 @@ export const articles: Article[] = [
   },
 ];
 
+/** Every guide, in map order: north round to central. */
+const ZONE_ORDER = ["north", "north-east", "east", "south-east", "south", "west", "central"];
+export const guides: Article[] = [...articles, ...cityGuides].sort(
+  (a, b) => ZONE_ORDER.indexOf(a.localityId ?? "") - ZONE_ORDER.indexOf(b.localityId ?? ""),
+);
+
 export const hasArticles = articles.length > 0;
 
 export function getArticle(slug: string): Article | undefined {
-  return articles.find((a) => a.slug === slug);
+  return guides.find((a) => a.slug === slug);
 }

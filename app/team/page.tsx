@@ -51,7 +51,7 @@ export default function TeamPage() {
 
       <Section tone="raised">
         <div className="max-w-2xl">
-          <h2 className="text-(length:--text-h2) leading-[1.08]">The advisory team</h2>
+          <h2 className="text-(length:--text-h2) leading-[1.08]">Meet the advisory team</h2>
           <p className="text-muted mt-4 text-(length:--text-lede) leading-relaxed">
             Discovery, site visits, negotiation, documentation and loan support, handled by people
             who know Bengaluru project by project.

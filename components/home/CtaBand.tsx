@@ -1,4 +1,4 @@
-import { site, whatsappLink } from "@/content/site";
+import { whatsappLink } from "@/content/site";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -32,7 +32,7 @@ export function CtaBand() {
               Send an enquiry
             </Button>
             <Button href={whatsappLink()} size="lg" variant="secondary">
-              WhatsApp {site.contact.phoneDisplay}
+              Message us on WhatsApp
             </Button>
           </div>
         </Reveal>

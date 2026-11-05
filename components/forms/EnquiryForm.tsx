@@ -81,7 +81,7 @@ export function EnquiryForm({
       >
         <h3 className="text-(length:--text-h3)">Thanks, we&rsquo;ve got it.</h3>
         <p className="text-muted mt-3 leading-relaxed">
-          Someone from the team will be in touch. If it&rsquo;s urgent, WhatsApp us on{" "}
+          Someone from the team will be in touch. If it&rsquo;s urgent, call us on{" "}
           {site.contact.phoneDisplay}.
         </p>
         <button

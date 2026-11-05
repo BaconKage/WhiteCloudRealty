@@ -1,15 +1,11 @@
 /**
  * The White Cloud Realty team, for the Meet the team page.
  *
- * The founders' details come from the firm's LinkedIn posts and Mahesh's
- * business card. Advisory team names are the people the firm tags as its team
- * on LinkedIn; only the founders' titles are published anywhere.
+ * Names, photos and numbers as the client sent them on 5 November 2026, in the
+ * order she asked for. Photos are cropped to head and shoulders, as she asked.
  *
- * TODO: the client is sending advisory team photos and contact numbers, and
- * should confirm each title. For a photo, drop a 4:5 portrait (~900px wide) in
- * public/images/team/ and set `photo`. Until then the card shows the person's
- * initials in the logo's disc. A null `role` is not shown, and a null `phone`
- * falls back to the firm's main number, so every card can still be called.
+ * TODO: job titles have not been supplied yet; a null `role` is not shown.
+ * Surnames for Manoj, Francis, Rajkumar and Rachan are still to come.
  */
 
 export type TeamMember = {
@@ -31,8 +27,8 @@ export const founders: TeamMember[] = [
     name: "Sayanti Majumdar",
     role: "Founder",
     photo: "/images/founder-portrait.jpg",
-    phone: null,
-    email: "connect@whitecloudrealty.in",
+    phone: "+91 96869 87757",
+    email: "sayanti@whitecloudrealty.in",
     linkedin: "https://www.linkedin.com/in/sayantimajumdar/",
     intro: "Sayanti founded White Cloud Realty with the belief that property decisions should feel confident, not confusing, and curates options that match each client’s brief with honesty and precision.",
     bio: "Sayanti founded White Cloud Realty with the belief that property decisions should feel confident, not confusing. She works closely with clients to understand what they are truly optimising for (home, lifestyle, returns, timing), then curates options that match the brief with honesty and precision, blending research, on-ground insight and a strong service mindset.",
@@ -50,11 +46,14 @@ export const founders: TeamMember[] = [
 ];
 
 export const team: TeamMember[] = [
-  { name: "Urvashi Choudhury", role: null, photo: null, phone: null },
-  { name: "Nandita Sengupta", role: null, photo: null, phone: null },
-  { name: "Rahul Gowda YS", role: null, photo: null, phone: null },
-  { name: "Suraj C J", role: null, photo: null, phone: null },
-  { name: "Akash Kolkur", role: null, photo: null, phone: null },
+  { name: "Manoj", role: null, photo: "/images/team/manoj.jpg", phone: "+91 93802 18123" },
+  { name: "Urvashi Choudhury", role: null, photo: "/images/team/urvashi-choudhury.jpg", phone: "+91 70263 54041" },
+  { name: "Francis", role: null, photo: "/images/team/francis.jpg", phone: "+91 83102 47436" },
+  { name: "Suraj C J", role: null, photo: "/images/team/suraj-c-j.jpg", phone: "+91 70191 43040" },
+  { name: "Nandita Sengupta", role: null, photo: "/images/team/nandita-sengupta.jpg", phone: "+91 84203 60233" },
+  { name: "Rajkumar", role: null, photo: "/images/team/rajkumar.jpg", phone: "+91 78297 81138" },
+  { name: "Akash Kolkur", role: null, photo: "/images/team/akash-kolkur.jpg", phone: "+91 63611 93703" },
+  { name: "Rachan", role: null, photo: "/images/team/rachan.jpg", phone: "+91 91485 71033" },
 ];
 
 /** "Urvashi Choudhury" → "UC"; "Suraj C J" → "SC". */

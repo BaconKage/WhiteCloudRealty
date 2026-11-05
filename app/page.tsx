@@ -12,14 +12,9 @@ import { FounderTrust } from "@/components/home/FounderTrust";
 import { Partners } from "@/components/home/Partners";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CtaBand } from "@/components/home/CtaBand";
-import { partners } from "@/content/partners";
 import { whatsappLink } from "@/content/site";
 
-const heroProof = [
-  "Buy · Sell · Rent",
-  "Residential · Commercial · Land",
-  `${partners.length} developer partners`,
-];
+const heroProof = ["Buy · Sell · Rent", "Residential · Commercial · Land", "RERA registered"];
 
 export default function HomePage() {
   return (

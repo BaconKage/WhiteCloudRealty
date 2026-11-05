@@ -20,6 +20,7 @@ export function organizationJsonLd() {
     url: absoluteUrl("/"),
     telephone: site.contact.phoneDisplay,
     email: site.contact.email,
+    ...(site.gstin && { taxID: site.gstin }),
     areaServed: { "@type": "Place", name: site.region },
     founder: [site.founder, site.coFounder].map((person) => ({
       "@type": "Person",

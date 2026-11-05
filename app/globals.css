@@ -6,7 +6,7 @@
 
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: var(--font-serif), ui-serif, Georgia, "Times New Roman", serif;
 
   /* Brand constants — these do not change between themes.
      --color-brand is the flat orange of the White Cloud Realty logo tile.
@@ -546,7 +546,7 @@ details > summary::-webkit-details-marker {
   overflow: hidden;
   isolation: isolate;
   background: var(--color-brand);
-  animation: intro-reveal 350ms ease-out 1300ms forwards;
+  animation: intro-reveal 450ms ease-out 2550ms forwards;
   will-change: opacity;
 }
 
@@ -559,8 +559,8 @@ details > summary::-webkit-details-marker {
   translate: var(--disc-offset) 0;
   transform-origin: var(--disc-x) var(--disc-y);
   animation:
-    intro-settle 620ms var(--ease-out-soft) 480ms forwards,
-    intro-push 400ms cubic-bezier(0.6, 0, 0.9, 0.45) 1100ms forwards;
+    intro-settle 760ms var(--ease-out-soft) 700ms forwards,
+    intro-push 480ms cubic-bezier(0.6, 0, 0.9, 0.45) 2300ms forwards;
   will-change: translate, transform, opacity;
 }
 
@@ -576,7 +576,7 @@ details > summary::-webkit-details-marker {
   transform: scale(0.35);
   transform-origin: var(--disc-x) var(--disc-y);
   filter: drop-shadow(0 14px 28px rgb(120 45 0 / 0.28));
-  animation: intro-disc 520ms var(--ease-spring) 60ms forwards;
+  animation: intro-disc 640ms var(--ease-spring) 100ms forwards;
 }
 
 /* The mask stops at the disc's edge, so "Realty." rises from inside the cloud
@@ -590,7 +590,7 @@ details > summary::-webkit-details-marker {
 .site-intro__layer--realty {
   opacity: 0;
   transform: translateY(24%);
-  animation: intro-realty 440ms var(--ease-out-soft) 330ms forwards;
+  animation: intro-realty 560ms var(--ease-out-soft) 460ms forwards;
 }
 
 /* Starts as a zero-width strip at the disc's left edge and opens leftwards,
@@ -598,7 +598,7 @@ details > summary::-webkit-details-marker {
 .site-intro__layer--words {
   clip-path: inset(0 calc(100% - var(--disc-left)) 0 var(--disc-left));
   transform: translateX(7%);
-  animation: intro-words 560ms var(--ease-out-soft) 500ms forwards;
+  animation: intro-words 720ms var(--ease-out-soft) 720ms forwards;
 }
 
 @keyframes intro-disc {
@@ -744,5 +744,23 @@ html[data-intro="seen"] .site-intro {
   @keyframes theme-reveal {
     from { clip-path: circle(0 at var(--theme-x, 100%) var(--theme-y, 0)); }
     to { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 100%) var(--theme-y, 0)); }
+  }
+}
+
+/* About page skyline: an auto goes past on the road now and then. */
+@media (prefers-reduced-motion: no-preference) {
+  .skyline-auto {
+    animation: skyline-auto 22s linear infinite;
+  }
+}
+.skyline-auto {
+  translate: 900px 0;
+}
+@keyframes skyline-auto {
+  from {
+    translate: -140px 0;
+  }
+  to {
+    translate: 1320px 0;
   }
 }

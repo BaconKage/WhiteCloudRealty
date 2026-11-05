@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { localities } from "@/content/localities";
-import { partners } from "@/content/partners";
 import { testimonials } from "@/content/testimonials";
 import { Container } from "@/components/ui/Container";
 import { Counter } from "@/components/ui/Counter";
@@ -14,7 +13,6 @@ import { Reveal } from "@/components/ui/Reveal";
 const stats = [
   { value: localities.length, label: "Parts of Bengaluru", href: "/#locations" },
   { value: new Set(localities.flatMap((l) => l.markets)).size, label: "Micro-markets covered", href: "/#locations" },
-  { value: partners.length, label: "Developer partners", href: "/#partners" },
   { value: testimonials.length, label: "Client recommendations", href: "/#testimonials" },
 ];
 
@@ -22,7 +20,7 @@ export function Stats() {
   return (
     <section aria-label="At a glance" className="on-ink bg-ink border-line border-y">
       <Container className="py-10 lg:py-12">
-        <ul className="grid grid-cols-2 gap-x-6 gap-y-9 lg:grid-cols-4">
+        <ul className="grid grid-cols-3 gap-x-6 gap-y-9">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 90} as="li">
               <Link href={stat.href} className="group block">

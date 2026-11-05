@@ -32,11 +32,11 @@ export const site = {
   },
 
   contact: {
-    // The website's call to action, as requested by the client. Their office
-    // line (+91 90356 81633) is on the business card but deliberately not here.
-    phoneDisplay: "+91 98868 98882",
-    phoneHref: "tel:+919886898882",
-    whatsapp: "919886898882",
+    // As the client asked: the number shown wherever the site displays one, and
+    // a separate number behind every WhatsApp button (which never shows it).
+    phoneDisplay: "+91 98868 98699",
+    phoneHref: "tel:+919886898699",
+    whatsapp: "919686987757",
     email: "connect@whitecloudrealty.in",
     // From the business card. Drives the footer, the contact page and the
     // `address` field of the RealEstateAgent structured data.
@@ -50,9 +50,7 @@ export const site = {
         "https://www.google.com/maps/search/?api=1&query=" +
         encodeURIComponent("#6, 3rd Main Road, Venkategowda Layout, Kempapura, Hebbal, Bengaluru 560024"),
     },
-    // TODO: opening hours are not published anywhere on the current site.
-    // Fill this in and the footer and contact page show it; left null they
-    // both omit the row rather than guess.
+    // The client prefers not to show office hours.
     hours: null as string | null,
   },
 
@@ -62,13 +60,9 @@ export const site = {
     { label: "Instagram", href: "https://www.instagram.com/whitecloudrealty.in/" },
   ],
 
-  /**
-   * TODO: RERA registration. Indian property listings are expected to carry
-   * the agent's RERA number, and each project its own. Fill `agentRera` here
-   * and `rera` on each project in content/projects.ts. Until then the footer
-   * shows the advisory disclaimer only.
-   */
-  agentRera: null as string | null,
+  /** The firm's Karnataka RERA agent registration. Project numbers to follow. */
+  agentRera: "PRM/KA/RERA/1251/309/AG/260122/006759" as string | null,
+  gstin: "29AFBPM2301Q1ZB" as string | null,
 
   disclaimer:
     "White Cloud Realty is a real estate advisory and brokerage firm. Project information, pricing and imagery are provided by the respective developers and are indicative only; they do not constitute an offer or contract. Please verify all details, approvals and RERA registrations with the developer before making any commitment.",
@@ -79,7 +73,7 @@ export type NavLink = { label: string; href: string; description?: string };
 export const primaryNav: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Team", href: "/team" },
+  { label: "Meet the team", href: "/team" },
   { label: "Projects", href: "/projects" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },

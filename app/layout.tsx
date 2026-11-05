@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Inter, Noto_Serif } from "next/font/google";
 import "./globals.css";
 
 import { Header } from "@/components/layout/Header";
@@ -20,11 +20,12 @@ const inter = Inter({
   display: "swap",
 });
 
-const fraunces = Fraunces({
+// Close to the serif in the logo, and plain where Fraunces was quirky (the
+// client flagged its "F").
+const serif = Noto_Serif({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-serif",
   display: "swap",
-  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -99,7 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en-IN"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${inter.variable} ${fraunces.variable}`}
+      className={`${inter.variable} ${serif.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />

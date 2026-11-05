@@ -144,6 +144,10 @@ export const verticals = [
   },
 ];
 
+/** From the about page, verbatim. */
+export const purpose =
+  "Our purpose is simple: to simplify real estate decisions and create value at every stage of the property life cycle. We don’t just close deals — we build trust, deliver insight, and create lasting relationships.";
+
 /** "What Sets Us Apart", verbatim from the about page. */
 export const pillars = [
   {
@@ -186,7 +190,7 @@ export const capabilities = [
 export const journey = [
   { title: "Your brief", note: "Budget, location, timing, and what the place has to do for you." },
   { title: "Shortlist", note: "Options measured against that brief." },
-  { title: "Site visits", note: "The trade-offs of each, said out loud." },
+  { title: "Site visit", note: "The trade-offs of each, said out loud." },
   { title: "Negotiation", note: "Terms worked out on your behalf." },
   { title: "Paperwork", note: "Documentation, legal and loan support." },
   { title: "Keys", note: "Right through to possession." },

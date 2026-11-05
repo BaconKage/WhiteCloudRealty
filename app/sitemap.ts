@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
-import { articles } from "@/content/insights";
+import { guides } from "@/content/insights";
 import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: route.priority,
     })),
-    ...articles.map((article) => ({
+    ...guides.map((article) => ({
       url: absoluteUrl(`/insights/${article.slug}`),
       lastModified: now,
       changeFrequency: "monthly" as const,

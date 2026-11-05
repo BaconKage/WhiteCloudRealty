@@ -47,7 +47,7 @@ export default function ContactPage() {
 
               <dl className="mt-6 space-y-5 text-sm">
                 <div>
-                  <dt className="text-muted">WhatsApp &amp; phone</dt>
+                  <dt className="text-muted">Phone</dt>
                   <dd className="mt-1">
                     <a
                       href={site.contact.phoneHref}

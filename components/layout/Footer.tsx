@@ -112,9 +112,12 @@ export function Footer() {
             <p>
               &copy; {year} {site.legalName}. All rights reserved.
             </p>
-            {site.agentRera ? (
-              <p>RERA registration: {site.agentRera}</p>
-            ) : null}
+            {(site.agentRera || site.gstin) && (
+              <p className="flex flex-col gap-1 sm:items-end">
+                {site.agentRera && <span>RERA: {site.agentRera}</span>}
+                {site.gstin && <span>GSTIN: {site.gstin}</span>}
+              </p>
+            )}
           </div>
         </div>
       </Container>

@@ -7,14 +7,14 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { ZoneThumb, ZoneThumbDefs } from "@/components/home/ZoneThumb";
 import { localities } from "@/content/localities";
 import { projects } from "@/content/projects";
-import { articles } from "@/content/insights";
-import { formatDate } from "@/lib/format";
+import { guides } from "@/content/insights";
+import { GuideSlider } from "@/components/insights/GuideSlider";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Insights",
   description:
-    "A plain-language guide to Bengaluru's property market, zone by zone, starting with South Bangalore. What holds each part of the city up, and where to look.",
+    "A plain-language guide to Bengaluru's property market, area by area. What holds each part of the city up, and where to look.",
   path: "/insights",
 });
 
@@ -29,45 +29,21 @@ export default function InsightsPage() {
 
       <Section>
         <h2 className="text-(length:--text-h2) leading-tight">Guides</h2>
-        <ul className="mt-8 grid gap-6">
-          {articles.map((article) => (
-            <Reveal
-              key={article.slug}
-              as="li"
-              className="on-ink bg-ink-deep group relative isolate overflow-hidden rounded-(--radius-card) p-7 sm:p-10"
-            >
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 -z-10 bg-[radial-gradient(70%_120%_at_90%_0%,rgb(255_118_30/0.28),transparent_65%)]"
-              />
-              <p className="text-accent text-xs font-medium tracking-wide">{article.tag}</p>
-              <h3 className="mt-3 text-(length:--text-h2) leading-[1.1]">
-                <Link href={`/insights/${article.slug}`} className="before:absolute before:inset-0">
-                  {article.title}
-                </Link>
-              </h3>
-              <p className="text-muted mt-4 max-w-2xl leading-relaxed">{article.excerpt}</p>
-              <p className="text-faint mt-5 text-sm">
-                {formatDate(article.date)} &middot; {article.readingMinutes} min read
-                <span
-                  aria-hidden="true"
-                  className="text-accent ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  Read the guide &rarr;
-                </span>
-              </p>
-            </Reveal>
-          ))}
-        </ul>
+        <p className="text-muted mt-3 max-w-2xl leading-relaxed">
+          Every part of Bengaluru, one guide at a time.
+        </p>
+        <div className="mt-6">
+          <ZoneThumbDefs />
+          <GuideSlider guides={guides} />
+        </div>
       </Section>
 
       <Section tone="raised">
-        <ZoneThumbDefs />
         <h2 className="text-(length:--text-h2) leading-tight">Every part of the city</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {localities.map((locality, i) => {
             const here = projects.filter((p) => p.localityId === locality.id);
-            const guide = articles.find((a) => a.localityId === locality.id);
+            const guide = guides.find((a) => a.localityId === locality.id);
 
             return (
               <Reveal
