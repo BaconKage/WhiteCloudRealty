@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { ProjectCategory, ProjectSummary } from "@/content/projects";
-import { CATEGORY_LABELS } from "@/content/projects";
+import { CATEGORY_LABELS, CATEGORY_ORDER } from "@/content/projects";
 import { site, whatsappLink } from "@/content/site";
 import { localities } from "@/content/localities";
 import { ProjectCard } from "./ProjectCard";
@@ -11,6 +11,8 @@ import { cx } from "@/lib/format";
 import { withViewTransition } from "@/lib/viewTransition";
 
 const MAX_COMPARE = 3;
+
+type Availability = "all" | "ready" | "resale";
 
 type ExplorerProps = { projects: ProjectSummary[] };
 
@@ -26,23 +28,24 @@ type ExplorerProps = { projects: ProjectSummary[] };
 export function ProjectExplorer({ projects }: ExplorerProps) {
   const [category, setCategory] = useState<ProjectCategory | "all">("all");
   const [localityId, setLocalityId] = useState<string | "all">("all");
+  const [availability, setAvailability] = useState<Availability>("all");
   const [query, setQuery] = useState("");
   const [compare, setCompare] = useState<string[]>([]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const locality = params.get("locality");
-    if (locality && localities.some((l) => l.id === locality)) setLocalityId(locality);
+    if (locality && localities.some((l) => l.id === locality))
+      setLocalityId(locality);
     const type = params.get("type");
-    if (type && projects.some((p) => p.category === type)) setCategory(type as ProjectCategory);
+    if (type && CATEGORY_ORDER.includes(type as ProjectCategory))
+      setCategory(type as ProjectCategory);
+    const status = params.get("status");
+    if (status === "ready" || status === "resale") setAvailability(status);
     const q = params.get("q");
     if (q) setQuery(q);
   }, [projects]);
 
-  const categories = useMemo(
-    () => [...new Set(projects.map((p) => p.category))],
-    [projects],
-  );
   const usedLocalities = useMemo(
     () => localities.filter((l) => projects.some((p) => p.localityId === l.id)),
     [projects],
@@ -53,15 +56,21 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
     return projects.filter((p) => {
       if (category !== "all" && p.category !== category) return false;
       if (localityId !== "all" && p.localityId !== localityId) return false;
+      if (availability === "ready" && p.status !== "ready") return false;
+      if (availability === "resale" && !p.resale) return false;
       if (!q) return true;
       return [p.name, p.developer, p.locationLabel, p.summary]
         .join(" ")
         .toLowerCase()
         .includes(q);
     });
-  }, [projects, category, localityId, query]);
+  }, [projects, category, localityId, availability, query]);
 
-  const filtered = category !== "all" || localityId !== "all" || query.trim() !== "";
+  const filtered =
+    category !== "all" ||
+    localityId !== "all" ||
+    availability !== "all" ||
+    query.trim() !== "";
 
   function toggleCompare(slug: string) {
     setCompare((current) =>
@@ -77,6 +86,7 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
     withViewTransition(() => {
       setCategory("all");
       setLocalityId("all");
+      setAvailability("all");
       setQuery("");
     }, "filtering");
   }
@@ -84,18 +94,30 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
   // Filter chips re-flow the grid inside a View Transition: cards that stay
   // glide to their new slots, the rest fade out or in. Typing in the search
   // box updates directly, since animating every keystroke would lag.
-  const filterTo = (apply: () => void) => withViewTransition(apply, "filtering");
+  const filterTo = (apply: () => void) =>
+    withViewTransition(apply, "filtering");
 
   return (
     <>
       <div className="border-line bg-surface rounded-(--radius-card) border p-5 sm:p-6">
         <div className="flex flex-col gap-5">
           <div>
-            <label htmlFor="project-search" className="text-muted mb-2 block text-sm font-medium">
+            <label
+              htmlFor="project-search"
+              className="text-muted mb-2 block text-sm font-medium"
+            >
               Search
             </label>
             <div className="relative">
-              <svg viewBox="0 0 24 24" className="text-faint pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                className="text-faint pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.9"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
                 <circle cx="11" cy="11" r="6.5" />
                 <path d="M16 16l4.5 4.5" />
               </svg>
@@ -114,10 +136,15 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
             legend="Property type"
             options={[
               { value: "all", label: "All types" },
-              ...categories.map((c) => ({ value: c, label: CATEGORY_LABELS[c] })),
+              ...CATEGORY_ORDER.map((c) => ({
+                value: c,
+                label: CATEGORY_LABELS[c],
+              })),
             ]}
             value={category}
-            onChange={(v) => filterTo(() => setCategory(v as ProjectCategory | "all"))}
+            onChange={(v) =>
+              filterTo(() => setCategory(v as ProjectCategory | "all"))
+            }
           />
 
           <FilterRow
@@ -129,13 +156,27 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
             value={localityId}
             onChange={(v) => filterTo(() => setLocalityId(v))}
           />
+
+          <FilterRow
+            legend="Availability"
+            options={[
+              { value: "all", label: "All" },
+              { value: "ready", label: "Ready to move in" },
+              { value: "resale", label: "Resale" },
+            ]}
+            value={availability}
+            onChange={(v) => filterTo(() => setAvailability(v as Availability))}
+          />
         </div>
       </div>
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
         <p aria-live="polite" className="text-muted text-sm">
-          Showing <span className="numeric text-fg font-semibold">{results.length}</span> of{" "}
-          <span className="numeric">{projects.length}</span> projects
+          Showing{" "}
+          <span className="numeric text-fg font-semibold">
+            {results.length}
+          </span>{" "}
+          of <span className="numeric">{projects.length}</span> projects
         </p>
         {filtered && (
           <button
@@ -158,13 +199,24 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
             <li
               key={project.slug}
               data-filter-slot
-              style={{ "--filter-slot": `project-slot-${project.slug}` } as CSSProperties}
+              style={
+                {
+                  "--filter-slot": `project-slot-${project.slug}`,
+                } as CSSProperties
+              }
               className="relative flex"
             >
-              <ProjectCard project={project} priority={i < 3} className="w-full" />
+              <ProjectCard
+                project={project}
+                priority={i < 3}
+                className="w-full"
+              />
               <CompareToggle
                 checked={compare.includes(project.slug)}
-                disabled={!compare.includes(project.slug) && compare.length >= MAX_COMPARE}
+                disabled={
+                  !compare.includes(project.slug) &&
+                  compare.length >= MAX_COMPARE
+                }
                 projectName={project.name}
                 onChange={() => toggleCompare(project.slug)}
               />
@@ -173,10 +225,13 @@ export function ProjectExplorer({ projects }: ExplorerProps) {
         </ul>
       ) : (
         <div className="border-line mt-6 rounded-(--radius-card) border border-dashed p-12 text-center">
-          <p className="text-(length:--text-h3) font-display">Nothing matches that yet</p>
+          <p className="text-(length:--text-h3) font-display">
+            Nothing matches that yet
+          </p>
           <p className="text-muted mx-auto mt-3 max-w-md leading-relaxed">
-            What&rsquo;s listed here is only part of what we transact. Tell us what you&rsquo;re
-            after and we&rsquo;ll bring you things that never make it onto a website.
+            What&rsquo;s listed here is only part of what we transact. Tell us
+            what you&rsquo;re after and we&rsquo;ll bring you things that never
+            make it onto a website.
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <a
@@ -276,8 +331,20 @@ function CompareToggle({
         onChange={onChange}
         className="sr-only"
       />
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-        {checked ? <path d="M4 12.5l5 5L20 6.5" /> : <path d="M12 5v14M5 12h14" />}
+      <svg
+        viewBox="0 0 24 24"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        {checked ? (
+          <path d="M4 12.5l5 5L20 6.5" />
+        ) : (
+          <path d="M12 5v14M5 12h14" />
+        )}
       </svg>
       Compare
       <span className="sr-only">{projectName}</span>

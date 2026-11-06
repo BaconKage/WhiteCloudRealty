@@ -50,14 +50,14 @@ export const site = {
         "https://www.google.com/maps/search/?api=1&query=" +
         encodeURIComponent("#6, 3rd Main Road, Venkategowda Layout, Kempapura, Hebbal, Bengaluru 560024"),
     },
-    // The client prefers not to show office hours.
-    hours: null as string | null,
+    hours: "10 am – 7 pm, all days" as string | null,
   },
 
   /** The firm's own pages. The founder's profile lives on `founder` above. */
   social: [
     { label: "LinkedIn", href: "https://www.linkedin.com/company/white-cloud-realty/" },
     { label: "Instagram", href: "https://www.instagram.com/whitecloudrealty.in/" },
+    { label: "Facebook", href: "https://www.facebook.com/share/1TXdFjcGAt/" },
   ],
 
   /** The firm's Karnataka RERA agent registration. Project numbers to follow. */

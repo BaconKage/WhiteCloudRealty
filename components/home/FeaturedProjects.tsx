@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { projects, toSummary, type ProjectCategory } from "@/content/projects";
+import {
+  CATEGORY_INCLUDES,
+  CATEGORY_LABELS,
+  CATEGORY_ORDER,
+  projects,
+  toSummary,
+  type ProjectCategory,
+} from "@/content/projects";
 import { pillars, purpose } from "@/content/services";
 import { site, whatsappLink } from "@/content/site";
 import { ProjectCard } from "@/components/projects/ProjectCard";
@@ -8,34 +15,15 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 
-/** The categories on the firm's Instagram highlights, in the same order. */
-const PROPERTY_TYPES: { label: string; category: ProjectCategory; icon: React.ReactNode }[] = [
-  {
-    label: "Plots",
-    category: "plots",
-    icon: <path d="M4 18.5 8 6.5h8l4 12H4ZM6.7 12.5h10.6M12 6.5v12" />,
-  },
-  {
-    label: "Apartments",
-    category: "apartments",
-    icon: <path d="M6 20V4.5h12V20M3.5 20h17M9.5 8h1.5M13 8h1.5M9.5 11.5h1.5M13 11.5h1.5M10.5 20v-4.5h3V20" />,
-  },
-  {
-    label: "Villas",
-    category: "villas",
-    icon: <path d="M4 11.5 12 5l8 6.5M6.5 10v9.5h11V10M10 19.5v-5h4v5" />,
-  },
-  {
-    label: "Villaments",
-    category: "villaments",
-    icon: <path d="M4 20V9l6-4 6 4M10 20v-8h10v8M3 20h18M13.5 15.5h3M6.5 12h1M6.5 15.5h1" />,
-  },
-  {
-    label: "Commercial",
-    category: "commercial",
-    icon: <path d="M5 20V6.5l8-2V20M13 9.5l6 1.5v9M3.5 20h17M8 9h2M8 12.5h2M8 16h2M16 14h.01M16 17h.01" />,
-  },
-];
+/** The client's property types (6 November), in her order. */
+const TYPE_ICONS: Record<ProjectCategory, React.ReactNode> = {
+  apartments: <path d="M6 20V4.5h12V20M3.5 20h17M9.5 8h1.5M13 8h1.5M9.5 11.5h1.5M13 11.5h1.5M10.5 20v-4.5h3V20" />,
+  villas: <path d="M4 11.5 12 5l8 6.5M6.5 10v9.5h11V10M10 19.5v-5h4v5" />,
+  plots: <path d="M4 18.5 8 6.5h8l4 12H4ZM6.7 12.5h10.6M12 6.5v12" />,
+  farmhouses: <path d="M3.5 20h17M4.5 20v-7l5-4 5 4v7M8 20v-4h3v4M18.5 20v-5.5M18.5 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />,
+  commercial: <path d="M5 20V6.5l8-2V20M13 9.5l6 1.5v9M3.5 20h17M8 9h2M8 12.5h2M8 16h2M16 14h.01M16 17h.01" />,
+  investment: <path d="M4 19.5h16M5.5 15l4.5-4.5 3.5 3L19 7.5M15 7.5h4v4" />,
+};
 
 /**
  * Property first: browse by type, then the projects themselves. Types with
@@ -68,8 +56,9 @@ export function FeaturedProjects() {
         </ul>
       </div>
 
-      <ul className="scrollbar-none -mx-4 mt-12 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-5">
-        {PROPERTY_TYPES.map((type) => {
+      <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {CATEGORY_ORDER.map((category) => {
+          const type = { category, label: CATEGORY_LABELS[category], icon: TYPE_ICONS[category] };
           const count = projects.filter((p) => p.category === type.category).length;
           const content = (
             <>
@@ -80,7 +69,8 @@ export function FeaturedProjects() {
               </span>
               <span>
                 <span className="font-display block text-lg leading-snug">{type.label}</span>
-                <span className="text-faint block text-xs">
+                <span className="text-muted block text-xs leading-snug">{CATEGORY_INCLUDES[category]}</span>
+                <span className="text-faint mt-1 block text-xs">
                   {count > 0 ? `${count} on our desk` : "Ask us what’s available"}
                 </span>
               </span>
@@ -90,7 +80,7 @@ export function FeaturedProjects() {
             "group border-line bg-surface hover:border-accent/60 flex h-full items-center gap-3 rounded-(--radius-card) border p-4 transition-colors";
 
           return (
-            <li key={type.label} className="min-w-[14rem] sm:min-w-0">
+            <li key={type.label}>
               {count > 0 ? (
                 <Link href={`/projects?type=${type.category}`} className={classes}>
                   {content}

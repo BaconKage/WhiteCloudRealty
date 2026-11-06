@@ -1,12 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { ProjectArt } from "./ProjectArt";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { ProjectSummary } from "@/content/projects";
 import { CATEGORY_LABELS, STATUS_LABELS } from "@/content/projects";
-import { formatArea, formatConfigurations, formatPrice, cx } from "@/lib/format";
+import {
+  formatArea,
+  formatConfigurations,
+  formatPrice,
+  cx,
+} from "@/lib/format";
 import { navigateWithTransition } from "@/lib/viewTransition";
 import { site, whatsappLink } from "@/content/site";
 
@@ -32,7 +38,10 @@ export function ProjectCard({
   const price = formatPrice(project.priceFrom);
   const href = `/projects/${project.slug}`;
   const specs = [
-    { label: "Configurations", value: formatConfigurations(project.configurations) },
+    {
+      label: "Configurations",
+      value: formatConfigurations(project.configurations),
+    },
     { label: "Area", value: formatArea(project.areaSqft) },
     { label: "Possession", value: project.possession },
     { label: "Development", value: project.landArea },
@@ -48,26 +57,35 @@ export function ProjectCard({
     // Next disables router prefetching in development. Warm the local route
     // explicitly so the very first click is not delayed by an on-demand build.
     if (process.env.NODE_ENV === "development") {
-      void fetch(`${href}/`, { cache: "force-cache", priority: "low" }).catch(() => {
-        warmedProjectRoutes.delete(href);
-      });
+      void fetch(`${href}/`, { cache: "force-cache", priority: "low" }).catch(
+        () => {
+          warmedProjectRoutes.delete(href);
+        },
+      );
     }
   }, [href, router]);
 
   useEffect(() => {
-    const connection = (navigator as Navigator & {
-      connection?: { saveData?: boolean };
-    }).connection;
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean };
+      }
+    ).connection;
 
     if (connection?.saveData) return;
 
     const idleWindow = window as Window & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      requestIdleCallback?: (
+        callback: () => void,
+        options?: { timeout: number },
+      ) => number;
       cancelIdleCallback?: (handle: number) => void;
     };
 
     if (idleWindow.requestIdleCallback) {
-      const handle = idleWindow.requestIdleCallback(warmProject, { timeout: 1200 });
+      const handle = idleWindow.requestIdleCallback(warmProject, {
+        timeout: 1200,
+      });
       return () => idleWindow.cancelIdleCallback?.(handle);
     }
 
@@ -122,14 +140,21 @@ export function ProjectCard({
           className="absolute inset-0"
           style={{ viewTransitionName: `project-image-${project.slug}` }}
         >
-          <Image
-            src={project.image}
-            alt={project.imageAlt}
-            fill
-            priority={priority}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-[700ms] ease-(--ease-out-soft) group-hover:scale-[1.045]"
-          />
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={project.imageAlt}
+              fill
+              priority={priority}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[700ms] ease-(--ease-out-soft) group-hover:scale-[1.045]"
+            />
+          ) : (
+            <ProjectArt
+              project={project}
+              className="transition-transform duration-[700ms] ease-(--ease-out-soft) group-hover:scale-[1.045]"
+            />
+          )}
         </div>
         {/* Darkens the image slightly on hover so the badges stay readable. */}
         <span
@@ -150,7 +175,9 @@ export function ProjectCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <p className="text-faint text-xs tracking-wide">{CATEGORY_LABELS[project.category]}</p>
+        <p className="text-faint text-xs tracking-wide">
+          {CATEGORY_LABELS[project.category]}
+        </p>
 
         <h3 className="mt-2 text-(length:--text-h3) leading-snug">
           <Link
@@ -166,27 +193,48 @@ export function ProjectCard({
         </h3>
 
         <p className="text-muted mt-2 flex items-start gap-1.5 text-sm">
-          <svg viewBox="0 0 24 24" className="mt-0.5 h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="mt-0.5 h-3.5 w-3.5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            aria-hidden="true"
+          >
             <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
             <circle cx="12" cy="10" r="2.4" />
           </svg>
           {project.locationLabel}
         </p>
 
-        <p className="text-muted mt-4 line-clamp-2 text-sm leading-relaxed">{project.summary}</p>
+        <p className="text-muted mt-4 line-clamp-2 text-sm leading-relaxed">
+          {project.summary}
+        </p>
 
         {(price || specs.length > 0) && (
           <dl className="border-line mt-5 space-y-2 border-t pt-4 text-sm">
             {price && (
               <div className="flex items-baseline justify-between gap-3">
                 <dt className="text-faint text-xs">Starting from</dt>
-                <dd className="numeric text-accent-text font-semibold">{price}</dd>
+                <dd className="numeric text-accent-text font-semibold">
+                  {price}
+                </dd>
               </div>
             )}
             {specs.map((spec) => (
-              <div key={spec.label} className="flex items-baseline justify-between gap-3">
+              <div
+                key={spec.label}
+                className="flex items-baseline justify-between gap-3"
+              >
                 <dt className="text-faint text-xs">{spec.label}</dt>
-                <dd className="numeric text-fg text-right">{spec.value}</dd>
+                <dd
+                  className={cx(
+                    "numeric text-fg min-w-0 text-right",
+                    spec.label === "RERA" && "text-xs break-all",
+                  )}
+                >
+                  {spec.value}
+                </dd>
               </div>
             ))}
           </dl>
@@ -195,7 +243,9 @@ export function ProjectCard({
         {/* Above the card's stretched link, so it opens the enquiry instead. */}
         <div className="mt-auto pt-5">
           <a
-            href={whatsappLink(`Hi ${site.name}, I'd like to know more about ${project.name}.`)}
+            href={whatsappLink(
+              `Hi ${site.name}, I'd like to know more about ${project.name}.`,
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-brand text-ink hover:bg-fg hover:text-bg relative z-10 inline-flex min-h-11 w-full items-center justify-center rounded-full px-5 text-sm font-semibold transition-[background-color,color,translate,scale] active:scale-[0.97]"
@@ -207,7 +257,16 @@ export function ProjectCard({
 
         <p className="text-accent-text flex min-h-11 items-center gap-1.5 pt-3 text-sm font-medium">
           View project
-          <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </p>

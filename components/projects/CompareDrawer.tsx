@@ -1,19 +1,28 @@
 "use client";
 
 import Image from "next/image";
+import { ProjectArt } from "./ProjectArt";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { ProjectSummary } from "@/content/projects";
 import { CATEGORY_LABELS } from "@/content/projects";
-import { formatArea, formatConfigurations, formatPrice, cx } from "@/lib/format";
+import {
+  formatArea,
+  formatConfigurations,
+  formatPrice,
+  cx,
+} from "@/lib/format";
 
 const ROWS: { label: string; get: (p: ProjectSummary) => string | null }[] = [
   { label: "Developer", get: (p) => p.developer },
   { label: "Location", get: (p) => p.locationLabel },
   { label: "Type", get: (p) => CATEGORY_LABELS[p.category] },
   { label: "Starting from", get: (p) => formatPrice(p.priceFrom) },
-  { label: "Configurations", get: (p) => formatConfigurations(p.configurations) },
+  {
+    label: "Configurations",
+    get: (p) => formatConfigurations(p.configurations),
+  },
   { label: "Area", get: (p) => formatArea(p.areaSqft) },
   { label: "Possession", get: (p) => p.possession },
   { label: "Development", get: (p) => p.landArea },
@@ -61,7 +70,8 @@ export function CompareDrawer({
 
   useEffect(() => {
     if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setExpanded(false);
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [expanded]);
@@ -73,7 +83,10 @@ export function CompareDrawer({
   // Only ever reached in the browser: the tray is empty on the server render,
   // so the early return above runs before `document` is touched.
   return createPortal(
-    <div data-compare-tray className="fixed inset-x-0 bottom-0 z-40 px-3 pb-3 sm:px-6 sm:pb-6">
+    <div
+      data-compare-tray
+      className="fixed inset-x-0 bottom-0 z-40 px-3 pb-3 sm:px-6 sm:pb-6"
+    >
       <div
         ref={panelRef}
         className="border-line bg-surface mx-auto max-w-[1280px] animate-(--animate-tray-up) overflow-hidden rounded-2xl border shadow-[0_-8px_40px_-16px_rgb(0_0_0_/_0.35)]"
@@ -105,7 +118,19 @@ export function CompareDrawer({
               className="bg-fg text-bg hover:bg-accent hover:text-ink inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-[background-color,color,translate,scale] active:scale-[0.96]"
             >
               {expanded ? "Hide" : "Compare"}
-              <svg viewBox="0 0 24 24" className={cx("h-4 w-4 transition-transform duration-300", expanded && "rotate-180")} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                className={cx(
+                  "h-4 w-4 transition-transform duration-300",
+                  expanded && "rotate-180",
+                )}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M6 15l6-6 6 6" />
               </svg>
             </button>
@@ -124,18 +149,37 @@ export function CompareDrawer({
           <div className="min-h-0 overflow-hidden">
             <div className="border-line max-h-[65svh] overflow-auto border-t">
               <table className="w-full min-w-[34rem] border-collapse text-sm">
-                <caption className="sr-only">Comparison of selected projects</caption>
+                <caption className="sr-only">
+                  Comparison of selected projects
+                </caption>
                 <thead>
                   <tr>
-                    <th scope="col" className="bg-surface sticky left-0 z-10 w-32 p-3 text-left align-bottom sm:w-40">
+                    <th
+                      scope="col"
+                      className="bg-surface sticky left-0 z-10 w-32 p-3 text-left align-bottom sm:w-40"
+                    >
                       <span className="sr-only">Attribute</span>
                     </th>
                     {projects.map((p) => (
-                      <th key={p.slug} scope="col" className="min-w-[12rem] p-3 text-left align-bottom">
+                      <th
+                        key={p.slug}
+                        scope="col"
+                        className="min-w-[12rem] p-3 text-left align-bottom"
+                      >
                         {/* Capped: with one or two projects the column fills the tray,
                             and an uncapped thumbnail would swell to fill it too. */}
                         <div className="bg-raised relative aspect-16/10 max-w-[16rem] overflow-hidden rounded-lg">
-                          <Image src={p.image} alt="" fill sizes="200px" className="object-cover" />
+                          {p.image ? (
+                            <Image
+                              src={p.image}
+                              alt=""
+                              fill
+                              sizes="200px"
+                              className="object-cover"
+                            />
+                          ) : (
+                            <ProjectArt project={p} compact />
+                          )}
                         </div>
                         <Link
                           href={`/projects/${p.slug}`}
@@ -157,7 +201,10 @@ export function CompareDrawer({
                 <tbody>
                   {rows.map((row) => (
                     <tr key={row.label} className="border-line border-t">
-                      <th scope="row" className="bg-surface text-muted sticky left-0 z-10 p-3 text-left font-medium">
+                      <th
+                        scope="row"
+                        className="bg-surface text-muted sticky left-0 z-10 p-3 text-left font-medium"
+                      >
                         {row.label}
                       </th>
                       {projects.map((p) => (

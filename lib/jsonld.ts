@@ -28,6 +28,7 @@ export function organizationJsonLd() {
       jobTitle: person.role,
     })),
     sameAs: site.social.map((s) => s.href),
+    openingHours: "Mo-Su 10:00-19:00",
     ...(address && {
       address: {
         "@type": "PostalAddress",
@@ -48,7 +49,7 @@ export function projectJsonLd(project: Project) {
     name: project.name,
     description: project.summary,
     url: absoluteUrl(`/projects/${project.slug}`),
-    image: absoluteUrl(project.image),
+    ...(project.image && { image: absoluteUrl(project.image) }),
     address: {
       "@type": "PostalAddress",
       addressLocality: project.locationLabel,

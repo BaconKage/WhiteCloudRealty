@@ -8,17 +8,19 @@
  * the cards, filters and comparison table pick them up with no code changes.
  */
 
+/** The client's property types (6 November), in her order. */
+import { listings } from "./projectListings";
+
 export type ProjectCategory =
   | "apartments"
   | "villas"
-  | "villaments"
   | "plots"
+  | "farmhouses"
   | "commercial"
-  | "township"
-  | "farmland"
-  | "hospitality";
+  | "investment";
 
-export type ProjectStatus = "pre-launch" | "new-launch" | "under-construction" | "ready";
+export type ProjectStatus =
+  "pre-launch" | "new-launch" | "under-construction" | "ready";
 
 export type Project = {
   slug: string;
@@ -42,7 +44,10 @@ export type Project = {
   landArea: string | null;
   /** TODO: Karnataka RERA registration number for the project. */
   rera: string | null;
-  image: string;
+  /** A resale home rather than a sale from the developer. */
+  resale?: boolean;
+  /** Developer imagery; null until it is supplied, and the card draws its own. */
+  image: string | null;
   imageAlt: string;
   /** One line for cards and meta descriptions. */
   summary: string;
@@ -58,29 +63,50 @@ export type Project = {
  */
 export type ProjectSummary = Omit<Project, "description" | "highlights">;
 
-export function toSummary({ description: _description, highlights: _highlights, ...summary }: Project): ProjectSummary {
+export function toSummary({
+  description: _description,
+  highlights: _highlights,
+  ...summary
+}: Project): ProjectSummary {
   return summary;
 }
 
+export const CATEGORY_ORDER: ProjectCategory[] = [
+  "apartments",
+  "villas",
+  "plots",
+  "farmhouses",
+  "commercial",
+  "investment",
+];
+
 export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
   apartments: "Apartments",
-  villas: "Villas",
-  villaments: "Villaments",
-  plots: "Plots",
+  villas: "Villas & Houses",
+  plots: "Plots & Land",
+  farmhouses: "Farmhouses",
   commercial: "Commercial",
-  township: "Township",
-  farmland: "Managed farmland",
-  hospitality: "Hospitality",
+  investment: "Investment Properties",
+};
+
+/** What each type covers, as the client listed it. */
+export const CATEGORY_INCLUDES: Record<ProjectCategory, string> = {
+  apartments: "Flats, Duplexes, Penthouses, Villaments",
+  villas: "Villas, Independent Houses, Row Houses",
+  plots: "Residential Plots, Villa Plots, Commercial Land",
+  farmhouses: "Farmhouses, Farmland, Managed Farms",
+  commercial: "Offices, Retail, Showrooms, Commercial Buildings",
+  investment: "Pre-Leased Assets, Rental Income Properties, Land Investments",
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
   "pre-launch": "Pre-launch",
   "new-launch": "New launch",
   "under-construction": "Under construction",
-  ready: "Ready to move",
+  ready: "Ready to move in",
 };
 
-export const projects: Project[] = [
+const core: Project[] = [
   {
     slug: "white-lotus-amanvana",
     name: "White Lotus Amanvana",
@@ -116,7 +142,7 @@ export const projects: Project[] = [
     developer: "Avillion Infrastructure",
     localityId: "north",
     locationLabel: "North Bengaluru",
-    category: "farmland",
+    category: "farmhouses",
     status: null,
     priceFrom: null,
     configurations: [],
@@ -125,7 +151,8 @@ export const projects: Project[] = [
     landArea: "225 acres",
     rera: null,
     image: "/images/projects/avillion-farm-villas-4k.webp",
-    imageAlt: "A-frame farm villa with a tiled roof set among palms and stone landscaping",
+    imageAlt:
+      "A-frame farm villa with a tiled roof set among palms and stone landscaping",
     summary:
       "Managed farmland across 225 acres of verdant North Bangalore landscape, built around luxury, comfort and the future of living.",
     description: [
@@ -145,7 +172,7 @@ export const projects: Project[] = [
     developer: "Bhartiya City · The Leela",
     localityId: "north",
     locationLabel: "Near Kempegowda International Airport",
-    category: "hospitality",
+    category: "investment",
     status: null,
     priceFrom: null,
     configurations: [],
@@ -170,25 +197,25 @@ export const projects: Project[] = [
   },
   {
     slug: "bm-solcrest",
-    name: "Brick & Milestones — Solcrest",
-    developer: "B&M Group",
+    name: "Solcrest by Bricks & Milestones",
+    developer: "Bricks & Milestones",
     localityId: "north",
-    locationLabel: "Hennur, Bengaluru",
+    locationLabel: "Bileshivale, Hennur Road",
     category: "apartments",
-    status: null,
-    priceFrom: null,
-    configurations: [],
-    areaSqft: null,
-    possession: null,
-    landArea: null,
-    rera: null,
+    status: "under-construction",
+    priceFrom: 14_000_000,
+    configurations: ["2 BHK", "3 BHK", "4 BHK"],
+    areaSqft: [1332, 3400],
+    possession: "2030",
+    landArea: "9.3 acres",
+    rera: "PRM/KA/RERA/1251/446/PR/151225/008336",
     image: "/images/projects/bm-solcrest-4k.webp",
     imageAlt:
       "Sweeping cantilevered entrance canopy at B&M Solcrest with residential towers rising behind",
     summary:
       "An upscale residential address in the centre of Hennur, built around family life and reconnection with the community.",
     description: [
-      "Enter a realm where peace harmonizes with contemporary living at B&M Solcrest, an upscale residential development by B&M Group situated in the center of Hennur, Bangalore.",
+      "Enter a realm where peace harmonizes with contemporary living at Solcrest, an upscale residential development by Bricks & Milestones situated in the center of Hennur, Bangalore.",
       "Crafted with family dynamics in mind, this remarkable residence offers a sanctuary where you can savor the benefits of modern living while reestablishing connections with the vibrant community surrounding you.",
     ],
     highlights: [
@@ -199,51 +226,22 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "purva-flow-kiadb",
-    name: "Purva Codename Flow",
-    developer: "Puravankara Group",
-    localityId: "north",
-    locationLabel: "KIADB Aerospace Tech Park, Bagalur",
-    category: "apartments",
-    status: null,
-    priceFrom: null,
-    configurations: [],
-    areaSqft: null,
-    possession: null,
-    landArea: "25 acres",
-    rera: null,
-    image: "/images/projects/purva-flow-kiadb-4k.webp",
-    imageAlt:
-      "Render of the Purva Codename Flow towers above the KIADB Aerospace Tech Park skyline at sunset",
-    summary:
-      "A 25-acre high-rise gated community in the KIADB Aerospace Tech Park, built for comfort, connectivity and a future-ready lifestyle.",
-    description: [
-      "Purva Codename Flow, an extraordinary residential address crafted by the renowned Puravankara Group. Spread across 25 sprawling acres, this high-rise gated community in Bagalur’s KIADB Aerospace Tech Park is designed for those who value comfort, connectivity, and a future-ready lifestyle.",
-      "With world-class amenities, premium homes, and seamless access to Bengaluru’s growth hubs, Purva Codename Flow is set to redefine modern living in North Bangalore.",
-    ],
-    highlights: [
-      "25-acre high-rise gated community",
-      "Inside the KIADB Aerospace Tech Park",
-      "Seamless access to Bengaluru’s growth hubs",
-    ],
-    featured: true,
-  },
-  {
     slug: "nikoo-garden-estate",
     name: "Nikoo Garden Estate",
     developer: "Bhartiya Urban",
     localityId: "north",
     locationLabel: "Sadahalli, Bengaluru",
-    category: "township",
-    status: null,
-    priceFrom: null,
+    category: "apartments",
+    status: "under-construction",
+    priceFrom: 9_700_000,
     configurations: ["Studio", "2.5 BHK", "3 BHK", "3.5 BHK", "4 BHK"],
     areaSqft: null,
-    possession: null,
-    landArea: null,
-    rera: null,
+    possession: "Dec 2030",
+    landArea: "29 acres",
+    rera: "PRM/KA/RERA/1251/309/PR/060925/008065",
     image: "/images/projects/nikoo-garden-estate-4k.webp",
-    imageAlt: "Render of the Nikoo Garden Estate towers and landscaped township in Sadahalli",
+    imageAlt:
+      "Render of the Nikoo Garden Estate towers and landscaped township in Sadahalli",
     summary:
       "An integrated township in Sadahalli — 180 row houses and townhouses, apartments, retail and a school in one masterplan.",
     description: [
@@ -259,6 +257,9 @@ export const projects: Project[] = [
   },
 ];
 
+/** The original portfolio first, then the projects from the client’s sheet. */
+export const projects: Project[] = [...core, ...listings];
+
 export const featuredProjects = projects.filter((p) => p.featured);
 
 export function getProject(slug: string): Project | undefined {
@@ -270,4 +271,3 @@ export function projectsInLocality(localityId: string): Project[] {
 }
 
 /** Categories actually present in the portfolio, for the filter chips. */
-export const activeCategories: ProjectCategory[] = [...new Set(projects.map((p) => p.category))];

@@ -31,7 +31,6 @@ const MANIFEST = [
   { to: "projects/avillion-farm-villas.jpeg", from: orig("Avilion Farm Villas.jpeg") },
   { to: "projects/leela-bhartiya-city.png", from: orig("Leela.png") },
   { to: "projects/bm-solcrest.jpg", from: orig("LANDSCAPE IMAGES-10 - Copy.jpg") },
-  { to: "projects/purva-flow-kiadb.png", from: orig("Purva flow.png") },
   { to: "projects/nikoo-garden-estate.png", from: orig("Nikoo.png") },
 
   // Developer partner logos

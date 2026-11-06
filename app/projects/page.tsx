@@ -9,7 +9,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Projects",
   description:
-    "Residential, township and managed-farmland developments across Bengaluru, represented by White Cloud Realty.",
+    "Apartments, villas, plots, farmhouses, commercial and investment properties across Bengaluru, represented by White Cloud Realty.",
   path: "/projects",
 });
 

@@ -14,7 +14,21 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { CtaBand } from "@/components/home/CtaBand";
 import { whatsappLink } from "@/content/site";
 
-const heroProof = ["Buy · Sell · Rent", "Residential · Commercial · Land", "RERA registered"];
+/** The client's own service line, as sent on 6 November. */
+const heroServices = [
+  "Strategic Real Estate Advisory",
+  "Residential Property Consulting",
+  "Commercial Property Advisory",
+  "Land Acquisition & Investment Advisory",
+  "Buy • Sell • Rent Solutions",
+  "Investor-Focused Property Strategy",
+  "End-to-End Transaction Support",
+  "Market Intelligence & Location Analytics",
+  "Transparent, Client-First Advisory",
+  "Portfolio Growth & Asset Optimization",
+];
+
+const heroProof = ["Residential", "Commercial", "Land"];
 
 export default function HomePage() {
   return (
@@ -29,7 +43,29 @@ export default function HomePage() {
             <span className="text-accent">Our expertise.</span>
           </>
         }
-        lede="Advice on buying, selling and renting residential, commercial and land, all across Bengaluru — from the first brief to the final paperwork."
+        lede={
+          <span className="block text-[0.95rem] leading-relaxed sm:text-base">
+            {heroServices.map((item, i) => (
+              <span key={item}>
+                {/* Spaces either side of the bar, so lines can break there. */}
+                {i > 0 && (
+                  <>
+                    {" "}
+                    <span
+                      aria-hidden="true"
+                      className="text-accent mx-1 hidden sm:inline"
+                    >
+                      |
+                    </span>{" "}
+                  </>
+                )}
+                <span className="block sm:inline sm:whitespace-nowrap">
+                  {item}
+                </span>
+              </span>
+            ))}
+          </span>
+        }
         image={{
           src: "/images/projects/bm-solcrest-4k.webp",
           alt: "",
@@ -48,10 +84,13 @@ export default function HomePage() {
           </Button>
         </div>
 
-        <ul className="text-fg mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs sm:text-sm">
+        <ul className="text-accent mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold sm:text-base">
           {heroProof.map((item) => (
             <li key={item} className="flex items-center gap-2">
-              <span aria-hidden="true" className="bg-accent h-1.5 w-1.5 rounded-full" />
+              <span
+                aria-hidden="true"
+                className="bg-accent h-2 w-2 rounded-full"
+              />
               {item}
             </li>
           ))}

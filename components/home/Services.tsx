@@ -15,7 +15,7 @@ const PATHS = [
   { id: "buy", image: "/images/projects/bm-solcrest-4k.webp", icon: <path d="M4 11.5 12 5l8 6.5M6.5 10v9.5h11V10M10 19.5v-5h4v5" /> },
   { id: "sell", image: "/images/projects/nikoo-garden-estate-4k.webp", icon: <path d="M4 12 12 4h7v7l-8 8.5L4 12ZM15.5 8.5h.01" /> },
   { id: "rent", image: "/images/projects/white-lotus-amanvana-4k.webp", icon: <path d="M14.5 9.5a4.5 4.5 0 1 0-3.6 4.4L13 16h2v2h2v2h3v-3l-5.9-5.9a4.5 4.5 0 0 0 .4-1.6ZM9 8.5h.01" /> },
-  { id: "invest", image: "/images/projects/purva-flow-kiadb-4k.webp", icon: <path d="M4 19.5h16M5.5 15l4.5-4.5 3.5 3L19 7.5M15 7.5h4v4" /> },
+  { id: "invest", image: "/images/projects/avillion-farm-villas-4k.webp", icon: <path d="M4 19.5h16M5.5 15l4.5-4.5 3.5 3L19 7.5M15 7.5h4v4" /> },
   { id: "commercial", image: "/images/projects/leela-bhartiya-city-4k.webp", icon: <path d="M5 20V6.5l8-2V20M13 9.5l6 1.5v9M3.5 20h17M8 9h2M8 12.5h2M8 16h2M16 14h.01M16 17h.01" /> },
 ];
 const IDS = PATHS.map((p) => p.id);
@@ -41,7 +41,7 @@ export function Services() {
         <span key={id} id={id} aria-hidden="true" className="block" style={{ scrollMarginTop: "6rem" }} />
       ))}
 
-      <SectionHeading eyebrow="What we do" title="Buy. Sell. Rent. And commercial too." />
+      <SectionHeading eyebrow="What we do" title="Buy • Sell • Rent Solutions" />
 
       <div className="scrollbar-none -mx-4 mt-8 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
         {PATHS.map((path) => {
