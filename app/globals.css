@@ -746,3 +746,79 @@ html[data-intro="seen"] .site-intro {
     to { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 100%) var(--theme-y, 0)); }
   }
 }
+
+/* The navigation bar: liquid glass, after Apple's. A heavily blurred and
+   saturated view of the page, a faint sheen, and a specular rim that is
+   brightest along the top edge. The tint follows what is underneath
+   (Header sets data-tone): smoky over dark content, clear over light. */
+.liquid-glass {
+  isolation: isolate;
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  transition:
+    background-color 450ms ease,
+    box-shadow 450ms ease,
+    color 300ms ease;
+}
+.liquid-glass::before {
+  /* The rim: a 1px gradient ring cut out with a mask. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    170deg,
+    rgb(255 255 255 / 0.65),
+    rgb(255 255 255 / 0.12) 30%,
+    rgb(255 255 255 / 0.04) 60%,
+    rgb(255 255 255 / 0.3)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.liquid-glass::after {
+  /* The sheen across the upper half. */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent 55%);
+  pointer-events: none;
+}
+.liquid-glass[data-tone="dark"] {
+  background-color: rgb(20 24 32 / 0.48);
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.35),
+    0 10px 30px -10px rgb(0 0 0 / 0.5);
+}
+.liquid-glass[data-tone="light"] {
+  background-color: rgb(255 255 255 / 0.58);
+  box-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.08),
+    0 10px 30px -12px rgb(15 23 35 / 0.18);
+}
+.liquid-glass[data-tone="light"]::after {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.55), transparent 60%);
+}
+/* The open menu holds more text, so it is frosted more heavily. */
+.liquid-glass--panel[data-tone="dark"] {
+  background-color: rgb(20 24 32 / 0.78);
+}
+.liquid-glass--panel[data-tone="light"] {
+  background-color: rgb(255 255 255 / 0.84);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .liquid-glass[data-tone="dark"] {
+    background-color: rgb(20 24 32 / 0.95);
+  }
+  .liquid-glass[data-tone="light"] {
+    background-color: rgb(255 255 255 / 0.96);
+  }
+}

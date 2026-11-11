@@ -54,7 +54,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       onClick={toggle}
-      className={`border-line text-muted hover:border-accent hover:text-accent-text inline-flex h-11 w-11 items-center justify-center rounded-full border transition-[color,border-color,translate,scale] active:scale-90 ${className ?? ""}`}
+      className={`text-fg/75 hover:text-fg hover:bg-fg/[0.08] inline-flex h-10 w-10 items-center justify-center rounded-full transition-[color,background-color,scale] active:scale-90 ${className ?? ""}`}
       aria-label={
         theme === null
           ? "Switch colour theme"

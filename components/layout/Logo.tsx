@@ -12,20 +12,31 @@ export function Logo({
   className,
   href = "/",
   priority = false,
+  variant = "tile",
 }: {
   className?: string;
   href?: string | null;
   priority?: boolean;
+  /** "pill" is the compact capsule used inside the nav bar. */
+  variant?: "tile" | "pill";
 }) {
   const mark = (
-    <span className={cx("bg-brand inline-flex rounded-lg px-2.5 py-1 sm:px-3", className)}>
+    <span
+      className={cx(
+        "bg-brand inline-flex",
+        variant === "pill"
+          ? "rounded-full py-1 pr-1.5 pl-3.5 shadow-[inset_0_1px_0_rgb(255_255_255/0.35)]"
+          : "rounded-lg px-2.5 py-1 sm:px-3",
+        className,
+      )}
+    >
       <Image
         src="/images/brand/wordmark.png"
         alt="White Cloud Realty"
         width={360}
         height={139}
         priority={priority}
-        className="h-10 w-auto sm:h-11"
+        className={variant === "pill" ? "h-8 w-auto" : "h-10 w-auto sm:h-11"}
       />
     </span>
   );
@@ -35,7 +46,7 @@ export function Logo({
   return (
     <Link
       href={href}
-      className="group/logo inline-flex min-h-11 items-center rounded-lg transition-transform duration-300 hover:scale-[1.03]"
+      className="group/logo inline-flex min-h-10 items-center rounded-full transition-transform duration-300 hover:scale-[1.03]"
       aria-label="White Cloud Realty - home"
     >
       {mark}
