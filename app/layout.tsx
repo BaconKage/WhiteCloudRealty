@@ -31,8 +31,8 @@ const serif = Noto_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL(absoluteUrl("/")),
   title: {
-    default: `${site.name} — Strategic Real Estate Advisory, Bengaluru`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} - Strategic Real Estate Advisory, Bengaluru`,
+    template: `%s - ${site.name}`,
   },
   description: site.description,
   applicationName: site.name,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: "en_IN",
     url: absoluteUrl("/"),
-    title: `${site.name} — Strategic Real Estate Advisory`,
+    title: `${site.name} - Strategic Real Estate Advisory`,
     description: site.description,
     images: [{ url: absoluteUrl("/images/og-default.jpg"), width: 1200, height: 630, alt: site.name }],
   },

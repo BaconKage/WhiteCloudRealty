@@ -3,7 +3,7 @@
  *
  * Everything here was taken from the existing whitecloudrealty.in site or its
  * marketing collateral. Anything still unknown is marked `null` and the UI
- * hides that element rather than inventing a value — see TODO notes below.
+ * hides that element rather than inventing a value - see TODO notes below.
  */
 
 export const site = {

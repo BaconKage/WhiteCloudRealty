@@ -301,7 +301,7 @@ function FilterRow({ legend, options, value, onChange }: FilterRowProps) {
 
 /**
  * Sits above the card's stretched link, which is why it needs its own stacking
- * context — otherwise the card's `before:inset-0` anchor would swallow clicks.
+ * context - otherwise the card's `before:inset-0` anchor would swallow clicks.
  */
 function CompareToggle({
   checked,

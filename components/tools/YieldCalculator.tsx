@@ -16,7 +16,7 @@ const currency = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 });
 /**
  * EMI and gross rental yield, worked out in the browser.
  *
- * Deliberately plain arithmetic with no fees, taxes or escalation modelled —
+ * Deliberately plain arithmetic with no fees, taxes or escalation modelled - 
  * the copy says as much. It exists to make the "data-backed, not guesswork"
  * claim tangible, not to replace a lender's sanction letter.
  */
@@ -207,9 +207,9 @@ export function YieldCalculator() {
               </p>
 
               <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-(--color-line)">
-                <Metric label="Cash down payment" value={formatPrice(Math.round(result.downPayment)) ?? "—"} />
-                <Metric label="Loan amount" value={formatPrice(Math.round(result.principal)) ?? "—"} />
-                <Metric label="Total interest" value={formatPrice(Math.round(result.totalInterest)) ?? "—"} />
+                <Metric label="Cash down payment" value={formatPrice(Math.round(result.downPayment)) ?? "-"} />
+                <Metric label="Loan amount" value={formatPrice(Math.round(result.principal)) ?? "-"} />
+                <Metric label="Total interest" value={formatPrice(Math.round(result.totalInterest)) ?? "-"} />
                 <Metric label="Gross rental yield" value={`${result.grossYield.toFixed(2)}%`} accent />
               </dl>
 

@@ -10,7 +10,7 @@ import { formatDate, cx } from "@/lib/format";
  *
  * The highlight line carries the card; the full text is collapsed behind a
  * disclosure so a column of five does not become a wall. The full quote is
- * always in the DOM — only its height is animated — so it stays searchable
+ * always in the DOM - only its height is animated - so it stays searchable
  * and readable to assistive tech.
  */
 export function TestimonialCard({

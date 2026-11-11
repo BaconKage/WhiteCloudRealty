@@ -209,7 +209,7 @@ export function CompareDrawer({
                       </th>
                       {projects.map((p) => (
                         <td key={p.slug} className="numeric p-3 align-top">
-                          {row.get(p) ?? <span className="text-faint">—</span>}
+                          {row.get(p) ?? <span className="text-faint">-</span>}
                         </td>
                       ))}
                     </tr>

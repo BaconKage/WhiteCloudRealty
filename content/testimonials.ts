@@ -7,7 +7,7 @@
  * phone. They are transcribed here verbatim instead.
  *
  * `relationship` is how LinkedIn describes the connection and is worth
- * keeping — "was Sayanti's client" carries more weight than an unlabelled
+ * keeping - "was Sayanti's client" carries more weight than an unlabelled
  * quote. `date` is the recommendation date as shown on LinkedIn.
  */
 
@@ -53,7 +53,7 @@ export const testimonials: Testimonial[] = [
     highlight: "She remains my go-to person for real estate in Bangalore.",
     quote: [
       "I had the pleasure of being Sayanti’s client at Bhartiya City, and working with her was a truly remarkable experience. She played a key role in ensuring my residence met the international standards expected of a luxury brand, bringing a strong investor-minded approach throughout.",
-      "Her friendly, people-centric style, attention to detail, strategic know-how, and deep understanding of the luxury real estate segment uniquely set her apart. In any real estate transaction, trust and genuine care matter most—and Sayanti brings both in abundance. She remains my go-to person for real estate in Bangalore.",
+      "Her friendly, people-centric style, attention to detail, strategic know-how, and deep understanding of the luxury real estate segment uniquely set her apart. In any real estate transaction, trust and genuine care matter most - and Sayanti brings both in abundance. She remains my go-to person for real estate in Bangalore.",
     ],
   },
   {
@@ -78,7 +78,7 @@ export const testimonials: Testimonial[] = [
       "Always making clients feel heard and valued, even in high-stakes negotiations.",
     quote: [
       "Sayanti worked with me during her tenure with Leela Residences, Bhartiya City, where she excelled as a Senior Sales Professional.",
-      "What truly set her apart was her warm, friendly, and empathetic approach—always making clients feel heard and valued, even in high-stakes negotiations.",
+      "What truly set her apart was her warm, friendly, and empathetic approach - always making clients feel heard and valued, even in high-stakes negotiations.",
       "She balanced genuine relationship-building with professional solution-oriented strategies, guiding clients to seamless sales. Even during uncertain economic downturns, her ability to anticipate needs and deliver tailored solutions kept our pipeline strong.",
     ],
   },
@@ -113,7 +113,7 @@ export const hasTestimonials = testimonials.length > 0;
 export const featuredTestimonial = testimonials.find((t) => t.featured);
 export const shortTestimonials = testimonials.filter((t) => !t.featured);
 
-/** Initials for the avatar placeholder — no client headshots are published. */
+/** Initials for the avatar placeholder - no client headshots are published. */
 export function initials(name: string): string {
   return name
     .replace(/[^A-Za-z\s.]/g, "")

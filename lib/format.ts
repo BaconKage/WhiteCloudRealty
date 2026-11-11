@@ -12,7 +12,7 @@ export function formatPrice(rupees: number | null): string | null {
 
   if (rupees >= CRORE) {
     const cr = rupees / CRORE;
-    // Two decimals below 10 Cr, one above — matches how listings are written.
+    // Two decimals below 10 Cr, one above - matches how listings are written.
     const value = cr >= 10 ? cr.toFixed(1) : cr.toFixed(2);
     return `₹${stripTrailingZeros(value)} Cr`;
   }

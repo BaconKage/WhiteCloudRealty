@@ -7,7 +7,7 @@ type Theme = "light" | "dark";
 
 /**
  * Flips `data-theme` on <html>. With no stored preference the site follows the
- * OS, which is handled entirely in CSS — this only kicks in once the visitor
+ * OS, which is handled entirely in CSS - this only kicks in once the visitor
  * makes a choice, and that choice is remembered per browser.
  *
  * Where View Transitions are supported, the new theme spreads out in a circle
@@ -46,7 +46,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     try {
       localStorage.setItem("wcr-theme", next);
     } catch {
-      // Private browsing or blocked storage — the choice just won't persist.
+      // Private browsing or blocked storage - the choice just won't persist.
     }
   }
 

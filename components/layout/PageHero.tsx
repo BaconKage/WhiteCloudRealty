@@ -11,12 +11,14 @@ type PageHeroProps = {
   /** Optional backdrop; without one the panel is flat ink. */
   image?: { src: string; alt: string; credit?: string; transitionName?: string };
   size?: "full" | "page";
+  /** Desktop-only panel beside the headline and lede (the home page's services). */
+  aside?: ReactNode;
   className?: string;
 };
 
 /**
  * Every page opens on this ink panel. Beyond the look, it is what lets the
- * sticky header sit transparently over the top of the page — see Header.
+ * sticky header sit transparently over the top of the page - see Header.
  *
  * The negative top margin pulls the panel up behind the header, and the
  * matching padding keeps the content clear of it.
@@ -28,8 +30,41 @@ export function PageHero({
   children,
   image,
   size = "page",
+  aside,
   className,
 }: PageHeroProps) {
+  const intro = (
+    <>
+      {eyebrow && (
+        <p className="eyebrow text-accent animate-(--animate-fade-up)">{eyebrow}</p>
+      )}
+
+      <h1
+        className={cx(
+          "mt-5 max-w-4xl leading-[0.98]",
+          size === "full" ? "text-(length:--text-display)" : "text-(length:--text-h1)",
+        )}
+      >
+        {/* The mask lets the headline rise into place from nothing. The
+            padding keeps descenders off the clip edge. */}
+        <span className="block overflow-hidden pb-[0.12em]">
+          <span className="block animate-(--animate-rise)" style={{ animationDelay: "40ms" }}>
+            {title}
+          </span>
+        </span>
+      </h1>
+
+      {lede && (
+        <div
+          className="text-fg mt-6 max-w-2xl animate-(--animate-fade-up) text-(length:--text-lede) leading-relaxed"
+          style={{ animationDelay: "90ms" }}
+        >
+          {lede}
+        </div>
+      )}
+    </>
+  );
+
   return (
     <section
       className={cx(
@@ -70,35 +105,18 @@ export function PageHero({
             : "min-h-[22rem] pt-16 pb-14 lg:min-h-[26rem]",
         )}
       >
-        {eyebrow && (
-          <p className="eyebrow text-accent animate-(--animate-fade-up)">{eyebrow}</p>
-        )}
-
-        <h1
-          className={cx(
-            "mt-5 max-w-4xl leading-[0.98]",
-            size === "full" ? "text-(length:--text-display)" : "text-(length:--text-h1)",
-          )}
-        >
-          {/* The mask lets the headline rise into place from nothing. The
-              padding keeps descenders off the clip edge. */}
-          <span className="block overflow-hidden pb-[0.12em]">
-            <span
-              className="block animate-(--animate-rise)"
-              style={{ animationDelay: "40ms" }}
+        {aside ? (
+          <div className="grid gap-10 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,0.65fr)] xl:items-end xl:gap-14">
+            <div>{intro}</div>
+            <div
+              className="hidden animate-(--animate-fade-up) xl:block"
+              style={{ animationDelay: "160ms" }}
             >
-              {title}
-            </span>
-          </span>
-        </h1>
-
-        {lede && (
-          <p
-            className="text-fg mt-6 max-w-2xl animate-(--animate-fade-up) text-(length:--text-lede) leading-relaxed"
-            style={{ animationDelay: "90ms" }}
-          >
-            {lede}
-          </p>
+              {aside}
+            </div>
+          </div>
+        ) : (
+          intro
         )}
 
         {children && (

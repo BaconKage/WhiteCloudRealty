@@ -92,7 +92,7 @@ export function Header() {
                   href={link.href}
                   aria-current={isActive(link.href) ? "page" : undefined}
                   className={cx(
-                    "group/nav relative inline-flex min-h-11 items-center rounded-full px-4 text-sm transition-colors",
+                    "group/nav relative inline-flex min-h-11 items-center rounded-full px-4 text-sm whitespace-nowrap transition-colors",
                     isActive(link.href) ? "text-fg font-medium" : "text-muted hover:text-fg",
                   )}
                 >

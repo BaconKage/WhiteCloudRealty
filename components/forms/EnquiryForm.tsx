@@ -12,7 +12,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 type Errors = Partial<Record<"name" | "phone" | "email" | "message", string>>;
 
 /**
- * Posts to Web3Forms, which needs no backend of its own — set
+ * Posts to Web3Forms, which needs no backend of its own - set
  * NEXT_PUBLIC_WEB3FORMS_KEY in .env.local (see .env.example).
  *
  * With no key configured the form does not pretend to work: it hands the
@@ -58,7 +58,7 @@ export function EnquiryForm({
     setStatus("sending");
     setServerError(null);
     data.append("access_key", ACCESS_KEY!);
-    data.append("subject", `${subject} — ${name}`);
+    data.append("subject", `${subject} - ${name}`);
     data.append("from_name", site.name);
 
     try {
@@ -97,7 +97,7 @@ export function EnquiryForm({
 
   return (
     <form onSubmit={onSubmit} noValidate className={cx("grid gap-5", compact ? "" : "sm:grid-cols-2")}>
-      {/* Honeypot — real people never see it, bots fill it in. */}
+      {/* Honeypot - real people never see it, bots fill it in. */}
       <input
         type="checkbox"
         name="botcheck"
@@ -233,7 +233,7 @@ function Field({
  * Shown when no Web3Forms key is configured. Rather than a form that silently
  * drops submissions, this routes the enquiry to WhatsApp and email.
  *
- * Deliberately reads as ordinary site copy — a visitor should never see setup
+ * Deliberately reads as ordinary site copy - a visitor should never see setup
  * instructions. To swap it for the full form, set NEXT_PUBLIC_WEB3FORMS_KEY
  * in .env.local (see the README).
  */

@@ -8,7 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
  * The founder's letter, given the room it deserves. On the old site it sat
  * collapsed behind a "Show More" link halfway down the home page.
  *
- * The portrait slot is optional — see the TODO on site.founder.portrait. With
+ * The portrait slot is optional - see the TODO on site.founder.portrait. With
  * no photo the layout falls back to a single wide column rather than leaving
  * an empty frame.
  */

@@ -746,21 +746,3 @@ html[data-intro="seen"] .site-intro {
     to { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 100%) var(--theme-y, 0)); }
   }
 }
-
-/* About page skyline: an auto goes past on the road now and then. */
-@media (prefers-reduced-motion: no-preference) {
-  .skyline-auto {
-    animation: skyline-auto 22s linear infinite;
-  }
-}
-.skyline-auto {
-  translate: 900px 0;
-}
-@keyframes skyline-auto {
-  from {
-    translate: -140px 0;
-  }
-  to {
-    translate: 1320px 0;
-  }
-}

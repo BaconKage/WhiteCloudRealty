@@ -3,7 +3,7 @@
  *
  * Every `description` is the copy as published on whitecloudrealty.in/projects.
  * Structured fields (price, configurations, area, possession) are only filled
- * where the source material actually stated them — the rest are `null`, and
+ * where the source material actually stated them - the rest are `null`, and
  * the UI omits those rows rather than showing a placeholder. Fill them in and
  * the cards, filters and comparison table pick them up with no code changes.
  */
@@ -32,7 +32,7 @@ export type Project = {
   locationLabel: string;
   category: ProjectCategory;
   status: ProjectStatus | null;
-  /** Starting price in rupees. TODO across the board — see README. */
+  /** Starting price in rupees. TODO across the board - see README. */
   priceFrom: number | null;
   /** e.g. ["3 BHK", "4 BHK"] */
   configurations: string[];
@@ -125,7 +125,7 @@ const core: Project[] = [
     imageAlt:
       "Architectural render of the White Lotus Amanvana clubhouse, brick arches wrapped in planting",
     summary:
-      "A philosophy of experience rather than a checklist of amenities — homes cradled with care, walks that unfold like a story.",
+      "A philosophy of experience rather than a checklist of amenities - homes cradled with care, walks that unfold like a story.",
     description: [
       "Amanvana isn’t a checklist of amenities, but a philosophy of experience. Every home is cradled with care, every walk unfolds like a story, and each day makes space for who you are and who you’re becoming.",
     ],
@@ -138,7 +138,7 @@ const core: Project[] = [
   },
   {
     slug: "avillion-farm-villas",
-    name: "Avillion — Luxury Farm Villas",
+    name: "Avillion - Luxury Farm Villas",
     developer: "Avillion Infrastructure",
     localityId: "north",
     locationLabel: "North Bengaluru",
@@ -243,7 +243,7 @@ const core: Project[] = [
     imageAlt:
       "Render of the Nikoo Garden Estate towers and landscaped township in Sadahalli",
     summary:
-      "An integrated township in Sadahalli — 180 row houses and townhouses, apartments, retail and a school in one masterplan.",
+      "An integrated township in Sadahalli - 180 row houses and townhouses, apartments, retail and a school in one masterplan.",
     description: [
       "Nikoo Garden Estate presents lavish row houses, townhouses, retail, and one educational building in Sadahalli, Bangalore.",
       "There are 2.5 BHK, 3 BHK, 3.5 & 4 BHK apartments and studio apartments available. There are a total of 180 townhouses/ row houses, 1 retail building, and 1 school in this integrated township project. Immerse in the lap of nature and some of the most engaging amenities.",

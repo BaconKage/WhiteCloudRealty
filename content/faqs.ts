@@ -2,7 +2,7 @@
  * FAQs, written only from what the firm already states publicly about its
  * services. Nothing here asserts a fee, a response time, a geography or a
  * service that is not already claimed on the site or in the firm's own
- * collateral — add those once confirmed.
+ * collateral - add those once confirmed.
  */
 
 export type Faq = { question: string; answer: string };

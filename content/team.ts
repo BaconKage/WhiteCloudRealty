@@ -47,12 +47,12 @@ export const founders: TeamMember[] = [
 
 export const team: TeamMember[] = [
   { name: "Manoj", role: null, photo: "/images/team/manoj.jpg", phone: "+91 93802 18123" },
-  { name: "Urvashi Choudhury", role: null, photo: "/images/team/urvashi-choudhury.jpg", phone: "+91 70263 54041" },
+  { name: "Urvashi", role: null, photo: "/images/team/urvashi-choudhury.jpg", phone: "+91 70263 54041" },
   { name: "Francis", role: null, photo: "/images/team/francis.jpg", phone: "+91 83102 47436" },
-  { name: "Suraj C J", role: null, photo: "/images/team/suraj-c-j.jpg", phone: "+91 70191 43040" },
-  { name: "Nandita Sengupta", role: null, photo: "/images/team/nandita-sengupta.jpg", phone: "+91 84203 60233" },
+  { name: "Suraj", role: null, photo: "/images/team/suraj-c-j.jpg", phone: "+91 70191 43040" },
+  { name: "Nandita", role: null, photo: "/images/team/nandita-sengupta.jpg", phone: "+91 84203 60233" },
   { name: "Rajkumar", role: null, photo: "/images/team/rajkumar.jpg", phone: "+91 78297 81138" },
-  { name: "Akash Kolkur", role: null, photo: "/images/team/akash-kolkur.jpg", phone: "+91 63611 93703" },
+  { name: "Akash", role: null, photo: "/images/team/akash-kolkur.jpg", phone: "+91 63611 93703" },
   { name: "Rachan", role: null, photo: "/images/team/rachan.jpg", phone: "+91 91485 71033" },
 ];
 

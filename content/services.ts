@@ -26,7 +26,7 @@ export const services: Service[] = [
     label: "Buy a home",
     title: "Finding your dream home",
     lede:
-      "Finding your dream home is more than a transaction — it’s a journey toward the life you’ve always imagined.",
+      "Finding your dream home is more than a transaction - it’s a journey toward the life you’ve always imagined.",
     body: [
       "Whether you’re looking for your first home, a spacious upgrade, or a smart investment, the right property should reflect your lifestyle, priorities, and aspirations.",
       "At every step, we make the process simple, transparent, and tailored to you. From understanding your needs and shortlisting the right options to site visits, negotiations, and final paperwork, we guide you with expert insight and genuine care.",
@@ -39,7 +39,7 @@ export const services: Service[] = [
       "Trusted support for legal, financial, and documentation needs",
     ],
     closer:
-      "Your dream home isn’t just about walls and windows — it’s about comfort, connection, and a future you can build with confidence.",
+      "Your dream home isn’t just about walls and windows - it’s about comfort, connection, and a future you can build with confidence.",
     cta: "Start your home search",
   },
   {
@@ -47,10 +47,10 @@ export const services: Service[] = [
     label: "Invest for returns",
     title: "The right asset, in the right location, at the right time",
     lede:
-      "Real estate investing is not just about buying property — it’s about choosing the right asset, in the right location, at the right time, to create long-term value.",
+      "Real estate investing is not just about buying property - it’s about choosing the right asset, in the right location, at the right time, to create long-term value.",
     body: [
       "Whether your goal is steady rental income, capital appreciation, or portfolio diversification, we help you identify opportunities that align with your financial objectives and risk appetite.",
-      "Our approach combines market insight, location intelligence, and data-backed evaluation to help you invest with clarity and confidence — from residential and commercial assets to pre-launch and ready-to-move opportunities.",
+      "Our approach combines market insight, location intelligence, and data-backed evaluation to help you invest with clarity and confidence - from residential and commercial assets to pre-launch and ready-to-move opportunities.",
     ],
     listTitle: "How we help you invest smarter",
     list: [
@@ -69,7 +69,7 @@ export const services: Service[] = [
     label: "Sell & diversify",
     title: "Sell smart. Diversify better.",
     lede:
-      "Your existing assets hold value — but the right strategy unlocks their full potential.",
+      "Your existing assets hold value - but the right strategy unlocks their full potential.",
     body: [
       "Whether you’re planning to exit a property, rebalance your portfolio, or move capital into higher-growth opportunities, we help you do it with clarity and confidence.",
       "Selling is not just about listing; it’s about positioning your asset for maximum value. Diversification is not just about spreading risk; it’s about building a stronger, more resilient portfolio aligned to your goals.",
@@ -146,7 +146,7 @@ export const verticals = [
 
 /** From the about page, verbatim. */
 export const purpose =
-  "Our purpose is simple: to simplify real estate decisions and create value at every stage of the property life cycle. We don’t just close deals — we build trust, deliver insight, and create lasting relationships.";
+  "Our purpose is simple: to simplify real estate decisions and create value at every stage of the property life cycle. We don’t just close deals - we build trust, deliver insight, and create lasting relationships.";
 
 /** "What Sets Us Apart", verbatim from the about page. */
 export const pillars = [
@@ -164,7 +164,7 @@ export const pillars = [
   },
   {
     title: "One-stop-shop experience",
-    body: "Through partnerships with leading interior design firms, we extend our services beyond transactions — helping clients transform properties into functional, beautiful spaces.",
+    body: "Through partnerships with leading interior design firms, we extend our services beyond transactions - helping clients transform properties into functional, beautiful spaces.",
   },
 ];
 

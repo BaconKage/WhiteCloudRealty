@@ -3,7 +3,7 @@ import type { Project } from "@/content/projects";
 import { absoluteUrl } from "./seo";
 
 /**
- * Structured data. Only fields backed by real values are emitted — an empty
+ * Structured data. Only fields backed by real values are emitted - an empty
  * `address` or a null price is omitted rather than serialised as null, which
  * search engines treat as a malformed entity.
  */

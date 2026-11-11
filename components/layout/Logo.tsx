@@ -36,7 +36,7 @@ export function Logo({
     <Link
       href={href}
       className="group/logo inline-flex min-h-11 items-center rounded-lg transition-transform duration-300 hover:scale-[1.03]"
-      aria-label="White Cloud Realty — home"
+      aria-label="White Cloud Realty - home"
     >
       {mark}
     </Link>

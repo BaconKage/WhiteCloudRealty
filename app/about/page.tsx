@@ -9,7 +9,7 @@ import { Partners } from "@/components/home/Partners";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CtaBand } from "@/components/home/CtaBand";
 import { aboutIntro, ethos } from "@/content/founder";
-import { SkylineArt } from "@/components/about/SkylineArt";
+import Image from "next/image";
 import { pillars, verticals } from "@/content/services";
 import { pageMetadata } from "@/lib/seo";
 
@@ -66,11 +66,15 @@ export default function AboutPage() {
                 className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-[radial-gradient(60%_60%_at_50%_45%,rgb(255_118_30/0.22),transparent_72%)] blur-2xl sm:-inset-5"
               />
 
-              <div className="border-line bg-raised relative aspect-4/3 overflow-hidden rounded-(--radius-card) border shadow-[0_24px_60px_-32px_rgb(0_0_0_/_0.45)]">
-                <SkylineArt className="absolute inset-0 h-full w-full transition-transform duration-[1100ms] ease-(--ease-out-soft) group-hover:scale-[1.035]" />
-                <span className="absolute bottom-3 left-3 rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                  Vidhana Soudha, Bengaluru
-                </span>
+              {/* 3:2 is the graphic's own shape, so none of its text is cropped. */}
+              <div className="border-line bg-raised relative aspect-[3/2] overflow-hidden rounded-(--radius-card) border shadow-[0_24px_60px_-32px_rgb(0_0_0_/_0.45)]">
+                <Image
+                  src="/images/about/welcome-to-white-cloud-realty.webp"
+                  alt="Welcome to White Cloud Realty: a strategic real estate advisory for residential, commercial and land, to buy, sell or rent. A hand holds house keys beside a model home, with the city skyline behind."
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 52vw"
+                  className="object-cover"
+                />
               </div>
             </figure>
           </Reveal>

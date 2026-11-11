@@ -5,7 +5,7 @@ import { cx } from "@/lib/format";
 
 /**
  * One person on the Meet the team page. Until a photo arrives the frame shows
- * the logo's own device — the white disc on ink — with the person's initials
+ * the logo's own device - the white disc on ink - with the person's initials
  * set in it the way "Realty." sits in the logo, so the grid reads as designed
  * rather than as missing images. Every card carries a number to call: the
  * person's own, or the firm's main line until theirs is supplied.

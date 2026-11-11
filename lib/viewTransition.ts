@@ -58,7 +58,7 @@ export function withViewTransition(update: () => void, flag?: string): void {
  * Runs a route change inside a View Transition, giving up on the animation if
  * the new page is not ready within MAX_ROUTE_WAIT_MS. Skipping ends the
  * rendering freeze at once, so the old page stays live and the new one simply
- * swaps in when it arrives — a normal navigation, never a frozen screen.
+ * swaps in when it arrives - a normal navigation, never a frozen screen.
  *
  * Returns null when no transition was started (unsupported, or reduced
  * motion), so the caller can let the link navigate normally.

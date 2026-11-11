@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * True once the element has been seen. Latches — it never flips back, so
+ * True once the element has been seen. Latches - it never flips back, so
  * an entrance animation cannot replay while the visitor scrolls around.
  */
 export function useInView<T extends HTMLElement>(threshold = 0.25) {
