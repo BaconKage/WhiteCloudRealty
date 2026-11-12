@@ -58,6 +58,7 @@ export const site = {
     { label: "LinkedIn", href: "https://www.linkedin.com/company/white-cloud-realty/" },
     { label: "Instagram", href: "https://www.instagram.com/whitecloudrealty.in/" },
     { label: "Facebook", href: "https://www.facebook.com/share/1TXdFjcGAt/" },
+    { label: "YouTube", href: "https://www.youtube.com/@whitecloudrealty" },
   ],
 
   /** The firm's Karnataka RERA agent registration. Project numbers to follow. */

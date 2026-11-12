@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ProjectArt } from "./ProjectArt";
+import { ShareButton } from "./ShareButton";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -241,18 +242,19 @@ export function ProjectCard({
         )}
 
         {/* Above the card's stretched link, so it opens the enquiry instead. */}
-        <div className="mt-auto pt-5">
+        <div className="mt-auto flex gap-2 pt-5">
           <a
             href={whatsappLink(
               `Hi ${site.name}, I'd like to know more about ${project.name}.`,
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-brand text-ink hover:bg-fg hover:text-bg relative z-10 inline-flex min-h-11 w-full items-center justify-center rounded-full px-5 text-sm font-semibold transition-[background-color,color,translate,scale] active:scale-[0.97]"
+            className="bg-brand text-ink hover:bg-fg hover:text-bg relative z-10 inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-5 text-sm font-semibold transition-[background-color,color,translate,scale] active:scale-[0.97]"
           >
             Enquire now
             <span className="sr-only"> about {project.name}</span>
           </a>
+          <ShareButton title={project.name} path={`/projects/${project.slug}/`} />
         </div>
 
         <p className="text-accent-text flex min-h-11 items-center gap-1.5 pt-3 text-sm font-medium">

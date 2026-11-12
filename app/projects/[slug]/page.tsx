@@ -20,6 +20,7 @@ import { getLocality } from "@/content/localities";
 import { site, whatsappLink } from "@/content/site";
 import { formatArea, formatConfigurations, formatPrice } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
+import { ShareButton } from "@/components/projects/ShareButton";
 import { breadcrumbJsonLd, projectJsonLd } from "@/lib/jsonld";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -120,6 +121,11 @@ export default async function ProjectPage({ params }: Params) {
           >
             WhatsApp us
           </Button>
+          <ShareButton
+            variant="button"
+            title={project.name}
+            path={`/projects/${project.slug}/`}
+          />
         </div>
       </PageHero>
 
